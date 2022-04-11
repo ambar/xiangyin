@@ -1,4 +1,5 @@
 import * as ui from '@chakra-ui/react'
+import {useBoolean} from '@chakra-ui/react'
 import {useEffect, useState} from 'react'
 import TextareaAutosize from 'react-textarea-autosize'
 import {queryPinyin, QueryResult} from './pinyin'
@@ -10,10 +11,8 @@ const example = `
 白沙遠浦，青泥別渚，剩有蝦跳鰍舞。任君飛去飽時來，看頭上風吹一縷。
 
 鹊桥仙
-纤云弄巧，飞星传恨，银汉迢迢暗度。
-金风玉露一相逢，便胜却人间无数。
-柔情似水，佳期如梦，忍顾鹊桥归路。
-两情若是久长时，又岂在朝朝暮暮。
+纤云弄巧，飞星传恨，银汉迢迢暗度。金风玉露一相逢，便胜却人间无数。
+柔情似水，佳期如梦，忍顾鹊桥归路。两情若是久长时，又岂在朝朝暮暮。
 
 鵲橋仙 秦觀
 纖雲弄巧，飛星傳恨，銀漢迢迢暗度。金風玉露一相逢，便勝卻人間無數。
@@ -42,14 +41,15 @@ const RubyResult: React.FC<{char: string; result: QueryResult}> = ({
 function Zhuyin() {
   const [words, setWords] = useState(example)
   const [result, setResult] = useState<[string, QueryResult][]>([])
+  const [shouldQueryVariants, shouldQueryVariantsFlag] = useBoolean(true)
 
   useEffect(() => {
     setResult(
       Array.from(words).map((c) => {
-        return [c, reHan.test(c) ? queryPinyin(c) : void 0]
+        return [c, reHan.test(c) ? queryPinyin(c, shouldQueryVariants) : void 0]
       })
     )
-  }, [words])
+  }, [words, shouldQueryVariants])
 
   let dict = (
     <ui.Box
@@ -62,12 +62,20 @@ function Zhuyin() {
       <ui.Textarea
         as={TextareaAutosize}
         size="md"
-        placeholder="请输入字词"
+        placeholder="輸入漢字"
         rows={10}
         maxRows={20}
         value={words}
         onChange={(e) => setWords(e.target.value)}
       />
+      <ui.HStack my={4} spacing={5}>
+        <ui.Checkbox
+          isChecked={shouldQueryVariants}
+          onChange={shouldQueryVariantsFlag.toggle}
+        >
+          繁體/異體轉換
+        </ui.Checkbox>
+      </ui.HStack>
       <ui.Divider my="4" />
       <ui.Text whiteSpace="pre-wrap" fontSize="2xl" lineHeight={1.8}>
         {result.map(([char, result], i) =>
@@ -83,7 +91,7 @@ function Zhuyin() {
         <ui.Tabs isLazy defaultIndex={0} variant="soft-rounded">
           <ui.TabList>
             <ui.Tab>注音</ui.Tab>
-            <ui.Tab>音节表</ui.Tab>
+            <ui.Tab>音節表</ui.Tab>
           </ui.TabList>
           <ui.TabPanels>
             <ui.TabPanel>{dict}</ui.TabPanel>
