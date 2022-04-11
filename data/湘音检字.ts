@@ -9,14 +9,14 @@ const charGroup = new Map<string, DataItem[]>()
 
 export const items = json.map((x) => {
   const item = Object.fromEntries(x.map((v, i) => [head[i], v])) as DataItem
-  if (item.字甲) {
-    if (charGroup.has(item.字甲)) charGroup.get(item.字甲)!.push(item)
-    else charGroup.set(item.字甲, [item])
+  const setIfNotSet = (char: string) => {
+    if (char) {
+      if (charGroup.has(char)) charGroup.get(char)!.push(item)
+      else charGroup.set(char, [item])
+    }
   }
-  if (item.字乙) {
-    if (charGroup.has(item.字乙)) charGroup.get(item.字乙)!.push(item)
-    else charGroup.set(item.字乙, [item])
-  }
+  setIfNotSet(item.字甲)
+  setIfNotSet(item.字乙)
   return item
 })
 
