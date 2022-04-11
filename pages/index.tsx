@@ -1,6 +1,7 @@
 import * as ui from '@chakra-ui/react'
 import type {NextPage} from 'next'
 import Head from 'next/head'
+import Zhuyin from '../biz/Zhuyin'
 
 const Home: NextPage = () => {
   return (
@@ -15,6 +16,8 @@ const Home: NextPage = () => {
           href="/xiang.svg"
         ></link>
       </Head>
+
+      <Zhuyin />
     </ui.Container>
   )
 }
