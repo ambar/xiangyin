@@ -2,17 +2,7 @@ const hash = require('stable-hash').default
 const fs = require('fs/promises')
 const assert = require('assert')
 const stringify = require('json-stringify-pretty-compact')
-
-const unwrapQuote = (s) => s.replace(/^"(.*)"$/, '$1')
-const csv2json = (values, opts = {}) => {
-  const {skip} = {skip: 0, ...opts}
-  const [th, ...rows] = values
-    .slice(skip)
-    .map((x) => x.split('\t').map(unwrapQuote))
-  return rows.map((cells) =>
-    Object.fromEntries(th.map((k, i) => [k, cells[i]?.trim() ?? '']))
-  )
-}
+const {csv2json} = require('./utils')
 
 const main = async () => {
   // 拼音, 寬式IPA, 調號, 字甲, 字乙, 釋義
@@ -54,11 +44,8 @@ const main = async () => {
 
   let hashSet = new Set()
   items.forEach((x) => {
-    // assert(x.字甲)
     const hv = hash(x)
-    if (hashSet.has(hv)) {
-      console.info('重复项', x)
-    }
+    assert(!hashSet.has(hv), '重复项')
     hashSet.add(hv)
   })
 
