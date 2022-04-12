@@ -1,4 +1,6 @@
 import json from './raw/汉方字.简.修正.json'
+import {csToneName2csToneNo, ToneName, ToneType} from './tones'
+import {NormResult} from './types'
 
 const schema = [
   ['號', String],
@@ -31,17 +33,16 @@ type RawDataItem = {
 }
 
 type RawDataSubItem = Record<typeof subhead[number], string>
-type DataSubItem = {音: string; 调: string; 释: string}
 
 type DataItem = {
   號: string
   字: string
-  湘: Record<县市, DataSubItem[]>
+  湘: Record<县市, NormResult[]>
 }
 
 const charGroup = new Map<string, DataItem[]>()
 
-const parsePinyin = (v: RawDataSubItem) => {
+const parsePinyin = (v: RawDataSubItem): NormResult[] => {
   // 声/韵/调可能只在任意一个中出现斜线，主要是文白异读
   const i = v.声母.split('/')
   const f = v.韵母.split('/')
@@ -68,12 +69,16 @@ const parsePinyin = (v: RawDataSubItem) => {
         ? Array(5).fill('未注明异读原因')
         : note.split(/,/g)
   }
-  return i.map((_, i) => [
-    _,
-    f[i],
-    t[i],
-    (notes ? `〔${notes[i]}〕` : '') + def,
-  ])
+  return i.map((y, i) => {
+    const tn = t[i]
+    // 一些项目是单字表示，统一一下（入 -> 入声）
+    const toneName = tn.length === 1 ? tn + '声' : tn
+    return {
+      音: y.replace('0', '') + f[i],
+      调: toneName,
+      释: (notes ? `〔${notes[i]}〕` : '') + def,
+    }
+  })
 }
 
 // TODO: 改成 script 预解析
@@ -85,9 +90,7 @@ export const items = json.map((x) => {
   const item = {
     號: rawItem.號,
     字: rawItem.字,
-    湘: Object.fromEntries(
-      rawItem.湘.map((v) => [v.方言点, parsePinyin(v)])
-    ) as unknown as DataItem['湘'],
+    湘: Object.fromEntries(rawItem.湘.map((v) => [v.方言点, parsePinyin(v)])),
   } as DataItem
   const setIfNotSet = (char: string) => {
     if (char) {
@@ -99,13 +102,23 @@ export const items = json.map((x) => {
   return item
 })
 
-export const query = (char: string, cc: 县市) => {
+export const query = (char: string, cc: 县市, toneType?: ToneType) => {
   const items = charGroup.get(char)
   if (items && cc) {
-    return items.map((x) => x.湘[cc]).flat()
+    return items
+      .map((x) => x.湘[cc] ?? [])
+      .flat()
+      .map((item) => {
+        let tone = item.调
+        if (toneType === 'CSToneNo') {
+          tone = csToneName2csToneNo[tone as ToneName]!
+        }
+        return {...item, 调: tone}
+      })
   }
+  return []
 }
 
-export const queryCS = (char: string) => {
-  return query(char, '长沙')
+export const queryCS = (char: string, toneType: ToneType = 'CSToneNo') => {
+  return query(char, '长沙', toneType)
 }

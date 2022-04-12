@@ -2,7 +2,7 @@ import * as ui from '@chakra-ui/react'
 import {useBoolean} from '@chakra-ui/react'
 import {useEffect, useState} from 'react'
 import TextareaAutosize from 'react-textarea-autosize'
-import {queryPinyin, QueryResult} from './pinyin'
+import {queryPinyin, QueryResult, Source, sourceOptions} from './pinyin'
 
 const reHan = /\p{Script=Han}/u
 const example = `
@@ -29,34 +29,31 @@ const RubyResult: React.FC<{char: string; result: QueryResult}> = ({
   return (
     <ruby onPointerEnter={() => {}}>
       {char}
-      {result && (
-        <>
-          <rt>{result.join('\n')}</rt>
-        </>
-      )}
+      <rt>{result.map((x) => x.音 + x.调).join('\n')}</rt>
     </ruby>
   )
 }
 
 function Zhuyin() {
   const [words, setWords] = useState(example)
+  const [source, setSource] = useState(Source.湘音检字)
   const [result, setResult] = useState<[string, QueryResult][]>([])
   const [shouldQueryVariants, shouldQueryVariantsFlag] = useBoolean(true)
 
   useEffect(() => {
     setResult(
       Array.from(words).map((c) => {
-        return [c, reHan.test(c) ? queryPinyin(c, shouldQueryVariants) : void 0]
+        let r = reHan.test(c) ? queryPinyin(c, shouldQueryVariants, source) : []
+        return [c, r]
       })
     )
-  }, [words, shouldQueryVariants])
+  }, [words, shouldQueryVariants, source])
 
   let dict = (
     <ui.Box
       css={{
-        ruby: {
-          margin: '0 2px',
-        },
+        ruby: {margin: '0 2px'},
+        // rt: {font: '.6em/1 Doulos SIL, Arial'},
       }}
     >
       <ui.Textarea
@@ -69,17 +66,35 @@ function Zhuyin() {
         onChange={(e) => setWords(e.target.value)}
       />
       <ui.HStack my={4} spacing={5}>
-        <ui.Checkbox
-          isChecked={shouldQueryVariants}
-          onChange={shouldQueryVariantsFlag.toggle}
-        >
-          繁體/異體轉換
-        </ui.Checkbox>
+        <ui.Box>
+          <ui.Select
+            value={source}
+            onChange={(e) => setSource(e.target.value as Source)}
+          >
+            {sourceOptions.map(({label, value}) => (
+              <option key={value} value={value}>
+                {label}
+              </option>
+            ))}
+          </ui.Select>
+        </ui.Box>
+        <ui.Box>
+          <ui.Checkbox
+            isChecked={shouldQueryVariants}
+            onChange={shouldQueryVariantsFlag.toggle}
+          >
+            简繁異轉換
+          </ui.Checkbox>
+        </ui.Box>
       </ui.HStack>
       <ui.Divider my="4" />
       <ui.Text whiteSpace="pre-wrap" fontSize="2xl" lineHeight={1.8}>
         {result.map(([char, result], i) =>
-          result ? <RubyResult key={i} char={char} result={result} /> : char
+          result.length ? (
+            <RubyResult key={i} char={char} result={result} />
+          ) : (
+            char
+          )
         )}
       </ui.Text>
     </ui.Box>

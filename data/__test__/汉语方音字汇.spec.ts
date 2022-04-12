@@ -4,3 +4,9 @@ const csChars = ['蟻', '指', '序', '樹']
 test.each(csChars)('queryCS: %s', (char) => {
   expect(queryCS(char)).toMatchSnapshot()
 })
+
+test('empty', () => {
+  // 仅有灌阳/全州的结果
+  expect(queryCS('鷺')).toEqual([])
+  expect(queryCS('X')).toEqual([])
+})
