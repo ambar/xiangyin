@@ -15,6 +15,7 @@
     "downlevelIteration": true,
     "jsx": "preserve",
     "incremental": true,
+    "downlevelIteration": true,
     "baseUrl": ".",
     "paths": {
       "~/*": ["./*"]
