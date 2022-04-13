@@ -29,7 +29,9 @@ const RubyResult: React.FC<{char: string; result: QueryResult}> = ({
   return (
     <ruby onPointerEnter={() => {}}>
       {char}
-      <rt>{result.map((x) => x.音 + x.调).join('\n')}</rt>
+      {result.length > 0 && (
+        <rt>{result.map((x) => x.音 + x.调).join('\n')}</rt>
+      )}
     </ruby>
   )
 }
@@ -37,13 +39,16 @@ const RubyResult: React.FC<{char: string; result: QueryResult}> = ({
 function Zhuyin() {
   const [words, setWords] = useState(example)
   const [source, setSource] = useState(Source.湘音检字)
-  const [result, setResult] = useState<[string, QueryResult][]>([])
+  const [result, setResult] = useState<[string, QueryResult | null][]>([])
   const [shouldQueryVariants, shouldQueryVariantsFlag] = useBoolean(true)
 
   useEffect(() => {
     setResult(
       Array.from(words).map((c) => {
-        let r = reHan.test(c) ? queryPinyin(c, shouldQueryVariants, source) : []
+        // 汉字全部用 ruby 标记，保持变体切换时样式稳定
+        let r = reHan.test(c)
+          ? queryPinyin(c, shouldQueryVariants, source)
+          : null
         return [c, r]
       })
     )
@@ -90,11 +95,7 @@ function Zhuyin() {
       <ui.Divider my="4" />
       <ui.Text whiteSpace="pre-wrap" fontSize="2xl" lineHeight={1.8}>
         {result.map(([char, result], i) =>
-          result.length ? (
-            <RubyResult key={i} char={char} result={result} />
-          ) : (
-            char
-          )
+          result ? <RubyResult key={i} char={char} result={result} /> : char
         )}
       </ui.Text>
     </ui.Box>
