@@ -118,7 +118,7 @@ const RubyResult: React.FC<{char: string; result: QueryResult}> = ({
 }
 
 const ShouldQueryVariantsContext = createContext(true)
-const maxCharsToList = 20
+const maxCharsToList = 50
 
 function Zhuyin() {
   const [keyword, setKeyword] = useState(example)
