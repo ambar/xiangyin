@@ -7,8 +7,8 @@ const Home: NextPage = () => {
   return (
     <ui.Container maxW="6xl" px="1">
       <Head>
-        <title>湘音</title>
-        <meta name="description" content="湘音,乡音,长沙话" />
+        <title>湘音 - 长沙话注音查询</title>
+        <meta name="description" content="湘音,湘语,正音,长沙话" />
         <link
           rel="icon"
           sizes="any"
