@@ -194,14 +194,16 @@ function Zhuyin() {
       {charsToList.length > 0 && charsToList.length <= maxCharsToList && (
         <>
           <ui.Divider my="4" />
-          {charsToList.map((char, i) => (
-            <ui.Box key={i} my="6">
-              <ui.Heading as="h3" mb="2" fontSize="2xl">
-                {char}
-              </ui.Heading>
-              <MultipleSearchResult char={char} />
-            </ui.Box>
-          ))}
+          <ui.SimpleGrid columns={{sm: 2, md: 3}} spacing="40px">
+            {charsToList.map((char, i) => (
+              <ui.Box key={i} my="6">
+                <ui.Heading as="h3" mb="2" fontSize="2xl">
+                  {char}
+                </ui.Heading>
+                <MultipleSearchResult char={char} />
+              </ui.Box>
+            ))}
+          </ui.SimpleGrid>
         </>
       )}
     </ui.Box>
