@@ -1,8 +1,14 @@
 import * as ui from '@chakra-ui/react'
 import {useBoolean} from '@chakra-ui/react'
-import {useEffect, useState} from 'react'
+import {createContext, useContext, useEffect, useState} from 'react'
 import TextareaAutosize from 'react-textarea-autosize'
-import {queryPinyin, QueryResult, Source, sourceOptions} from './pinyin'
+import {
+  queryPinyin,
+  queryPinyinAll,
+  QueryResult,
+  Source,
+  sourceOptions,
+} from './pinyin'
 
 const reHan = /\p{Script=Han}/u
 const example = `
@@ -22,11 +28,70 @@ const example = `
 撫長劍兮玉珥，璆鏘鳴兮琳琅。
 `.trim()
 
+const StyledPopover: React.FC<{
+  trigger: React.ReactNode
+  header: React.ReactNode
+  children: React.ReactNode
+}> = ({trigger, header, children, ...props}) => {
+  return (
+    <ui.Popover isLazy trigger="hover" placement="left" {...props}>
+      {trigger && <ui.PopoverTrigger>{trigger}</ui.PopoverTrigger>}
+      <ui.Portal>
+        <ui.PopoverContent>
+          {header && (
+            <ui.PopoverHeader fontWeight="semibold">{header}</ui.PopoverHeader>
+          )}
+          <ui.PopoverArrow />
+          <ui.PopoverCloseButton />
+          <ui.PopoverBody>{children}</ui.PopoverBody>
+        </ui.PopoverContent>
+      </ui.Portal>
+    </ui.Popover>
+  )
+}
+
+const MultipleSearchResult: React.FC<{char: string}> = ({char}) => {
+  const shouldQueryVariants = useContext(ShouldQueryVariantsContext)
+  const [results, setResults] = useState<ReturnType<typeof queryPinyinAll>>([])
+
+  useEffect(() => {
+    setResults(queryPinyinAll(char, shouldQueryVariants))
+  }, [char, shouldQueryVariants])
+
+  const hasResult = results.some((x) => x[1].length > 0)
+
+  return (
+    <ui.TableContainer>
+      <ui.Table variant="simple" size="xs">
+        {!hasResult && <ui.TableCaption>没有找到结果</ui.TableCaption>}
+        <ui.Thead>
+          <ui.Tr>
+            <ui.Th>源</ui.Th>
+            <ui.Th>音</ui.Th>
+            <ui.Th>注</ui.Th>
+          </ui.Tr>
+        </ui.Thead>
+        <ui.Tbody>
+          {results.map(([source, result]) =>
+            result.map((x, i) => (
+              <ui.Tr key={i}>
+                <ui.Td>《{source}》</ui.Td>
+                <ui.Td>{x.音 + x.调}</ui.Td>
+                <ui.Td>{x.释}</ui.Td>
+              </ui.Tr>
+            ))
+          )}
+        </ui.Tbody>
+      </ui.Table>
+    </ui.TableContainer>
+  )
+}
+
 const RubyResult: React.FC<{char: string; result: QueryResult}> = ({
   char,
   result,
 }) => {
-  return (
+  let ruby = (
     <ruby onPointerEnter={() => {}}>
       {char}
       {result.length > 0 && (
@@ -34,7 +99,14 @@ const RubyResult: React.FC<{char: string; result: QueryResult}> = ({
       )}
     </ruby>
   )
+  return (
+    <StyledPopover trigger={ruby} header="多重搜索">
+      <MultipleSearchResult char={char} />
+    </StyledPopover>
+  )
 }
+
+const ShouldQueryVariantsContext = createContext(true)
 
 function Zhuyin() {
   const [words, setWords] = useState(example)
@@ -94,9 +166,11 @@ function Zhuyin() {
       </ui.HStack>
       <ui.Divider my="4" />
       <ui.Text whiteSpace="pre-wrap" fontSize="2xl" lineHeight={1.8}>
-        {result.map(([char, result], i) =>
-          result ? <RubyResult key={i} char={char} result={result} /> : char
-        )}
+        <ShouldQueryVariantsContext.Provider value={shouldQueryVariants}>
+          {result.map(([char, result], i) =>
+            result ? <RubyResult key={i} char={char} result={result} /> : char
+          )}
+        </ShouldQueryVariantsContext.Provider>
       </ui.Text>
     </ui.Box>
   )

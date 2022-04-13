@@ -34,4 +34,14 @@ export const queryPinyin = (
   return result
 }
 
+export const queryPinyinAll = (
+  char: string,
+  shouldQueryVariants = false
+): [Source, QueryResult][] => {
+  return [...queryMap.keys()].map((k) => [
+    k,
+    queryPinyin(char, shouldQueryVariants, k),
+  ])
+}
+
 export type QueryResult = ReturnType<typeof queryPinyin>

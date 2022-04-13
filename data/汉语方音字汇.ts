@@ -57,12 +57,15 @@ const parsePinyin = (v: RawDataSubItem): NormResult[] => {
   ;[i, f, t, tv].forEach((list) => fill(list, max))
   let note = ''
   let notes: string[] | void
-  const def = v.备注
-    .replace(/^(未注明异读原因)|(\p{Script=Han},[^.]+)/u, (x) => {
-      note = x
-      return ''
-    })
-    .replace(/^\p{Punctuation}/u, '')
+  const def =
+    max > 1
+      ? v.备注
+          .replace(/^(未注明异读原因)|(\p{Script=Han},[^.]+)/u, (x) => {
+            note = x
+            return ''
+          })
+          .replace(/^\p{Punctuation}/u, '')
+      : v.备注
   if (note) {
     notes =
       note === '未注明异读原因'

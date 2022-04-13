@@ -30,6 +30,16 @@ Array [
 ]
 `;
 
+exports[`queryCS: 核 1`] = `
+Array [
+  Object {
+    "调": 6,
+    "释": "核桃,核对同音",
+    "音": "xɤ",
+  },
+]
+`;
+
 exports[`queryCS: 樹 1`] = `
 Array [
   Object {
