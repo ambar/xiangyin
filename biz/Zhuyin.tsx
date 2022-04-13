@@ -1,6 +1,13 @@
 import * as ui from '@chakra-ui/react'
 import {useBoolean} from '@chakra-ui/react'
-import {createContext, useContext, useEffect, useState} from 'react'
+import {
+  createContext,
+  useDeferredValue,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react'
 import TextareaAutosize from 'react-textarea-autosize'
 import {
   queryPinyin,
@@ -52,21 +59,25 @@ const StyledPopover: React.FC<{
 
 const MultipleSearchResult: React.FC<{char: string}> = ({char}) => {
   const shouldQueryVariants = useContext(ShouldQueryVariantsContext)
-  const [results, setResults] = useState<ReturnType<typeof queryPinyinAll>>([])
-
-  useEffect(() => {
-    setResults(queryPinyinAll(char, shouldQueryVariants))
-  }, [char, shouldQueryVariants])
+  const results = useMemo(
+    () => queryPinyinAll(char, shouldQueryVariants),
+    [char, shouldQueryVariants]
+  )
+  // 不需要异步查询，直接渲染
+  // const [results, setResults] = useState<ReturnType<typeof queryPinyinAll>>([])
+  // useEffect(() => {
+  //   setResults(queryPinyinAll(char, shouldQueryVariants))
+  // }, [char, shouldQueryVariants])
 
   const hasResult = results.some((x) => x[1].length > 0)
 
   return (
     <ui.TableContainer>
-      <ui.Table variant="simple" size="xs">
+      <ui.Table variant="simple" size="xs" css={{th: {width: '33%'}}}>
         {!hasResult && <ui.TableCaption>没有找到结果</ui.TableCaption>}
         <ui.Thead>
           <ui.Tr>
-            <ui.Th>源</ui.Th>
+            <ui.Th maxWidth="10em">源</ui.Th>
             <ui.Th>音</ui.Th>
             <ui.Th>注</ui.Th>
           </ui.Tr>
@@ -107,16 +118,23 @@ const RubyResult: React.FC<{char: string; result: QueryResult}> = ({
 }
 
 const ShouldQueryVariantsContext = createContext(true)
+const maxCharsToList = 20
 
 function Zhuyin() {
-  const [words, setWords] = useState(example)
+  const [keyword, setKeyword] = useState(example)
+  const deferredKeyword = useDeferredValue(keyword)
   const [source, setSource] = useState(Source.湘音检字)
   const [result, setResult] = useState<[string, QueryResult | null][]>([])
   const [shouldQueryVariants, shouldQueryVariantsFlag] = useBoolean(true)
+  const [charsToList, setCharsToList] = useState<string[]>([])
+
+  useEffect(() => {
+    setCharsToList([...deferredKeyword].filter((x) => reHan.test(x)))
+  }, [deferredKeyword])
 
   useEffect(() => {
     setResult(
-      Array.from(words).map((c) => {
+      Array.from(keyword).map((c) => {
         // 汉字全部用 ruby 标记，保持变体切换时样式稳定
         let r = reHan.test(c)
           ? queryPinyin(c, shouldQueryVariants, source)
@@ -124,7 +142,7 @@ function Zhuyin() {
         return [c, r]
       })
     )
-  }, [words, shouldQueryVariants, source])
+  }, [keyword, shouldQueryVariants, source])
 
   let dict = (
     <ui.Box
@@ -139,8 +157,8 @@ function Zhuyin() {
         placeholder="輸入漢字"
         rows={10}
         maxRows={20}
-        value={words}
-        onChange={(e) => setWords(e.target.value)}
+        value={keyword}
+        onChange={(e) => setKeyword(e.target.value)}
       />
       <ui.HStack my={4} spacing={5}>
         <ui.Box>
@@ -172,6 +190,20 @@ function Zhuyin() {
           )}
         </ShouldQueryVariantsContext.Provider>
       </ui.Text>
+
+      {charsToList.length > 0 && charsToList.length <= maxCharsToList && (
+        <>
+          <ui.Divider my="4" />
+          {charsToList.map((char, i) => (
+            <ui.Box key={i} my="6">
+              <ui.Heading as="h3" mb="2" fontSize="2xl">
+                {char}
+              </ui.Heading>
+              <MultipleSearchResult char={char} />
+            </ui.Box>
+          ))}
+        </>
+      )}
     </ui.Box>
   )
 
