@@ -102,6 +102,14 @@ export const items = json.map((x) => {
   return item
 })
 
+// @see 汉语方音字汇.md
+const variantMap = [['間', '閒']]
+variantMap.forEach(([a, b]) => {
+  if (!charGroup.get(a) && charGroup.has(b)) {
+    charGroup.set(a, charGroup.get(b)!)
+  }
+})
+
 export const query = (char: string, cc: 县市, toneType?: ToneType) => {
   const items = charGroup.get(char)
   if (items && cc) {
