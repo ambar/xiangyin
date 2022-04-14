@@ -77,7 +77,8 @@ const MultipleSearchResult: React.FC<{char: string}> = ({char}) => {
               <ui.Tr key={i}>
                 <ui.Td>《{source}》</ui.Td>
                 <ui.Td fontFamily="ipa">{x.音 + x.调}</ui.Td>
-                <ui.Td>{x.释}</ui.Td>
+                {/* 手机不能适应 Grid/TableContainer，除非它用 maxWidth=100vw，但不如折行直观 */}
+                <ui.Td whiteSpace="normal">{x.释}</ui.Td>
               </ui.Tr>
             ))
           )}
@@ -144,7 +145,7 @@ function Zhuyin() {
         as={TextareaAutosize}
         size="md"
         placeholder="输入汉字"
-        rows={10}
+        rows={3}
         maxRows={20}
         value={keyword}
         onChange={(e) => setKeyword(e.target.value)}
