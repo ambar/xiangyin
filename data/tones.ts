@@ -93,3 +93,13 @@ export const csToneName2csToneNo: Partial<Record<ToneName, CSToneNo | ''>> = {
   阳去: 5,
   入声: 6,
 }
+
+/** 调值转长沙话序号 */
+export const toneValue2csToneNo: Record<number, CSToneNo> = {
+  33: 1,
+  13: 2,
+  41: 3,
+  55: 4,
+  11: 5,
+  24: 6,
+}

@@ -2,8 +2,8 @@ import * as ui from '@chakra-ui/react'
 import {useBoolean} from '@chakra-ui/react'
 import {
   createContext,
-  useDeferredValue,
   useContext,
+  useDeferredValue,
   useEffect,
   useMemo,
   useState,
@@ -63,7 +63,7 @@ const MultipleSearchResult: React.FC<{char: string}> = ({char}) => {
     () => queryPinyinAll(char, shouldQueryVariants),
     [char, shouldQueryVariants]
   )
-  // 不需要异步查询，直接渲染
+  // 己优化，不需要需要异步处理
   // const [results, setResults] = useState<ReturnType<typeof queryPinyinAll>>([])
   // useEffect(() => {
   //   setResults(queryPinyinAll(char, shouldQueryVariants))
@@ -79,7 +79,7 @@ const MultipleSearchResult: React.FC<{char: string}> = ({char}) => {
           <ui.Tr>
             <ui.Th maxWidth="10em">源</ui.Th>
             <ui.Th>音</ui.Th>
-            <ui.Th>注</ui.Th>
+            <ui.Th>释</ui.Th>
           </ui.Tr>
         </ui.Thead>
         <ui.Tbody>
