@@ -3,6 +3,8 @@ import {useBoolean} from '@chakra-ui/react'
 import {
   createContext,
   useContext,
+  // @types/react v18 暂不兼容于 chakra
+  // @ts-expect-error Module '"react"' has no exported member 'useDeferredValue'
   useDeferredValue,
   useEffect,
   useMemo,
