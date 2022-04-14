@@ -51,7 +51,7 @@ const StyledPopover: React.FC<{
             <ui.PopoverHeader fontWeight="semibold">{header}</ui.PopoverHeader>
           )}
           <ui.PopoverArrow />
-          <ui.PopoverCloseButton />
+          <ui.PopoverCloseButton top="2" />
           <ui.PopoverBody>{children}</ui.PopoverBody>
         </ui.PopoverContent>
       </ui.Portal>
