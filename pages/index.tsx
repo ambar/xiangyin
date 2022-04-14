@@ -1,24 +1,12 @@
-import * as ui from '@chakra-ui/react'
 import type {NextPage} from 'next'
-import Head from 'next/head'
+import BasePage from '../biz/BasePage'
 import Zhuyin from '../biz/Zhuyin'
 
 const Home: NextPage = () => {
   return (
-    <ui.Container maxW="6xl" px="1">
-      <Head>
-        <title>湘音 - 长沙话注音查询</title>
-        <meta name="description" content="湘音,湘语,正音,长沙话" />
-        <link
-          rel="icon"
-          sizes="any"
-          type="image/svg+xml"
-          href="/xiang.svg"
-        ></link>
-      </Head>
-
+    <BasePage>
       <Zhuyin />
-    </ui.Container>
+    </BasePage>
   )
 }
 

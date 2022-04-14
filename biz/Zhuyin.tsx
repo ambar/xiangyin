@@ -211,22 +211,7 @@ function Zhuyin() {
     </ui.Box>
   )
 
-  return (
-    <ui.Container maxW="6xl" px="1">
-      <ui.Box pt="4">
-        <ui.Tabs isLazy defaultIndex={0} variant="soft-rounded">
-          <ui.TabList>
-            <ui.Tab>注音</ui.Tab>
-            <ui.Tab>音節表</ui.Tab>
-          </ui.TabList>
-          <ui.TabPanels>
-            <ui.TabPanel>{dict}</ui.TabPanel>
-            <ui.TabPanel>TODO</ui.TabPanel>
-          </ui.TabPanels>
-        </ui.Tabs>
-      </ui.Box>
-    </ui.Container>
-  )
+  return dict
 }
 
 export default Zhuyin
