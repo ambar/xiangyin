@@ -1,6 +1,6 @@
 import {queryCS} from '../汉语方音字汇'
 
-const csChars = ['蟻', '指', '序', '樹', '核']
+const csChars = ['蟻', '指', '序', '樹', '核', '強', '會']
 test.each(csChars)('queryCS: %s', (char) => {
   expect(queryCS(char)).toMatchSnapshot()
 })
