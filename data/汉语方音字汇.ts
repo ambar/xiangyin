@@ -106,7 +106,11 @@ export const items = json.map((x) => {
 })
 
 // @see 汉语方音字汇.md
-const variantMap = [['間', '閒']]
+const variantMap = [
+  ['間', '閒'],
+  // TODO: 应当更新 `queryVariants`（包含台湾用字），但要解决不上面的对应问题
+  ['顏', '颜'],
+]
 variantMap.forEach(([a, b]) => {
   if (!charGroup.get(a) && charGroup.has(b)) {
     charGroup.set(a, charGroup.get(b)!)
