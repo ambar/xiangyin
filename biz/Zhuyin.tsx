@@ -18,6 +18,7 @@ import {
   Source,
   sourceOptions,
 } from './pinyin'
+import {StyledPopover} from './shared'
 
 const reHan = /\p{Script=Han}/u
 const example = `
@@ -36,28 +37,6 @@ const example = `
 吉日兮辰良，穆將愉兮上皇。
 撫長劍兮玉珥，璆鏘鳴兮琳琅。
 `.trim()
-
-const StyledPopover: React.FC<{
-  trigger: React.ReactNode
-  header: React.ReactNode
-  children: React.ReactNode
-}> = ({trigger, header, children, ...props}) => {
-  return (
-    <ui.Popover isLazy trigger="hover" placement="bottom" {...props}>
-      {trigger && <ui.PopoverTrigger>{trigger}</ui.PopoverTrigger>}
-      <ui.Portal>
-        <ui.PopoverContent>
-          {header && (
-            <ui.PopoverHeader fontWeight="semibold">{header}</ui.PopoverHeader>
-          )}
-          <ui.PopoverArrow />
-          <ui.PopoverCloseButton top="2" />
-          <ui.PopoverBody>{children}</ui.PopoverBody>
-        </ui.PopoverContent>
-      </ui.Portal>
-    </ui.Popover>
-  )
-}
 
 const MultipleSearchResult: React.FC<{char: string}> = ({char}) => {
   const shouldQueryVariants = useContext(ShouldQueryVariantsContext)
