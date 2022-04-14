@@ -43,7 +43,7 @@ const StyledPopover: React.FC<{
   children: React.ReactNode
 }> = ({trigger, header, children, ...props}) => {
   return (
-    <ui.Popover isLazy trigger="hover" placement="left" {...props}>
+    <ui.Popover isLazy trigger="hover" placement="bottom" {...props}>
       {trigger && <ui.PopoverTrigger>{trigger}</ui.PopoverTrigger>}
       <ui.Portal>
         <ui.PopoverContent>
@@ -79,7 +79,7 @@ const MultipleSearchResult: React.FC<{char: string}> = ({char}) => {
         {!hasResult && <ui.TableCaption>没有找到结果</ui.TableCaption>}
         <ui.Thead>
           <ui.Tr>
-            <ui.Th maxWidth="10em">源</ui.Th>
+            <ui.Th>源</ui.Th>
             <ui.Th>音</ui.Th>
             <ui.Th>释</ui.Th>
           </ui.Tr>
