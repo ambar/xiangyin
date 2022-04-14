@@ -68,9 +68,7 @@ const parsePinyin = (v: RawDataSubItem): NormResult[] => {
       : v.备注
   if (note) {
     notes =
-      note === '未注明异读原因'
-        ? Array(5).fill('未注明异读原因')
-        : note.split(/,/g)
+      note === '未注明异读原因' ? Array(5).fill('未注明') : note.split(/,/g)
   }
   return i.map((y, i) => {
     const tn = t[i]
