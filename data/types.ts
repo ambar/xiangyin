@@ -5,11 +5,20 @@ export type NormResult = {
   释: string
 }
 
-type SchemaItem = readonly [string, Function]
+type AnyFunction = (...args: any) => any
+type SchemaItem = readonly [string, AnyFunction]
 type SchemaEntry<T extends SchemaItem> = T extends readonly [infer K, infer V]
-  ? Record<K, ReturnType<V>>
+  ? K extends string
+    ? V extends AnyFunction
+      ? Record<K, ReturnType<V>>
+      : never
+    : never
   : never
-export type SchemaEntries<T extends readonly SchemaItem[]> =
-  T extends readonly [infer L, ...infer R]
+export type SchemaEntries<T extends readonly any[]> = T extends readonly [
+  infer L,
+  ...infer R
+]
+  ? L extends SchemaItem
     ? SchemaEntry<L> & SchemaEntries<R>
     : unknown
+  : unknown
