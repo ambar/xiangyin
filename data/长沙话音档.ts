@@ -1,7 +1,8 @@
 import json from './raw/长沙话音档.修正.json'
-import {toneValue2csToneNo, ToneType} from './tones'
+import {ToneType, toneValue2csToneNo} from './tones'
 import {NormResult, SchemaEntries} from './types'
 
+type metaKey = 'disabled' | 'flawed' | 'comment' | 'corrected'
 const schema = [
   ['號', (v: string | null) => v],
   ['声母', String],
@@ -9,14 +10,17 @@ const schema = [
   ['调类', String],
   ['调值', Number],
   ['例字', (v: string[]) => v],
-  ['元', (v: Partial<Record<'disabled' | 'flawed', string>>) => v],
+  ['元', (v: Partial<Record<metaKey, string>>) => v],
 ] as const
 
 type RawDataItem = SchemaEntries<typeof schema>
+export type DataItem = RawDataItem & {
+  长沙调序: number
+}
 
-const charGroup = new Map<string, RawDataItem[]>()
+const charGroup = new Map<string, DataItem[]>()
 
-const setIfNotSet = (char: string, item: RawDataItem) => {
+const setIfNotSet = (char: string, item: DataItem) => {
   if (char) {
     if (charGroup.has(char)) charGroup.get(char)!.push(item)
     else charGroup.set(char, [item])
@@ -26,7 +30,9 @@ const setIfNotSet = (char: string, item: RawDataItem) => {
 export const items = json.map((x) => {
   const item = Object.fromEntries(
     schema.map(([key, val], i) => [key, val(x[i])])
-  ) as RawDataItem
+  ) as DataItem
+  // 自定义增补
+  item.长沙调序 = toneValue2csToneNo[item.调值]
   item.例字.forEach((c) => setIfNotSet(c, item))
   return item
 })
@@ -40,7 +46,7 @@ export const query = (
     return items.map((x) => {
       let t: string | number = x.调类
       if (toneType === 'CSToneNo') {
-        t = toneValue2csToneNo[x.调值]
+        t = x.长沙调序
       }
       return {音: x.声母 + x.韵母, 调: t, 释: ''}
     })

@@ -14,3 +14,13 @@ Array [
   },
 ]
 `;
+
+exports[`query 2`] = `
+Array [
+  Object {
+    "调": 3,
+    "释": "",
+    "音": "i",
+  },
+]
+`;

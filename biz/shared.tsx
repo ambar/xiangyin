@@ -1,11 +1,13 @@
 import * as ui from '@chakra-ui/react'
 import React from 'react'
 
-export const StyledPopover: React.FC<{
-  trigger: React.ReactNode
-  header: React.ReactNode
-  children: React.ReactNode
-}> = ({trigger, header, children, ...props}) => {
+export const StyledPopover: React.FC<
+  ui.PopoverProps & {
+    trigger: React.ReactNode
+    header: React.ReactNode
+    children: React.ReactNode
+  }
+> = ({trigger, header, children, ...props}) => {
   return (
     <ui.Popover isLazy trigger="hover" placement="bottom" {...props}>
       {trigger && <ui.PopoverTrigger>{trigger}</ui.PopoverTrigger>}
