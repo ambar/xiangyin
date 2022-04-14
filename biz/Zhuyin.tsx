@@ -92,7 +92,7 @@ const RubyResult: React.FC<{char: string; result: QueryResult}> = ({
     </ruby>
   )
   return (
-    <StyledPopover trigger={ruby} header="多重搜索">
+    <StyledPopover triggerContent={ruby} header="多重搜索">
       <MultipleSearchResult char={char} />
     </StyledPopover>
   )

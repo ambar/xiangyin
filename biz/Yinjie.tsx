@@ -140,7 +140,7 @@ const PinyinCell: React.FC<{
       {item && shouldRenderPopover ? (
         <StyledPopover
           // defaultIsOpen
-          trigger={playableCell}
+          triggerContent={playableCell}
           header="可用音节"
           openDelay={100}
         >

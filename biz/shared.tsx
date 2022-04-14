@@ -3,14 +3,16 @@ import React from 'react'
 
 export const StyledPopover: React.FC<
   ui.PopoverProps & {
-    trigger: React.ReactNode
+    triggerContent?: React.ReactNode
     header: React.ReactNode
     children: React.ReactNode
   }
-> = ({trigger, header, children, ...props}) => {
+> = ({triggerContent, header, children, ...props}) => {
   return (
     <ui.Popover isLazy trigger="hover" placement="bottom" {...props}>
-      {trigger && <ui.PopoverTrigger>{trigger}</ui.PopoverTrigger>}
+      {triggerContent && (
+        <ui.PopoverTrigger>{triggerContent}</ui.PopoverTrigger>
+      )}
       <ui.Portal>
         <ui.PopoverContent>
           {header && (
