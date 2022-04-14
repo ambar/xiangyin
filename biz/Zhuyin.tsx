@@ -21,7 +21,15 @@ import {
 import {StyledPopover} from './shared'
 
 const reHan = /\p{Script=Han}/u
-const example = `
+const example1 = `何解 冇得 颜色 手臂 深圳 谜语 忘记 艺术 意义 铅笔 详细 开福寺 纠缠 巡道街 感觉
+吉日兮辰良，穆將愉兮上皇。撫長劍兮玉珥，璆鏘鳴兮琳琅。
+`
+const example2 = `颜色 手臂 深圳 谜语 忘记 技术 艺术 意义
+疑问 铅笔 详细 开福寺 纠缠 巡道街 感觉
+帮助 促进 螃蟹 杨志醇 纯洁 选择 仅仅
+项目 取消 若即若离 呼吸 狡猾 过滤
+律师 必须 需要 习惯 惯性 惯式 贯穿`
+const example3 = `
 鹊桥仙
 溪邊白鷺，來吾告汝：溪裡魚兒堪數。主人憐汝汝憐魚，要物我欣然一處。
 白沙遠浦，青泥別渚，剩有蝦跳鰍舞。任君飛去飽時來，看頭上風吹一縷。
@@ -99,10 +107,10 @@ const RubyResult: React.FC<{char: string; result: QueryResult}> = ({
 }
 
 const ShouldQueryVariantsContext = createContext(true)
-const maxCharsToList = 50
+const maxCharsToList = 75
 
 function Zhuyin() {
-  const [keyword, setKeyword] = useState(example)
+  const [keyword, setKeyword] = useState(example1)
   const deferredKeyword = useDeferredValue(keyword)
   const [source, setSource] = useState(Source.湘音检字)
   const [result, setResult] = useState<[string, QueryResult | null][]>([])
@@ -135,7 +143,7 @@ function Zhuyin() {
       <ui.Textarea
         as={TextareaAutosize}
         size="md"
-        placeholder="輸入漢字"
+        placeholder="输入汉字"
         rows={10}
         maxRows={20}
         value={keyword}
@@ -159,7 +167,7 @@ function Zhuyin() {
             isChecked={shouldQueryVariants}
             onChange={shouldQueryVariantsFlag.toggle}
           >
-            简繁異轉換
+            简繁异转换
           </ui.Checkbox>
         </ui.Box>
       </ui.HStack>
