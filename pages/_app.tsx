@@ -9,6 +9,9 @@ const customTheme = extendTheme({
     // initialColorMode: 'light',
     // useSystemColorMode: true,
   },
+  fonts: {
+    ipa: 'Doulos SIL, Arial',
+  },
   styles: {
     global: {},
   },

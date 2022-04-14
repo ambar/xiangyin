@@ -68,7 +68,7 @@ const MultipleSearchResult: React.FC<{char: string}> = ({char}) => {
             result.map((x, i) => (
               <ui.Tr key={i}>
                 <ui.Td>《{source}》</ui.Td>
-                <ui.Td>{x.音 + x.调}</ui.Td>
+                <ui.Td fontFamily="ipa">{x.音 + x.调}</ui.Td>
                 <ui.Td>{x.释}</ui.Td>
               </ui.Tr>
             ))
@@ -129,7 +129,7 @@ function Zhuyin() {
     <ui.Box
       css={{
         ruby: {margin: '0 2px'},
-        // rt: {font: '.6em/1 Doulos SIL, Arial'},
+        rt: {fontSize: '.6em', lineHeight: 1},
       }}
     >
       <ui.Textarea
