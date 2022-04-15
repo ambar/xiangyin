@@ -20,7 +20,23 @@ const BasePage: React.FC<{children: React.ReactNode}> = ({children}) => {
       <Head>
         <title>湘音 - 长沙话方音字典</title>
         <meta name="description" content="湘语,正音,长沙话" />
-        <link rel="icon" sizes="any" type="image/svg+xml" href="/xiang.svg" />
+        <link
+          rel="icon"
+          sizes="any"
+          type="image/svg+xml"
+          href="/favicon/xiang.svg"
+        />
+        <link
+          rel="icon"
+          sizes="32x32"
+          type="image/png"
+          href="/favicon/xiang32h.png"
+        />
+        <link
+          rel="apple-touch-icon"
+          sizes="180x180"
+          href="/favicon/xiang180h.png"
+        />
       </Head>
 
       <ui.Box pt="4">
