@@ -21,16 +21,15 @@ import {
 import {StyledPopover} from './shared'
 
 const reHan = /\p{Script=Han}/u
-const example1 = `何解 冇得 颜色 手臂 深圳 谜语 忘记 艺术 意义 铅笔 详细 开福寺 纠缠 巡道街 感觉
-吉日兮辰良，穆將愉兮上皇。撫長劍兮玉珥，璆鏘鳴兮琳琅。
-`
-const example2 = `颜色 手臂 深圳 谜语 忘记 技术 艺术 意义
+const examples = [
+  `何解 冇得 颜色 手臂 深圳 谜语 忘记 艺术 意义 铅笔 详细 开福寺 纠缠 巡道街 感觉
+吉日兮辰良，穆將愉兮上皇。撫長劍兮玉珥，璆鏘鳴兮琳琅。`,
+  `颜色 手臂 深圳 谜语 忘记 技术 艺术 意义
 疑问 铅笔 详细 开福寺 纠缠 巡道街 感觉
 帮助 促进 螃蟹 杨志醇 纯洁 选择 仅仅
 项目 取消 若即若离 呼吸 狡猾 过滤
-律师 必须 需要 习惯 惯性 惯式 贯穿`
-const example3 = `
-鹊桥仙
+律师 必须 需要 习惯 惯性 惯式 贯穿`,
+  `鹊桥仙
 溪邊白鷺，來吾告汝：溪裡魚兒堪數。主人憐汝汝憐魚，要物我欣然一處。
 白沙遠浦，青泥別渚，剩有蝦跳鰍舞。任君飛去飽時來，看頭上風吹一縷。
 
@@ -43,8 +42,10 @@ const example3 = `
 柔情似水，佳期如夢，忍顧鵲橋歸路。兩情若是久長時，又豈在朝朝暮暮。
 
 吉日兮辰良，穆將愉兮上皇。
-撫長劍兮玉珥，璆鏘鳴兮琳琅。
-`.trim()
+撫長劍兮玉珥，璆鏘鳴兮琳琅。`,
+]
+
+const isExample = (str: string) => examples.some((x) => x === str)
 
 const MultipleSearchResult: React.FC<{char: string}> = ({char}) => {
   const shouldQueryVariants = useContext(ShouldQueryVariantsContext)
@@ -110,17 +111,57 @@ const RubyResult: React.FC<{char: string; result: QueryResult}> = ({
 const ShouldQueryVariantsContext = createContext(true)
 const maxCharsToList = 75
 
+// 将 hash 保存，有利于分享，同时 hash 不会传递到 server，不需要 server 解析
+const encodeHash = (query: Record<string, string>) => {
+  if (!query.keyword || isExample(query.keyword)) {
+    return ''
+  }
+  return new URLSearchParams(query).toString()
+}
+
+const decodeHash = (str: string) => {
+  const query = new URLSearchParams(str)
+  let keyword = query.get('keyword')
+  if (!keyword || isExample(keyword)) {
+    return {}
+  }
+  let source = query.get('source') as Source | null
+  if (source && !(source in Source)) {
+    source = null
+  }
+  let shouldQueryVariants = query.get('shouldQueryVariants') === 'true'
+  return {keyword, source, shouldQueryVariants}
+}
+
+const decodeLocationHash = () => {
+  if (typeof location === 'undefined') {
+    return {}
+  }
+  return decodeHash(location.hash.slice(1))
+}
+
 function Zhuyin() {
-  const [keyword, setKeyword] = useState(example1)
+  const [initialState] = useState(() => decodeLocationHash())
+  const [keyword, setKeyword] = useState(initialState.keyword ?? examples[0])
   const deferredKeyword = useDeferredValue(keyword)
-  const [source, setSource] = useState(Source.湘音检字)
+  const [source, setSource] = useState(initialState.source ?? Source.湘音检字)
   const [result, setResult] = useState<[string, QueryResult | null][]>([])
-  const [shouldQueryVariants, shouldQueryVariantsFlag] = useBoolean(true)
+  const [shouldQueryVariants, shouldQueryVariantsFlag] = useBoolean(
+    initialState.shouldQueryVariants ?? true
+  )
   const [charsToList, setCharsToList] = useState<string[]>([])
 
   useEffect(() => {
     setCharsToList([...deferredKeyword].filter((x) => reHan.test(x)))
   }, [deferredKeyword])
+
+  useEffect(() => {
+    location.hash = encodeHash({
+      keyword: deferredKeyword,
+      source,
+      shouldQueryVariants: JSON.stringify(shouldQueryVariants),
+    })
+  }, [deferredKeyword, shouldQueryVariants, source])
 
   useEffect(() => {
     setResult(
