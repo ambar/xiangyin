@@ -1,4 +1,4 @@
-# 湘音 - 长沙话方音字典
+# 湘音 - 长沙话发音字典
 
 <https://xiangyin.vercel.app>
 

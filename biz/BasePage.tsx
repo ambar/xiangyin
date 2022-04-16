@@ -18,8 +18,8 @@ const BasePage: React.FC<{children: React.ReactNode}> = ({children}) => {
   return (
     <ui.Container maxW="6xl" px="1">
       <Head>
-        <title>湘音 - 长沙话方音字典</title>
-        <meta name="description" content="湘语,正音,长沙话" />
+        <title>湘音 - 长沙话发音字典</title>
+        <meta name="description" content="长沙话,湘语,正音,方音,注音" />
         <link
           rel="icon"
           sizes="any"
