@@ -24,10 +24,12 @@ const StackedSyllables: React.FC<{
   shouldPlayOnHover: boolean
 }> = ({group, shouldPlayOnHover}) => {
   return (
-    <ui.Stack direction="row" spacing={4}>
+    <ui.HStack spacing={1}>
       {group.map((x, i) => (
         <ui.Box
           key={i}
+          // 让比较长的六个音不溢出，如 tɕiəu1~6，默认宽 318px
+          width={1 / 6}
           textAlign="center"
           cursor="pointer"
           onPointerDown={() => {
@@ -59,7 +61,7 @@ const StackedSyllables: React.FC<{
           {x.號 && <SpeakerIcon width="1em" height="1em" />}
         </ui.Box>
       ))}
-    </ui.Stack>
+    </ui.HStack>
   )
 }
 
