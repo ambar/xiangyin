@@ -15,6 +15,33 @@ type TabKey = keyof typeof tabIndexByPathname
 const BasePage: React.FC<{children: React.ReactNode}> = ({children}) => {
   const router = useRouter()
   const {pathname} = router
+  const tabIndex = tabIndexByPathname[pathname as TabKey]
+  // NOTE: chakra 在上面屏蔽了 tab 键导航（变成了箭头键导航），还不如完成重写不使用它
+  const nav = (
+    <ui.TabList flex={1}>
+      <Link passHref href="/">
+        <ui.Tab as="a">注音</ui.Tab>
+      </Link>
+      <Link passHref href="/yinjie">
+        <ui.Tab as="a">音节表</ui.Tab>
+      </Link>
+    </ui.TabList>
+  )
+  const right = (
+    <ui.Box>
+      <ui.Link
+        isExternal
+        href="https://github.com/ambar/xiangyin"
+        aria-label="GitHub 源码与反馈"
+        display="block"
+        transition="color .15s"
+        sx={{color: 'gray', transition: 'color .15s ease-in-out'}}
+        _hover={{color: 'inherit'}}
+      >
+        <bsi.BsGithub size={20} />
+      </ui.Link>
+    </ui.Box>
+  )
 
   return (
     <ui.Container maxW="6xl" px="0">
@@ -42,34 +69,18 @@ const BasePage: React.FC<{children: React.ReactNode}> = ({children}) => {
 
       <ui.Box pt="4">
         <ui.Tabs
-          px="4"
+          // NOTE: tab 文字与后续主体内容对齐，但移动端可能顶边，需要更好的设计
+          pl={['4', 0]}
+          pr="4"
           variant="soft-rounded"
-          index={tabIndexByPathname[pathname as TabKey]}
+          index={tabIndex}
+          // 转化为 controlled tabs，由 Next.js 处理
           onChange={() => {}}
         >
-          <ui.TabList alignItems="center">
-            <Link passHref href="/">
-              <ui.Tab as="a" _hover={{boxShadow: 'none'}}>
-                注音
-              </ui.Tab>
-            </Link>
-            <Link passHref href="/yinjie">
-              <ui.Tab as="a" _hover={{boxShadow: 'none'}}>
-                音节表
-              </ui.Tab>
-            </Link>
-            <ui.Box ml="auto">
-              <ui.Link
-                isExternal
-                href="https://github.com/ambar/xiangyin"
-                aria-label="GitHub 源码与反馈"
-                sx={{color: 'gray', transition: 'color .15s ease-in-out'}}
-                _hover={{color: 'inherit'}}
-              >
-                <bsi.BsGithub size={20} />
-              </ui.Link>
-            </ui.Box>
-          </ui.TabList>
+          <ui.HStack>
+            {nav}
+            {right}
+          </ui.HStack>
         </ui.Tabs>
         <ui.Box p="4">{children}</ui.Box>
       </ui.Box>
