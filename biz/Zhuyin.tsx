@@ -142,7 +142,8 @@ const decodeLocationHash = () => {
 
 function Zhuyin() {
   const [initialState] = useState(() => decodeLocationHash())
-  const [keyword, setKeyword] = useState(initialState.keyword ?? examples[0])
+  // SSR 阶段不输出，防止闪动替换
+  const [keyword, setKeyword] = useState('')
   const deferredKeyword = useDeferredValue(keyword)
   const [source, setSource] = useState(initialState.source ?? Source.湘音检字)
   const [result, setResult] = useState<[string, QueryResult | null][]>([])
@@ -150,6 +151,10 @@ function Zhuyin() {
     initialState.shouldQueryVariants ?? true
   )
   const [charsToList, setCharsToList] = useState<string[]>([])
+
+  useEffect(() => {
+    setKeyword(initialState.keyword ?? examples[0])
+  }, [initialState])
 
   useEffect(() => {
     setCharsToList([...deferredKeyword].filter((x) => reHan.test(x)))
