@@ -9,6 +9,7 @@ export const ToneTypes = [
   'CSToneNo',
   'OctetToneNo',
   'ToneValue',
+  'ToneLetter',
 ] as const
 export type ToneType = typeof ToneTypes[number]
 
@@ -139,3 +140,18 @@ export const csOctetToneNo2toneValue: Record<CSOctetToneNo, number> = {
   6: 11,
   7: 24,
 }
+
+export type ToneNumber = 1 | 2 | 3 | 4 | 5
+const toneLetters: Record<ToneNumber, string> = {
+  1: '˩',
+  2: '˨',
+  3: '˧',
+  4: '˦',
+  5: '˥',
+}
+const reToneLetters = RegExp(Object.values(toneLetters).join('|'))
+
+export const getToneLetter = (number: number) =>
+  [...String(number)]
+    .map((x) => toneLetters[x as unknown as ToneNumber])
+    .join('')

@@ -2,6 +2,7 @@ import {
   CSOctetToneNo,
   csOctetToneNo2toneName,
   csOctetToneNo2toneValue,
+  getToneLetter,
   octetToneNo2csToneNo,
   ToneType,
 } from './tones'
@@ -38,6 +39,8 @@ export const query = (
     let tone: string | number = octet
     if (toneType === 'CSToneNo') {
       tone = octetToneNo2csToneNo[octet]
+    } else if (toneType === 'ToneLetter') {
+      tone = getToneLetter(csOctetToneNo2toneValue[octet])
     } else if (toneType === 'ToneValue') {
       tone = csOctetToneNo2toneValue[octet]
     } else if (toneType === 'OctetToneNo') {

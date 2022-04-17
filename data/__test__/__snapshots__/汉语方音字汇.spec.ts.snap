@@ -165,10 +165,20 @@ Array [
 ]
 `;
 
+exports[`toneType: ToneLetter 1`] = `
+Array [
+  Object {
+    "调": "˨˦",
+    "释": "",
+    "音": "y",
+  },
+]
+`;
+
 exports[`toneType: ToneName 1`] = `
 Array [
   Object {
-    "调": "入声",
+    "调": 7,
     "释": "",
     "音": "y",
   },

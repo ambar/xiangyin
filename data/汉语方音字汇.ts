@@ -4,6 +4,7 @@ import {
   CSToneNo,
   csToneNo2octetToneNo,
   csToneNo2toneValue,
+  getToneLetter,
   ToneName,
   ToneType,
 } from './tones'
@@ -137,12 +138,14 @@ export const query = (char: string, cc: 县市, toneType?: ToneType) => {
         let tone: string | number = csToneName2csToneNo[tv as ToneName]!
         if (toneType === 'CSToneNo') {
           tone = tone
-        } else if (toneType === 'ToneName') {
-          tone = tv
+        } else if (toneType === 'ToneLetter') {
+          tone = getToneLetter(csToneNo2toneValue[tone as CSToneNo])
         } else if (toneType === 'ToneValue') {
           tone = csToneNo2toneValue[tone as CSToneNo]
         } else if ((toneType = 'OctetToneNo')) {
           tone = csToneNo2octetToneNo[tone as CSToneNo]
+        } else if (toneType === 'ToneName') {
+          tone = tv
         } else {
           tone = tone
         }

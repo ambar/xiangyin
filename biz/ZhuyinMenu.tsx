@@ -126,6 +126,7 @@ export default function ZhuyinMenu() {
           <ui.MenuItemOption value="CSToneNo">六位次序</ui.MenuItemOption>
           <ui.MenuItemOption value="OctetToneNo">八位次序</ui.MenuItemOption>
           <ui.MenuItemOption value="ToneValue">调值</ui.MenuItemOption>
+          <ui.MenuItemOption value="ToneLetter">调符</ui.MenuItemOption>
           {/* <ui.MenuItemOption value="ToneName">调名</ui.MenuItemOption> */}
         </ui.MenuOptionGroup>
       </ui.MenuList>

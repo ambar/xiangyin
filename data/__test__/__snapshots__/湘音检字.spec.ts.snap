@@ -45,6 +45,21 @@ Array [
 ]
 `;
 
+exports[`toneType: ToneLetter 1`] = `
+Array [
+  Object {
+    "调": "˨˦",
+    "释": "出～",
+    "音": "y",
+  },
+  Object {
+    "调": "˥˥",
+    "释": "",
+    "音": "ȵiɑ",
+  },
+]
+`;
+
 exports[`toneType: ToneName 1`] = `
 Array [
   Object {
