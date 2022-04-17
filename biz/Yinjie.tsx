@@ -6,7 +6,7 @@ import sortBy from 'lodash/sortBy'
 import {useEffect, useMemo} from 'react'
 import * as hsn from './hsn'
 import {canPlayItem, DataItem, items, playAudio} from './play'
-import {SpeakerIcon, StyledPopover} from './shared'
+import {StyledPopover, VolumeIcon} from './shared'
 
 const fontSize = '1.1em'
 const initials = sortBy(Object.values(hsn.Initials), (x) =>
@@ -24,7 +24,7 @@ const StackedSyllables: React.FC<{
   shouldPlayOnHover: boolean
 }> = ({group, shouldPlayOnHover}) => {
   return (
-    <ui.HStack spacing={1}>
+    <ui.HStack spacing={1} alignItems="flex-start">
       {group.map((x, i) => (
         <ui.Box
           key={i}
@@ -58,7 +58,7 @@ const StackedSyllables: React.FC<{
               <rt>{x.声母 + x.韵母 + x.长沙调序}</rt>
             </ruby>
           </ui.Box>
-          {x.號 && <SpeakerIcon width="1em" height="1em" />}
+          {x.號 && <VolumeIcon size=".9em" />}
         </ui.Box>
       ))}
     </ui.HStack>
@@ -133,7 +133,7 @@ const PinyinCell: React.FC<{
           <rt>{syllable}</rt>
         </ruby>
       </ui.Box>
-      <SpeakerIcon width="1em" height="1em" />
+      <VolumeIcon size=".9em" />
     </ui.Box>
   )
 
