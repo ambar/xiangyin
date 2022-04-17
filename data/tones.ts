@@ -4,7 +4,13 @@
  * @see https://zh.wikipedia.org/wiki/四聲
  */
 
-export type ToneType = 'ToneName' | 'CSToneNo' | 'OctetToneNo'
+export const ToneTypes = [
+  'ToneName',
+  'CSToneNo',
+  'OctetToneNo',
+  'ToneValue',
+] as const
+export type ToneType = typeof ToneTypes[number]
 
 export type ToneCode = keyof typeof toneCode2toneName
 export const toneCode2toneName = {
@@ -74,6 +80,16 @@ export const octetToneNo2csToneNo: Record<CSOctetToneNo, number> = {
   7: 6,
 }
 
+/** 长沙话序号转八位数字声调 */
+export const csToneNo2octetToneNo: Record<CSToneNo, CSOctetToneNo> = {
+  1: 1,
+  2: 2,
+  3: 3,
+  4: 5,
+  5: 6,
+  6: 7,
+}
+
 export const csOctetToneNo2toneName: Record<CSOctetToneNo, ToneName> = {
   1: '阴平',
   2: '阳平',
@@ -102,4 +118,24 @@ export const toneValue2csToneNo: Record<number, CSToneNo> = {
   55: 4,
   11: 5,
   24: 6,
+}
+
+/** 长沙话序号转调值 */
+export const csToneNo2toneValue: Record<CSToneNo, number> = {
+  1: 33,
+  2: 13,
+  3: 41,
+  4: 55,
+  5: 11,
+  6: 24,
+}
+
+/** 长沙话序号转调值 */
+export const csOctetToneNo2toneValue: Record<CSOctetToneNo, number> = {
+  1: 33,
+  2: 13,
+  3: 41,
+  5: 55,
+  6: 11,
+  7: 24,
 }

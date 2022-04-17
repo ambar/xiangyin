@@ -1,5 +1,11 @@
 import json from './raw/长沙话音档.修正.json'
-import {ToneType, toneValue2csToneNo} from './tones'
+import {
+  CSToneNo,
+  csToneNo2octetToneNo,
+  csToneNo2toneValue,
+  ToneType,
+  toneValue2csToneNo,
+} from './tones'
 import {NormResult, SchemaEntries} from './types'
 
 type metaKey = 'disabled' | 'flawed' | 'comment' | 'corrected'
@@ -44,11 +50,21 @@ export const query = (
   const items = charGroup.get(char)
   if (items) {
     return items.map((x) => {
-      let t: string | number = x.调类
+      let t: string = x.调类
+      let tone: string | number = t
       if (toneType === 'CSToneNo') {
-        t = x.长沙调序
+        tone = x.长沙调序
+      } else if (toneType === 'ToneValue') {
+        tone = csToneNo2toneValue[x.长沙调序 as CSToneNo]
+      } else if (toneType === 'OctetToneNo') {
+        tone = csToneNo2octetToneNo[x.长沙调序 as CSToneNo]
+      } else if (toneType === 'ToneName') {
+        // TODO: 统一简繁
+        tone = t
+      } else {
+        tone = x.长沙调序
       }
-      return {音: x.声母 + x.韵母, 调: t, 释: ''}
+      return {音: x.声母 + x.韵母, 调: tone, 释: ''}
     })
   }
   return []

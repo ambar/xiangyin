@@ -1,4 +1,5 @@
 import yitizi from 'yitizi'
+import {ToneType} from './tones'
 import * as 汉语方音字汇 from './汉语方音字汇'
 import * as 湘音检字 from './湘音检字'
 import * as 长沙话音档 from './长沙话音档'
@@ -24,10 +25,11 @@ let queryMap = new Map([
 export const queryPinyin = (
   char: string,
   shouldQueryVariants = false,
-  source: Source
+  source: Source,
+  toneType: ToneType
 ) => {
   let query = queryMap.get(source)!
-  let result = query(char)
+  let result = query(char, toneType)
   if (!result.length && shouldQueryVariants) {
     for (const v of yitizi.get(char)) {
       let r = query(v)
@@ -42,11 +44,12 @@ export const queryPinyin = (
 
 export const queryPinyinAll = (
   char: string,
-  shouldQueryVariants = false
+  shouldQueryVariants = false,
+  toneType: ToneType
 ): [Source, QueryResult][] => {
   return [...queryMap.keys()].map((k) => [
     k,
-    queryPinyin(char, shouldQueryVariants, k),
+    queryPinyin(char, shouldQueryVariants, k, toneType),
   ])
 }
 

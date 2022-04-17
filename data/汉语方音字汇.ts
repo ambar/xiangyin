@@ -1,5 +1,12 @@
 import json from './raw/汉方字.简.修正.json'
-import {csToneName2csToneNo, ToneName, ToneType} from './tones'
+import {
+  csToneName2csToneNo,
+  CSToneNo,
+  csToneNo2octetToneNo,
+  csToneNo2toneValue,
+  ToneName,
+  ToneType,
+} from './tones'
 import {NormResult} from './types'
 
 const schema = [
@@ -126,9 +133,18 @@ export const query = (char: string, cc: 县市, toneType?: ToneType) => {
       .map((x) => x.湘[cc] ?? [])
       .flat()
       .map((item) => {
-        let tone = item.调
+        let tv = item.调
+        let tone: string | number = csToneName2csToneNo[tv as ToneName]!
         if (toneType === 'CSToneNo') {
-          tone = csToneName2csToneNo[tone as ToneName]!
+          tone = tone
+        } else if (toneType === 'ToneName') {
+          tone = tv
+        } else if (toneType === 'ToneValue') {
+          tone = csToneNo2toneValue[tone as CSToneNo]
+        } else if ((toneType = 'OctetToneNo')) {
+          tone = csToneNo2octetToneNo[tone as CSToneNo]
+        } else {
+          tone = tone
         }
         return {...item, 调: tone}
       })
