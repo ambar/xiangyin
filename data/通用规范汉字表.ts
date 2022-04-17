@@ -33,6 +33,7 @@ export const query = (char: string) => {
   return charGroup.get(char)
 }
 
+// 此表收录不完整，没有包括台湾用字，参考：http://ws.moe.edu.tw/001/Upload/userfiles/標準字對照簡化字.pdf
 export const queryVariants = (char: string) => {
   const item = charGroup.get(char)
   return item

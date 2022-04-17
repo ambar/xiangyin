@@ -4846,3 +4846,8 @@ yargs@^16.2.0:
     string-width "^4.2.0"
     y18n "^5.0.5"
     yargs-parser "^20.2.2"
+
+yitizi@^0.1.1:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/yitizi/-/yitizi-0.1.1.tgz#0888f2ccfc41dedf9047e98b3bdb9eab003add13"
+  integrity sha512-m2lVuf98ZXfnQCx02oL/YfYEaDH/8OsI2HTpo57VLxAqhdVBpA7Ls5DsjTRJTI5rRvqMHWosLVa6+ZRl+pJIMg==

@@ -1,7 +1,7 @@
-import * as 汉语方音字汇 from '~/data/汉语方音字汇'
-import * as 湘音检字 from '~/data/湘音检字'
-import {queryVariants} from '~/data/通用规范汉字表'
-import * as 长沙话音档 from '~/data/长沙话音档'
+import yitizi from 'yitizi'
+import * as 汉语方音字汇 from './汉语方音字汇'
+import * as 湘音检字 from './湘音检字'
+import * as 长沙话音档 from './长沙话音档'
 
 export enum Source {
   湘音检字 = '湘音检字',
@@ -29,8 +29,10 @@ export const queryPinyin = (
   let query = queryMap.get(source)!
   let result = query(char)
   if (!result.length && shouldQueryVariants) {
-    for (const v of queryVariants(char)) {
-      if ((result = query(v))) {
+    for (const v of yitizi.get(char)) {
+      let r = query(v)
+      if (r.length) {
+        result = r
         break
       }
     }

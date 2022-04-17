@@ -17,7 +17,7 @@ import {
   QueryResult,
   Source,
   sourceOptions,
-} from './pinyin'
+} from '~/data/query'
 import {StyledPopover} from './shared'
 
 const reHan = /\p{Script=Han}/u
