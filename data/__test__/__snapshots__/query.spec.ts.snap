@@ -1,0 +1,241 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`toneType: CSToneNo 1`] = `
+Array [
+  Array [
+    "湘音检字",
+    Array [
+      Object {
+        "调": 6,
+        "释": "出～",
+        "音": "y",
+      },
+      Object {
+        "调": 4,
+        "释": "",
+        "音": "ȵiɑ",
+      },
+    ],
+  ],
+  Array [
+    "长沙话音档",
+    Array [
+      Object {
+        "调": 6,
+        "释": "",
+        "音": "y",
+      },
+    ],
+  ],
+  Array [
+    "汉语方音字汇",
+    Array [
+      Object {
+        "调": 6,
+        "释": "",
+        "音": "y",
+      },
+    ],
+  ],
+]
+`;
+
+exports[`toneType: OctetToneNo 1`] = `
+Array [
+  Array [
+    "湘音检字",
+    Array [
+      Object {
+        "调": 7,
+        "释": "出～",
+        "音": "y",
+      },
+      Object {
+        "调": 5,
+        "释": "",
+        "音": "ȵiɑ",
+      },
+    ],
+  ],
+  Array [
+    "长沙话音档",
+    Array [
+      Object {
+        "调": 7,
+        "释": "",
+        "音": "y",
+      },
+    ],
+  ],
+  Array [
+    "汉语方音字汇",
+    Array [
+      Object {
+        "调": 7,
+        "释": "",
+        "音": "y",
+      },
+    ],
+  ],
+]
+`;
+
+exports[`toneType: ToneLetter 1`] = `
+Array [
+  Array [
+    "湘音检字",
+    Array [
+      Object {
+        "调": "˨˦",
+        "释": "出～",
+        "音": "y",
+      },
+      Object {
+        "调": "˥˥",
+        "释": "",
+        "音": "ȵiɑ",
+      },
+    ],
+  ],
+  Array [
+    "长沙话音档",
+    Array [
+      Object {
+        "调": "˨˦",
+        "释": "",
+        "音": "y",
+      },
+    ],
+  ],
+  Array [
+    "汉语方音字汇",
+    Array [
+      Object {
+        "调": "˨˦",
+        "释": "",
+        "音": "y",
+      },
+    ],
+  ],
+]
+`;
+
+exports[`toneType: ToneName 1`] = `
+Array [
+  Array [
+    "湘音检字",
+    Array [
+      Object {
+        "调": "入声",
+        "释": "出～",
+        "音": "y",
+      },
+      Object {
+        "调": "阴去",
+        "释": "",
+        "音": "ȵiɑ",
+      },
+    ],
+  ],
+  Array [
+    "长沙话音档",
+    Array [
+      Object {
+        "调": "入聲",
+        "释": "",
+        "音": "y",
+      },
+    ],
+  ],
+  Array [
+    "汉语方音字汇",
+    Array [
+      Object {
+        "调": "入声",
+        "释": "",
+        "音": "y",
+      },
+    ],
+  ],
+]
+`;
+
+exports[`toneType: ToneValue 1`] = `
+Array [
+  Array [
+    "湘音检字",
+    Array [
+      Object {
+        "调": 24,
+        "释": "出～",
+        "音": "y",
+      },
+      Object {
+        "调": 55,
+        "释": "",
+        "音": "ȵiɑ",
+      },
+    ],
+  ],
+  Array [
+    "长沙话音档",
+    Array [
+      Object {
+        "调": 24,
+        "释": "",
+        "音": "y",
+      },
+    ],
+  ],
+  Array [
+    "汉语方音字汇",
+    Array [
+      Object {
+        "调": 24,
+        "释": "",
+        "音": "y",
+      },
+    ],
+  ],
+]
+`;
+
+exports[`toneType: XYZ 1`] = `
+Array [
+  Array [
+    "湘音检字",
+    Array [
+      Object {
+        "调": 6,
+        "释": "出～",
+        "音": "y",
+      },
+      Object {
+        "调": 4,
+        "释": "",
+        "音": "ȵiɑ",
+      },
+    ],
+  ],
+  Array [
+    "长沙话音档",
+    Array [
+      Object {
+        "调": 6,
+        "释": "",
+        "音": "y",
+      },
+    ],
+  ],
+  Array [
+    "汉语方音字汇",
+    Array [
+      Object {
+        "调": 6,
+        "释": "",
+        "音": "y",
+      },
+    ],
+  ],
+]
+`;

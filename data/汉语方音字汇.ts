@@ -142,7 +142,7 @@ export const query = (char: string, cc: 县市, toneType?: ToneType) => {
           tone = getToneLetter(csToneNo2toneValue[tone as CSToneNo])
         } else if (toneType === 'ToneValue') {
           tone = csToneNo2toneValue[tone as CSToneNo]
-        } else if ((toneType = 'OctetToneNo')) {
+        } else if (toneType === 'OctetToneNo') {
           tone = csToneNo2octetToneNo[tone as CSToneNo]
         } else if (toneType === 'ToneName') {
           tone = tv

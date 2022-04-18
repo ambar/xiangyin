@@ -32,7 +32,7 @@ export const queryPinyin = (
   let result = query(char, toneType)
   if (!result.length && shouldQueryVariants) {
     for (const v of yitizi.get(char)) {
-      let r = query(v)
+      let r = query(v, toneType)
       if (r.length) {
         result = r
         break

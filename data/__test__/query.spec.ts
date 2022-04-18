@@ -1,4 +1,5 @@
-import {queryPinyin, Source} from '../query'
+import {queryPinyin, queryPinyinAll, Source} from '../query'
+import {ToneType, ToneTypes} from '../tones'
 
 // 閱阅祿禄禿秃續续
 test('shouldQueryVariants', () => {
@@ -19,4 +20,8 @@ test('shouldQueryVariants', () => {
       queryPinyin(b, true, Source.汉语方音字汇)
     )
   })
+})
+
+test.each(ToneTypes.concat('XYZ' as ToneType))(`toneType: %s`, (toneType) => {
+  expect(queryPinyinAll('入', false, toneType)).toMatchSnapshot()
 })
