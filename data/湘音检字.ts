@@ -8,11 +8,15 @@ import {
 } from './tones'
 import {NormResult} from './types'
 import json from './湘音检字.json'
+import {ipa2if} from './湘音检字.meta'
 export * from './湘音检字.meta'
 
 const head = ['湘拼', '音標', '調號', '字甲', '字乙', '釋義'] as const
 
-type DataItem = Record<typeof head[number], string>
+type DataItem = Record<typeof head[number], string> & {
+  声: string
+  韵: string
+}
 
 // 异体、多音字分组 16519 -> 13543
 const charGroup = new Map<string, DataItem[]>()
@@ -25,6 +29,9 @@ export const items = json.map((x) => {
       else charGroup.set(char, [item])
     }
   }
+  const [声, 韵] = ipa2if(item.音標)
+  item.声 = 声
+  item.韵 = 韵
   setIfNotSet(item.字甲)
   setIfNotSet(item.字乙)
   return item
@@ -51,6 +58,6 @@ export const query = (
     } else {
       tone = octetToneNo2csToneNo[octet]
     }
-    return {音: item.音標, 调: tone, 释: item.釋義}
+    return {音: item.音標, 声: item.声, 韵: item.韵, 调: tone, 释: item.釋義}
   })
 }

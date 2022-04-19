@@ -86,8 +86,12 @@ const parsePinyin = (v: RawDataSubItem): NormResult[] => {
     const tn = t[i]
     // 一些项目是单字表示，统一一下（入 -> 入声）
     const toneName = tn.length === 1 ? tn + '声' : tn
+    const 声 = y.replace('0', '')
+    const 韵 = f[i]
     return {
-      音: y.replace('0', '') + f[i],
+      音: 声 + 韵,
+      声,
+      韵,
       调: toneName,
       释: (notes ? `〔${notes[i]}〕` : '') + def,
     }

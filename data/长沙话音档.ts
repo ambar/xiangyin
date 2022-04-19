@@ -67,7 +67,7 @@ export const query = (
       } else {
         tone = x.长沙调序
       }
-      return {音: x.声母 + x.韵母, 调: tone, 释: ''}
+      return {音: x.声母 + x.韵母, 声: x.声母, 韵: x.韵母, 调: tone, 释: ''}
     })
   }
   return []
