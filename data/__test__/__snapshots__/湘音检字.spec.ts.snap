@@ -1,5 +1,45 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`ipa2if: kai 1`] = `
+Array [
+  Array [
+    "k",
+    "ai",
+  ],
+  "gai",
+]
+`;
+
+exports[`ipa2if: m̩ 1`] = `
+Array [
+  Array [
+    "",
+    "m̩",
+  ],
+  "m",
+]
+`;
+
+exports[`ipa2if: pã 1`] = `
+Array [
+  Array [
+    "p",
+    "ã",
+  ],
+  "ban",
+]
+`;
+
+exports[`ipa2if: ɿ 1`] = `
+Array [
+  Array [
+    "",
+    "ɿ",
+  ],
+  "r",
+]
+`;
+
 exports[`query 1`] = `
 Array [
   Object {

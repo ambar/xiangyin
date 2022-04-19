@@ -8,6 +8,7 @@ import {
 } from './tones'
 import {NormResult} from './types'
 import json from './湘音检字.json'
+export * from './湘音检字.meta'
 
 const head = ['湘拼', '音標', '調號', '字甲', '字乙', '釋義'] as const
 
