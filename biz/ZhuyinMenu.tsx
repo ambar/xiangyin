@@ -107,7 +107,7 @@ export default function ZhuyinMenu() {
       </ui.MenuButton>
       <ui.MenuList>
         <ui.MenuOptionGroup
-          title="音标"
+          title="声韵"
           type="radio"
           value={pinyinType}
           onChange={(v) => setPinyinType(v as string as PinyinType)}

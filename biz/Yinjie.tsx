@@ -9,15 +9,13 @@ import {canPlayItem, DataItem, items, playAudio} from './play'
 import {StyledPopover, VolumeIcon} from './shared'
 
 const fontSize = '1.1em'
-const initials = sortBy(Object.values(hsn.Initials), (x) =>
-  x === hsn.Initials.Ø ? 0 : 1
-)
+const initials = sortBy(Object.values(hsn.Initials), (x) => (x === '' ? 0 : 1))
 const finals = Object.values(hsn.Finals)
 const normSyllable = (syllable: string) => {
   // 兼容
   return syllable
     .replace(/ʻ/g, 'ʰ')
-    .replace(/^(Ø|0)/g, '')
+    .replace(/^(Ø|∅|0)/g, '')
     .replace('ʨ', 'tɕ')
     .replace('ʦ', 'ts')
     .replace('n̩', 'n̍')
@@ -25,7 +23,7 @@ const normSyllable = (syllable: string) => {
 }
 
 const itemsBySyllable = mapValues(
-  groupBy(items, (x) => normSyllable(x.声母 + x.韵母)),
+  groupBy(items, (x) => x.声母 + x.韵母),
   (x) => sortBy(x, '长沙调序')
 )
 
@@ -97,12 +95,11 @@ const PinyinCell: React.FC<{
   final: string
   shouldPlayOnHover: boolean
   shouldCompact: boolean
-}> = ({initial: initialProp, final, shouldCompact, shouldPlayOnHover}) => {
+}> = ({initial, final, shouldCompact, shouldPlayOnHover}) => {
   // NOTE: Popover 大批量渲染时有性能问题，让它推迟初始化
   const [shouldRenderPopover, shouldRenderPopoverFlag] = useBoolean()
-  let initial = normSyllable(initialProp)
   // TODO: 在长沙话音档中替换
-  const syllable = normSyllable(initial + final)
+  const syllable = initial + final
   const group = itemsBySyllable[syllable]
 
   useEffect(() => {
@@ -240,7 +237,7 @@ const PinyinTable = () => {
             <ui.Tr>
               <ui.Th>{''}</ui.Th>
               {initials.map((x) => (
-                <ui.Th key={x}>{x === '' ? 'Ø' : x}</ui.Th>
+                <ui.Th key={x}>{x === '' ? '∅' : x}</ui.Th>
               ))}
             </ui.Tr>
           </ui.Thead>
