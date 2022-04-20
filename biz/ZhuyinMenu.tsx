@@ -55,7 +55,6 @@ export const ZhuyinSettingsProvider: React.FC<{children: React.ReactNode}> = ({
 }) => {
   const [toneType, setToneType] = useState<ToneType>(getInitialToneType)
   const [pinyinType, setPinyinType] = useState<PinyinType>(getInitialPinyinType)
-  console.info({pinyinType, toneType})
 
   // 暂没有 SSR 需要（如果有，应当存 cookie）
   useEffect(() => {
