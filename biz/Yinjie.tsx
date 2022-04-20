@@ -4,7 +4,7 @@ import groupBy from 'lodash/groupBy'
 import mapValues from 'lodash/mapValues'
 import sortBy from 'lodash/sortBy'
 import {useEffect, useMemo} from 'react'
-import * as hsn from './hsn'
+import * as hsn from '~/data/长沙话音档.meta'
 import {canPlayItem, DataItem, items, playAudio} from './play'
 import {StyledPopover, VolumeIcon} from './shared'
 
@@ -13,9 +13,19 @@ const initials = sortBy(Object.values(hsn.Initials), (x) =>
   x === hsn.Initials.Ø ? 0 : 1
 )
 const finals = Object.values(hsn.Finals)
+const normSyllable = (syllable: string) => {
+  // 兼容
+  return syllable
+    .replace(/ʻ/g, 'ʰ')
+    .replace(/^(Ø|0)/g, '')
+    .replace('ʨ', 'tɕ')
+    .replace('ʦ', 'ts')
+    .replace('n̩', 'n̍')
+    .replace('m̩', 'm̍')
+}
 
 const itemsBySyllable = mapValues(
-  groupBy(items, (x) => x.声母 + x.韵母),
+  groupBy(items, (x) => normSyllable(x.声母 + x.韵母)),
   (x) => sortBy(x, '长沙调序')
 )
 
@@ -82,11 +92,6 @@ const postPaint = (fn: () => void) => {
 const rIC =
   typeof requestIdleCallback !== 'undefined' ? requestIdleCallback : postPaint
 
-const normSyllable = (syllable: string) => {
-  // 兼容
-  return syllable.replace(/ʻ/g, 'ʰ').replace(/^(Ø|0)/g, '')
-}
-
 const PinyinCell: React.FC<{
   initial: string
   final: string
@@ -97,7 +102,7 @@ const PinyinCell: React.FC<{
   const [shouldRenderPopover, shouldRenderPopoverFlag] = useBoolean()
   let initial = normSyllable(initialProp)
   // TODO: 在长沙话音档中替换
-  const syllable = initial + final.replace('n̩', 'n̍').replace('m̩', 'm̍')
+  const syllable = normSyllable(initial + final)
   const group = itemsBySyllable[syllable]
 
   useEffect(() => {
@@ -235,7 +240,7 @@ const PinyinTable = () => {
             <ui.Tr>
               <ui.Th>{''}</ui.Th>
               {initials.map((x) => (
-                <ui.Th key={x}>{x}</ui.Th>
+                <ui.Th key={x}>{x === '' ? 'Ø' : x}</ui.Th>
               ))}
             </ui.Tr>
           </ui.Thead>

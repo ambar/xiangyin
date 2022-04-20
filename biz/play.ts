@@ -19,8 +19,8 @@ const normSyllable = (syllable: string) => {
   // 兼容其他字典
   return syllable
     ?.replace(/ʻ/g, 'ʰ')
-    .replace('tɕ', 'ʨ')
-    .replace('ts', 'ʦ')
+    .replace('ʨ', 'tɕ')
+    .replace('ʦ', 'ts')
     .replace('z', 'ʐ')
     .replace('ɤ', 'ə')
 }
