@@ -56,7 +56,7 @@ const xpByFinal = Object.fromEntries(
 export const ipa2xpa = (i: string, f: string) => {
   // NOTE：可能对应单独 ɿ 音（对应 r 日）
   if (i === '' && f === Finals.ɿ) {
-    return ['r', '']
+    return ['r', 'i']
   }
   const xpi = xpByInitial[i as Initial]
   const xpf = xpByFinal[f as Final]

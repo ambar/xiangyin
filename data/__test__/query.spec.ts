@@ -27,7 +27,7 @@ test.each(ToneTypes.concat('XYZ' as ToneType))(`toneType: %s`, (toneType) => {
 })
 
 test('XPA', () => {
-  Array.from('風吉辰人卻').map((c) => {
+  Array.from('風日吉辰人卻').map((c) => {
     expect(
       queryPinyinAll(c, false, {pinyinType: 'XPA'}).map(([s, r]) => [
         s,

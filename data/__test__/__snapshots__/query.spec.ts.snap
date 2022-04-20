@@ -31,6 +31,36 @@ exports[`XPA 2`] = `
 Array [
   Array [
     "湘音检字",
+    "日",
+    Array [
+      "ri",
+      "mi",
+      "gni",
+    ],
+  ],
+  Array [
+    "长沙话音档",
+    "日",
+    Array [
+      "ri",
+      "gni",
+    ],
+  ],
+  Array [
+    "汉语方音字汇",
+    "日",
+    Array [
+      "gni",
+      "ri",
+    ],
+  ],
+]
+`;
+
+exports[`XPA 3`] = `
+Array [
+  Array [
+    "湘音检字",
     "吉",
     Array [
       "ji",
@@ -53,7 +83,7 @@ Array [
 ]
 `;
 
-exports[`XPA 3`] = `
+exports[`XPA 4`] = `
 Array [
   Array [
     "湘音检字",
@@ -79,7 +109,7 @@ Array [
 ]
 `;
 
-exports[`XPA 4`] = `
+exports[`XPA 5`] = `
 Array [
   Array [
     "湘音检字",
@@ -105,7 +135,7 @@ Array [
 ]
 `;
 
-exports[`XPA 5`] = `
+exports[`XPA 6`] = `
 Array [
   Array [
     "湘音检字",
