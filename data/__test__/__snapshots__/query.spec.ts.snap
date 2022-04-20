@@ -1,5 +1,134 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`XPA 1`] = `
+Array [
+  Array [
+    "湘音检字",
+    "風",
+    Array [
+      "hong",
+      "hong",
+    ],
+  ],
+  Array [
+    "长沙话音档",
+    "風",
+    Array [
+      "hong",
+    ],
+  ],
+  Array [
+    "汉语方音字汇",
+    "風",
+    Array [
+      "hen",
+    ],
+  ],
+]
+`;
+
+exports[`XPA 2`] = `
+Array [
+  Array [
+    "湘音检字",
+    "吉",
+    Array [
+      "ji",
+    ],
+  ],
+  Array [
+    "长沙话音档",
+    "吉",
+    Array [
+      "ji",
+    ],
+  ],
+  Array [
+    "汉语方音字汇",
+    "吉",
+    Array [
+      "ji",
+    ],
+  ],
+]
+`;
+
+exports[`XPA 3`] = `
+Array [
+  Array [
+    "湘音检字",
+    "辰",
+    Array [
+      "shen",
+    ],
+  ],
+  Array [
+    "长沙话音档",
+    "辰",
+    Array [
+      "shen",
+    ],
+  ],
+  Array [
+    "汉语方音字汇",
+    "辰",
+    Array [
+      "sen",
+    ],
+  ],
+]
+`;
+
+exports[`XPA 4`] = `
+Array [
+  Array [
+    "湘音检字",
+    "人",
+    Array [
+      "ren",
+    ],
+  ],
+  Array [
+    "长沙话音档",
+    "人",
+    Array [
+      "ren",
+    ],
+  ],
+  Array [
+    "汉语方音字汇",
+    "人",
+    Array [
+      "ren",
+    ],
+  ],
+]
+`;
+
+exports[`XPA 5`] = `
+Array [
+  Array [
+    "湘音检字",
+    "卻",
+    Array [
+      "qio",
+    ],
+  ],
+  Array [
+    "长沙话音档",
+    "卻",
+    Array [
+      "qio",
+    ],
+  ],
+  Array [
+    "汉语方音字汇",
+    "卻",
+    Array [],
+  ],
+]
+`;
+
 exports[`toneType: CSToneNo 1`] = `
 Array [
   Array [

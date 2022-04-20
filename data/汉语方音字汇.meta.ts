@@ -1,12 +1,9 @@
-type ValueOf<T> = T[keyof T]
-export type Initial = ValueOf<typeof Initials>
-export type Final = ValueOf<typeof Finals>
+export type Initial = keyof typeof Initials
+export type Final = keyof typeof Finals
 
-// 应当把 Øø 纠正为 ∅，但后者不是合法 JS 标识符
-const Ø = ''
 /** 《汉语方音字汇》长沙方言声母，共 20 个 */
 export const Initials = {
-  [Ø]: Ø, // 儿以问软
+  '': '', // 儿以问软
   p: 'p', // 玻比平
   pʰ: 'pʰ', // 派判泼
   m: 'm', // 米满蚊
