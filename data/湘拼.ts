@@ -2,15 +2,21 @@ import * as m3 from '../data/汉语方音字汇.meta'
 import * as m1 from '../data/湘音检字.meta'
 import * as m2 from '../data/长沙话音档.meta'
 
-type XPAIntial = string
+type XPAInitial = string
 type XPAFinal = string
 type InitialRow = [
   m1.Initial | null,
   m2.Initial | null,
   m3.Initial | null,
-  XPAIntial
+  XPAInitial
 ]
-type FinalRow = [m1.Final | null, m2.Final | null, m3.Final | null, XPAFinal]
+type FinalRow = [
+  m1.Final | null,
+  m2.Final | null,
+  m3.Final | null,
+  //
+  XPAFinal
+]
 
 export const InitialConfig: InitialRow[] = [
   ['', '', '', ''],
