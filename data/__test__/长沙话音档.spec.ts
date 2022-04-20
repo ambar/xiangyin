@@ -7,7 +7,7 @@ test('query', () => {
   expect(query('顏', 'ToneValue')).toEqual([])
 })
 
-test('Initial/Finals', () => {
+test('senyn', () => {
   const matched = xy.items.every(
     (x) => x.声母 in xy.Initials && x.韵母 in xy.Finals
   )

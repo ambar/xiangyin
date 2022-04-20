@@ -1,3 +1,13 @@
+import {ToneType} from './tones'
+
+export const PinyinTypes = ['IPA', 'XPA'] as const
+export type PinyinType = typeof PinyinTypes[number]
+
+export type QueryOptions = {
+  pinyinType?: PinyinType
+  toneType?: ToneType
+}
+
 /** 使每个词典返回一致的规范结果 */
 export type NormResult = {
   音: string

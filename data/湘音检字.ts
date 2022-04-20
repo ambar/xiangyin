@@ -4,9 +4,8 @@ import {
   csOctetToneNo2toneValue,
   getToneLetter,
   octetToneNo2csToneNo,
-  ToneType,
 } from './tones'
-import {NormResult} from './types'
+import {NormResult, QueryOptions} from './types'
 import {FinalsConfig, InitialConfig} from './湘拼'
 import json from './湘音检字.json'
 import {Final, Finals, Initial, Initials} from './湘音检字.meta'
@@ -47,21 +46,21 @@ export const ipa2senyn = (ipa: string): [string, string] => {
 }
 
 const xpByInitial = Object.fromEntries(
-  InitialConfig.map(([x, , , v]) => [x, v]).filter((x) => x[0] !== null)
+  InitialConfig.map((x) => [x[0], x[3]]).filter((x) => x[0] !== null)
 ) as Record<Initial, string>
 const xpByFinal = Object.fromEntries(
-  FinalsConfig.map(([x, , , v]) => [x, v]).filter((x) => x[0] !== null)
+  FinalsConfig.map((x) => [x[0], x[3]]).filter((x) => x[0] !== null)
 ) as Record<Final, string>
 
-/** 原文 IPA 转湘拼 */
+/** IPA 转湘拼 A */
 export const ipa2xpa = (i: string, f: string) => {
   // NOTE：可能对应单独 ɿ 音（对应 r 日）
   if (i === '' && f === Finals.ɿ) {
-    return 'r'
+    return ['r', '']
   }
   const xpi = xpByInitial[i as Initial]
   const xpf = xpByFinal[f as Final]
-  return xpi + xpf
+  return [xpi, xpf]
 }
 
 export const items = json.map((x) => {
@@ -82,7 +81,7 @@ export const items = json.map((x) => {
 
 export const query = (
   char: string,
-  toneType: ToneType = 'CSToneNo'
+  {pinyinType = 'IPA', toneType = 'CSToneNo'}: QueryOptions = {}
 ): NormResult[] => {
   const items = charGroup.get(char) || []
   return items.map((item) => {
@@ -101,6 +100,11 @@ export const query = (
     } else {
       tone = octetToneNo2csToneNo[octet]
     }
-    return {音: item.音標, 声: item.声, 韵: item.韵, 调: tone, 释: item.釋義}
+    let {音標: 音, 声, 韵} = item
+    if (pinyinType === 'XPA') {
+      ;[声, 韵] = ipa2xpa(声, 韵)
+      音 = 声 + 韵
+    }
+    return {音, 声, 韵, 调: tone, 释: item.釋義}
   })
 }

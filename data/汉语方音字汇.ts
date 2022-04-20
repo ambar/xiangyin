@@ -6,9 +6,10 @@ import {
   csToneNo2toneValue,
   getToneLetter,
   ToneName,
-  ToneType,
 } from './tones'
-import {NormResult} from './types'
+import {NormResult, QueryOptions} from './types'
+import {Final, Initial} from './汉语方音字汇.meta'
+import {FinalsConfig, InitialConfig} from './湘拼'
 export * from './汉语方音字汇.meta'
 
 const schema = [
@@ -99,6 +100,20 @@ const parsePinyin = (v: RawDataSubItem): NormResult[] => {
   })
 }
 
+const xpByInitial = Object.fromEntries(
+  InitialConfig.map((x) => [x[2], x[3]]).filter((x) => x[20] !== null)
+) as Record<Initial, string>
+const xpByFinal = Object.fromEntries(
+  FinalsConfig.map((x) => [x[2], x[3]]).filter((x) => x[0] !== null)
+) as Record<Final, string>
+
+/** IPA 转湘拼 A */
+export const ipa2xpa = (i: string, f: string) => {
+  const xpi = xpByInitial[i as Initial]
+  const xpf = xpByFinal[f as Final]
+  return [xpi, xpf]
+}
+
 // TODO: 改成 script 预解析
 export const items = json.map((x) => {
   const rawItem = Object.fromEntries(
@@ -132,7 +147,11 @@ variantMap.forEach(([a, b]) => {
   }
 })
 
-export const query = (char: string, cc: 县市, toneType?: ToneType) => {
+export const query = (
+  char: string,
+  cc: 县市,
+  {pinyinType = 'IPA', toneType = 'CSToneNo'}: QueryOptions = {}
+) => {
   const items = charGroup.get(char)
   if (items && cc) {
     return items
@@ -154,12 +173,17 @@ export const query = (char: string, cc: 县市, toneType?: ToneType) => {
         } else {
           tone = tone
         }
-        return {...item, 调: tone}
+        let {音, 声, 韵} = item
+        if (pinyinType === 'XPA') {
+          ;[声, 韵] = ipa2xpa(声, 韵)
+          音 = 声 + 韵
+        }
+        return {音, 声, 韵, 调: tone, 释: item.释}
       })
   }
   return []
 }
 
-export const queryCS = (char: string, toneType: ToneType = 'CSToneNo') => {
-  return query(char, '长沙', toneType)
+export const queryCS = (char: string, opts?: QueryOptions) => {
+  return query(char, '长沙', opts)
 }

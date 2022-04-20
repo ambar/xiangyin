@@ -23,5 +23,5 @@ test('shouldQueryVariants', () => {
 })
 
 test.each(ToneTypes.concat('XYZ' as ToneType))(`toneType: %s`, (toneType) => {
-  expect(queryPinyinAll('入', false, toneType)).toMatchSnapshot()
+  expect(queryPinyinAll('入', false, {toneType})).toMatchSnapshot()
 })

@@ -12,7 +12,7 @@ test('empty', () => {
   expect(queryCS('X')).toEqual([])
 })
 
-test('if', () => {
+test('senyn', () => {
   const matched = xy.items
     .map((x) => x.湘.长沙)
     .filter(Boolean)

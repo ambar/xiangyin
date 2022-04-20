@@ -49,11 +49,11 @@ const examples = [
 const isExample = (str: string) => examples.some((x) => x === str)
 
 const MultipleSearchResult: React.FC<{char: string}> = ({char}) => {
-  const {toneType} = useContext(ZhuyinSettingsContext)
+  const {pinyinType, toneType} = useContext(ZhuyinSettingsContext)
   const shouldQueryVariants = useContext(ShouldQueryVariantsContext)
   const results = useMemo(
-    () => queryPinyinAll(char, shouldQueryVariants, toneType),
-    [char, shouldQueryVariants, toneType]
+    () => queryPinyinAll(char, shouldQueryVariants, {pinyinType, toneType}),
+    [char, shouldQueryVariants, pinyinType, toneType]
   )
   // 己优化，不需要需要异步处理
   // const [results, setResults] = useState<ReturnType<typeof queryPinyinAll>>([])
@@ -143,7 +143,7 @@ const decodeLocationHash = () => {
 }
 
 function Zhuyin() {
-  const {toneType} = useContext(ZhuyinSettingsContext)
+  const {pinyinType, toneType} = useContext(ZhuyinSettingsContext)
   const [initialState] = useState(() => decodeLocationHash())
   // SSR 阶段不输出，防止闪动替换
   const [keyword, setKeyword] = useState('')
@@ -176,12 +176,12 @@ function Zhuyin() {
       Array.from(keyword).map((c) => {
         // 汉字全部用 ruby 标记，保持变体切换时样式稳定
         let r = reHan.test(c)
-          ? queryPinyin(c, shouldQueryVariants, source, toneType)
+          ? queryPinyin(c, shouldQueryVariants, source, {pinyinType, toneType})
           : null
         return [c, r]
       })
     )
-  }, [keyword, shouldQueryVariants, source, toneType])
+  }, [keyword, shouldQueryVariants, source, pinyinType, toneType])
 
   let dict = (
     <ui.Box

@@ -9,7 +9,7 @@ import React, {
 import * as bsi from 'react-icons/bs'
 import {ToneType, ToneTypes} from '~/data/tones'
 
-const PinyinTypes = ['IPA', 'XPA', 'XPB'] as const
+const PinyinTypes = ['IPA', 'XPA'] as const
 export type PinyinType = typeof PinyinTypes[number]
 
 export const ZhuyinSettingsContext = createContext<{
@@ -113,8 +113,7 @@ export default function ZhuyinMenu() {
           onChange={(v) => setPinyinType(v as string as PinyinType)}
         >
           <ui.MenuItemOption value="IPA">IPA（原文）</ui.MenuItemOption>
-          {/* <ui.MenuItemOption value="XPA">湘拼甲</ui.MenuItemOption>
-          <ui.MenuItemOption value="XPB">湘拼乙</ui.MenuItemOption> */}
+          <ui.MenuItemOption value="XPA">湘拼 A</ui.MenuItemOption>
         </ui.MenuOptionGroup>
         <ui.MenuOptionGroup
           title="声调"
