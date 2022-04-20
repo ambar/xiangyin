@@ -26,7 +26,7 @@ export const queryPinyin = (
   char: string,
   shouldQueryVariants = false,
   source: Source,
-  toneType: ToneType
+  toneType?: ToneType
 ) => {
   let query = queryMap.get(source)!
   let result = query(char, toneType)
@@ -45,7 +45,7 @@ export const queryPinyin = (
 export const queryPinyinAll = (
   char: string,
   shouldQueryVariants = false,
-  toneType: ToneType
+  toneType?: ToneType
 ): [Source, QueryResult][] => {
   return [...queryMap.keys()].map((k) => [
     k,
