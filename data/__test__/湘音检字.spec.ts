@@ -8,8 +8,10 @@ test('query', () => {
   expect(query('铸')).toEqual(zhy)
 })
 
-test('ipa2if', () => {
-  const matched = xy.items.every((x) => xy.ipa2if(x.音標).join('') === x.音標)
+test('ipa2senyn', () => {
+  const matched = xy.items.every(
+    (x) => xy.ipa2senyn(x.音標).join('') === x.音標
+  )
   expect(matched).toBe(true)
 })
 
@@ -20,9 +22,9 @@ test('ipa2if', () => {
     xy.Finals.ɿ,
     xy.Finals.m̩,
   ]
-  test.each(cases)('ipa2if: %s', (x) => {
-    const r = xy.ipa2if(x)
-    const xp = xy.if2xp(...r)
+  test.each(cases)('ipa2senyn: %s', (x) => {
+    const r = xy.ipa2senyn(x)
+    const xp = xy.ipa2xpa(...r)
     expect([r, xp]).toMatchSnapshot()
   })
 }

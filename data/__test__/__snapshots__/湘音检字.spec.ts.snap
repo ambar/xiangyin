@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ipa2if: kai 1`] = `
+exports[`ipa2senyn: kai 1`] = `
 Array [
   Array [
     "k",
@@ -10,7 +10,7 @@ Array [
 ]
 `;
 
-exports[`ipa2if: m̩ 1`] = `
+exports[`ipa2senyn: m̩ 1`] = `
 Array [
   Array [
     "",
@@ -20,7 +20,7 @@ Array [
 ]
 `;
 
-exports[`ipa2if: pã 1`] = `
+exports[`ipa2senyn: pã 1`] = `
 Array [
   Array [
     "p",
@@ -30,7 +30,7 @@ Array [
 ]
 `;
 
-exports[`ipa2if: ɿ 1`] = `
+exports[`ipa2senyn: ɿ 1`] = `
 Array [
   Array [
     "",
