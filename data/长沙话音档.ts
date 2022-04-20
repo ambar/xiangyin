@@ -8,6 +8,7 @@ import {
   toneValue2csToneNo,
 } from './tones'
 import {NormResult, SchemaEntries} from './types'
+export * from './长沙话音档.meta'
 
 type metaKey = 'disabled' | 'flawed' | 'comment' | 'corrected'
 const schema = [
@@ -34,10 +35,21 @@ const setIfNotSet = (char: string, item: DataItem) => {
   }
 }
 
+// 其他与字典统一
+const normSyllable = (syllable: string) => {
+  return syllable
+    .replace('ʨ', 'tɕ')
+    .replace('ʦ', 'ts')
+    .replace('m̍', 'm̩')
+    .replace('n̍', 'n̩')
+}
+
 export const items = json.map((x) => {
   const item = Object.fromEntries(
     schema.map(([key, val], i) => [key, val(x[i])])
   ) as DataItem
+  item.声母 = normSyllable(item.声母)
+  item.韵母 = normSyllable(item.韵母)
   // 自定义增补
   item.长沙调序 = toneValue2csToneNo[item.调值]
   item.例字.forEach((c) => setIfNotSet(c, item))
