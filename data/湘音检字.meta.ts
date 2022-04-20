@@ -4,7 +4,7 @@ export type Initial = ValueOf<typeof Initials>
 const Ø = ''
 
 export const Initials = {
-  Ø,
+  [Ø]: '',
   p: 'p',
   pʰ: 'pʰ',
   m: 'm',

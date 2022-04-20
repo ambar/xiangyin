@@ -9,6 +9,7 @@ import {
   ToneType,
 } from './tones'
 import {NormResult} from './types'
+export * from './汉语方音字汇.meta'
 
 const schema = [
   ['號', String],
