@@ -4,13 +4,11 @@ import React, {
   useContext,
   useEffect,
   useMemo,
-  useState
+  useState,
 } from 'react'
 import * as bsi from 'react-icons/bs'
-import { ToneType, ToneTypes } from '~/data/tones'
-
-const PinyinTypes = ['IPA', 'XPA'] as const
-export type PinyinType = typeof PinyinTypes[number]
+import {ToneType, ToneTypes} from '~/data/tones'
+import {PinyinType, PinyinTypes} from '~/data/types'
 
 export const ZhuyinSettingsContext = createContext<{
   pinyinType: PinyinType
