@@ -9,6 +9,7 @@ import ZhuyinMenu, {ZhuyinSettingsProvider} from './ZhuyinMenu'
 const tabIndexByPathname = {
   '/': 0,
   '/yinjie': 1,
+  '/guanyu': 2,
 }
 
 type TabKey = keyof typeof tabIndexByPathname
@@ -25,6 +26,9 @@ const BasePage: React.FC<{children: React.ReactNode}> = ({children}) => {
       </Link>
       <Link passHref href="/yinjie">
         <ui.Tab as="a">音节表</ui.Tab>
+      </Link>
+      <Link passHref href="/guanyu">
+        <ui.Tab as="a">关于</ui.Tab>
       </Link>
     </ui.TabList>
   )

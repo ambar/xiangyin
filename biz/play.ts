@@ -30,7 +30,7 @@ export const playAudio = (syllable: number | string) => {
   const no =
     typeof syllable === 'number'
       ? syllable
-      : configBySyllable[normSyllable(syllable)]?.长沙调序
+      : configBySyllable[normSyllable(syllable)]?.號
   if (no) {
     const src = `/audio/syllables/F${String(no).padStart(5, '0')}.mp3`
     if (audio) {

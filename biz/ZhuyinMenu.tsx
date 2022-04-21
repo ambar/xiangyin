@@ -4,10 +4,10 @@ import React, {
   useContext,
   useEffect,
   useMemo,
-  useState,
+  useState
 } from 'react'
 import * as bsi from 'react-icons/bs'
-import {ToneType, ToneTypes} from '~/data/tones'
+import { ToneType, ToneTypes } from '~/data/tones'
 
 const PinyinTypes = ['IPA', 'XPA'] as const
 export type PinyinType = typeof PinyinTypes[number]
@@ -80,6 +80,12 @@ export const ZhuyinSettingsProvider: React.FC<{children: React.ReactNode}> = ({
   )
 }
 
+const senynOptions: Record<PinyinType, string> = {
+  IPA: 'IPA',
+  XPA: '湘拼〇',
+}
+const senynEntries = Object.entries(senynOptions)
+
 /**
  * 选择注音方式
  */
@@ -97,11 +103,21 @@ export default function ZhuyinMenu() {
       <ui.MenuButton
         as={ui.Button}
         variant="unstyled"
+        aria-label="注音方式"
         // Chakra 在加载页面后就 autofocus 到上面，行为不对
         _focus={{outline: 'none'}}
       >
-        <ui.Flex alignItems="center">
-          注音方式
+        <ui.Flex
+          alignItems="center"
+          sx={{
+            div: {
+              display: ['none', 'inline'],
+            },
+          }}
+        >
+          <ui.Box>注音（</ui.Box>
+          {senynOptions[pinyinType]}
+          <ui.Box>）</ui.Box>
           <ui.Icon ml={1} as={bsi.BsCaretDownFill} />
         </ui.Flex>
       </ui.MenuButton>
@@ -112,8 +128,11 @@ export default function ZhuyinMenu() {
           value={pinyinType}
           onChange={(v) => setPinyinType(v as string as PinyinType)}
         >
-          <ui.MenuItemOption value="IPA">IPA（原文）</ui.MenuItemOption>
-          <ui.MenuItemOption value="XPA">湘拼 A</ui.MenuItemOption>
+          {senynEntries.map(([v, k]) => (
+            <ui.MenuItemOption key={v} value={v}>
+              {k}
+            </ui.MenuItemOption>
+          ))}
         </ui.MenuOptionGroup>
         <ui.MenuOptionGroup
           title="声调"

@@ -100,6 +100,15 @@ export const csOctetToneNo2toneName: Record<CSOctetToneNo, ToneName> = {
   7: '入声',
 }
 
+export const csToneNo2toneName: Record<CSToneNo, ToneName> = {
+  1: '阴平',
+  2: '阳平',
+  3: '上声',
+  4: '阴去',
+  5: '阳去',
+  6: '入声',
+}
+
 /** 四声转长沙话序号 */
 export const csToneName2csToneNo: Partial<Record<ToneName, CSToneNo | ''>> = {
   轻声: '',
