@@ -38,7 +38,12 @@ const SendiauTable = () => {
   const {pinyinType} = useContext(ZhuyinSettingsContext)
   return (
     <ui.Box>
-      <ui.Table size="xs">
+      <ui.Table
+        size="xs"
+        css={{
+          th: {whiteSpace: 'nowrap'},
+        }}
+      >
         <ui.Tbody>
           <ui.Tr>
             <ui.Th>调名</ui.Th>
@@ -131,9 +136,25 @@ const SenynTable = () => {
           position: 'sticky',
           top: 0,
           bg: thBg,
-          writingMode: ['vertical-rl', 'vertical-rl', 'vertical-rl', 'unset'],
+          // writingMode: ['vertical-rl', 'vertical-rl', 'vertical-rl', 'unset'],
           fontSize: 'md',
           verticalAlign: 'bottom',
+        },
+        'th div': {
+          display: 'inline',
+        },
+        // 模拟竖排 writingMode: vertical-rl，因为 Safari 支持不太行
+        '@media(max-width: 1000px)': {
+          'th div': {
+            display: 'block',
+          },
+          // 首位标点模拟竖排
+          'th div:first-of-type, th div:last-of-type': {
+            marginLeft: '.3em',
+            width: '1em',
+            height: '1em',
+            transform: 'rotate(90deg)',
+          },
         },
       }}
     >
@@ -145,18 +166,20 @@ const SenynTable = () => {
           <ui.Thead>
             <ui.Tr>
               {cells.map((x, i) => (
-                <ui.Th key={i}>{x}</ui.Th>
-              ))}
-            </ui.Tr>
-            <ui.Tr>
-              {cells.map((x, i) => (
-                <ui.Td key={i}>
-                  <sub>{countInitials[i]}</sub>
-                </ui.Td>
+                <ui.Th key={i}>
+                  {Array.from(x).map((c) => (
+                    <ui.Box key={c}>{c}</ui.Box>
+                  ))}
+                </ui.Th>
               ))}
             </ui.Tr>
           </ui.Thead>
           <ui.Tbody fontFamily="ipa">
+            <ui.Tr>
+              {cells.map((x, i) => (
+                <ui.Td key={i}>{countInitials[i]}</ui.Td>
+              ))}
+            </ui.Tr>
             {xpConfig.InitialConfig.map(([a, b, c, y], i) => (
               <ui.Tr key={i}>
                 <ui.Td>{getI(a)}</ui.Td>
@@ -176,18 +199,20 @@ const SenynTable = () => {
           <ui.Thead>
             <ui.Tr>
               {cells.map((x, i) => (
-                <ui.Th key={i}>{x}</ui.Th>
-              ))}
-            </ui.Tr>
-            <ui.Tr>
-              {cells.map((x, i) => (
-                <ui.Td key={i}>
-                  <sub>{countFinals[i]}</sub>
-                </ui.Td>
+                <ui.Th key={i}>
+                  {Array.from(x).map((c) => (
+                    <ui.Box key={c}>{c}</ui.Box>
+                  ))}
+                </ui.Th>
               ))}
             </ui.Tr>
           </ui.Thead>
           <ui.Tbody fontFamily="ipa">
+            <ui.Tr>
+              {cells.map((x, i) => (
+                <ui.Td key={i}>{countFinals[i]}</ui.Td>
+              ))}
+            </ui.Tr>
             {xpConfig.FinalsConfig.map(([a, b, c, y], i) => (
               <ui.Tr key={i}>
                 <ui.Td>{a}</ui.Td>
