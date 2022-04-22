@@ -50,7 +50,7 @@ type DataItem = {
   湘: Record<县市, NormResult[]>
 }
 
-const charGroup = new Map<string, DataItem[]>()
+export const charGroup = new Map<string, DataItem[]>()
 
 const parsePinyin = (v: RawDataSubItem): NormResult[] => {
   // 声/韵/调可能只在任意一个中出现斜线，主要是文白异读

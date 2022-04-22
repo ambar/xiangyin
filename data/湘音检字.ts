@@ -19,7 +19,7 @@ type DataItem = Record<typeof head[number], string> & {
 }
 
 // 异体、多音字分组 16519 -> 13543
-const charGroup = new Map<string, DataItem[]>()
+export const charGroup = new Map<string, DataItem[]>()
 
 // 声母较长的排前面
 const sortedInitials = Object.entries(Initials).sort(

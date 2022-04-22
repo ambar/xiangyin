@@ -27,7 +27,7 @@ export type DataItem = RawDataItem & {
   长沙调序: number
 }
 
-const charGroup = new Map<string, DataItem[]>()
+export const charGroup = new Map<string, DataItem[]>()
 
 const setIfNotSet = (char: string, item: DataItem) => {
   if (char) {
