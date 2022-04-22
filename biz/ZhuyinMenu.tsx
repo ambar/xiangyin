@@ -1,4 +1,5 @@
 import * as ui from '@chakra-ui/react'
+import cookie from 'js-cookie'
 import React, {
   createContext,
   useContext,
@@ -26,41 +27,43 @@ const ZhuyinSettingsSetterContext = createContext<{
   setToneType() {},
 })
 
-const getInitialToneType = (): ToneType => {
-  if (typeof window !== 'undefined') {
-    const initialToneType = localStorage.getItem('app:toneType') as ToneType
-    if (initialToneType && ToneTypes.includes(initialToneType)) {
-      return initialToneType
-    }
+const defaultPinyinType: PinyinType = 'IPA'
+const defaultToneType: ToneType = 'CSToneNo'
+type ValueType = [PinyinType | void, ToneType | void]
+const parse = (v: string): [PinyinType, ToneType] => {
+  let [pinyinType, toneType] = v.split('|') as ValueType
+  if (!(toneType && ToneTypes.includes(toneType))) {
+    toneType = defaultToneType
   }
-  return 'CSToneNo'
+  if (!(pinyinType && PinyinTypes.includes(pinyinType))) {
+    pinyinType = defaultPinyinType
+  }
+  return [pinyinType, toneType]
 }
 
-const getInitialPinyinType = () => {
-  if (typeof window !== 'undefined') {
-    const initialPinyinType = localStorage.getItem(
-      'app:pinyinType'
-    ) as PinyinType
-    if (initialPinyinType && PinyinTypes.includes(initialPinyinType)) {
-      return initialPinyinType
-    }
+const getInitialSettings = (initialJyin?: string): [PinyinType, ToneType] => {
+  if (initialJyin) {
+    return parse(initialJyin || '')
+  } else if (typeof window !== 'undefined') {
+    return parse(cookie.get('jyin') || '')
   }
-  return 'IPA'
+  return [defaultPinyinType, defaultToneType]
 }
 
-export const ZhuyinSettingsProvider: React.FC<{children: React.ReactNode}> = ({
-  children,
-}) => {
-  const [toneType, setToneType] = useState<ToneType>(getInitialToneType)
-  const [pinyinType, setPinyinType] = useState<PinyinType>(getInitialPinyinType)
+export const ZhuyinSettingsProvider: React.FC<{
+  children: React.ReactNode
+  initialJyin?: string
+}> = ({children, initialJyin}) => {
+  const [[initialPinyinType, initialToneType]] = useState(() =>
+    getInitialSettings(initialJyin)
+  )
+  const [pinyinType, setPinyinType] = useState<PinyinType>(initialPinyinType)
+  const [toneType, setToneType] = useState<ToneType>(initialToneType)
 
   // 暂没有 SSR 需要（如果有，应当存 cookie）
   useEffect(() => {
-    localStorage.setItem('app:toneType', toneType)
-  }, [toneType])
-  useEffect(() => {
-    localStorage.setItem('app:pinyinType', pinyinType)
-  }, [pinyinType])
+    cookie.set('jyin', [pinyinType, toneType].join('|'), {path: '/'})
+  }, [toneType, pinyinType])
 
   return (
     <ZhuyinSettingsContext.Provider
@@ -108,9 +111,7 @@ export default function ZhuyinMenu() {
         <ui.Flex
           alignItems="center"
           sx={{
-            div: {
-              display: ['none', 'inline'],
-            },
+            div: {display: ['none', 'inline']},
           }}
         >
           <ui.Box>注音（</ui.Box>

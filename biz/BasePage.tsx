@@ -14,7 +14,10 @@ const tabIndexByPathname = {
 
 type TabKey = keyof typeof tabIndexByPathname
 
-const BasePage: React.FC<{children: React.ReactNode}> = ({children}) => {
+const BasePage: React.FC<{children: React.ReactNode; initialJyin?: string}> = ({
+  children,
+  initialJyin,
+}) => {
   const router = useRouter()
   const {pathname} = router
   const tabIndex = tabIndexByPathname[pathname as TabKey]
@@ -96,7 +99,11 @@ const BasePage: React.FC<{children: React.ReactNode}> = ({children}) => {
   return (
     <ui.Container maxW="6xl" px="0">
       {head}
-      <ZhuyinSettingsProvider>{body}</ZhuyinSettingsProvider>
+      <div suppressHydrationWarning>
+        <ZhuyinSettingsProvider initialJyin={initialJyin}>
+          {body}
+        </ZhuyinSettingsProvider>
+      </div>
     </ui.Container>
   )
 }
