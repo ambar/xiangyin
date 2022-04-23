@@ -1,8 +1,8 @@
 import {changeTone} from './tones'
 import {NormResult, QueryOptions} from './types'
-import {FinalsConfig, InitialConfig} from './湘拼'
+import {AnyFinal, AnyInitial, toSianpinA} from './湘拼'
 import json from './湘音检字.json'
-import {Final, Finals, Initial, Initials} from './湘音检字.meta'
+import {Finals, Initials} from './湘音检字.meta'
 export * from './湘音检字.meta'
 
 const head = ['湘拼', '音標', '調號', '字甲', '字乙', '釋義'] as const
@@ -39,24 +39,6 @@ export const ipa2senyn = (ipa: string): [string, string] => {
   return [i, f]
 }
 
-const xpByInitial = Object.fromEntries(
-  InitialConfig.map((x) => [x[0], x[3]]).filter((x) => x[0] !== null)
-) as Record<Initial, string>
-const xpByFinal = Object.fromEntries(
-  FinalsConfig.map((x) => [x[0], x[3]]).filter((x) => x[0] !== null)
-) as Record<Final, string>
-
-/** IPA 转湘拼 A */
-export const ipa2xpa = (i: string, f: string) => {
-  // NOTE：可能对应单独 ɿ 音（对应 r 日）
-  if (i === '' && f === Finals.ɿ) {
-    return ['r', 'i']
-  }
-  const xpi = xpByInitial[i as Initial]
-  const xpf = xpByFinal[f as Final]
-  return [xpi, xpf]
-}
-
 export const items = json.map((x) => {
   const item = Object.fromEntries(x.map((v, i) => [head[i], v])) as DataItem
   const setIfNotSet = (char: string) => {
@@ -82,8 +64,7 @@ export const query = (
     let tone: string | number = changeTone(item.調號, 'OctetToneNo', toneType)
     let {音標: 音, 声, 韵} = item
     if (pinyinType === 'XPA') {
-      ;[声, 韵] = ipa2xpa(声, 韵)
-      音 = 声 + 韵
+      ;[音, 声, 韵] = toSianpinA(声 as AnyInitial, 韵 as AnyFinal)
     }
     return {音, 声, 韵, 调: tone, 释: item.釋義}
   })

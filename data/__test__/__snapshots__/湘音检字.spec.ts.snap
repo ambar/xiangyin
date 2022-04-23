@@ -2,53 +2,29 @@
 
 exports[`ipa2senyn: kai 1`] = `
 Array [
-  Array [
-    "k",
-    "ai",
-  ],
-  Array [
-    "g",
-    "ai",
-  ],
+  "k",
+  "ai",
 ]
 `;
 
 exports[`ipa2senyn: m̩ 1`] = `
 Array [
-  Array [
-    "",
-    "m̩",
-  ],
-  Array [
-    "",
-    "m",
-  ],
+  "",
+  "m̩",
 ]
 `;
 
 exports[`ipa2senyn: pã 1`] = `
 Array [
-  Array [
-    "p",
-    "ã",
-  ],
-  Array [
-    "b",
-    "an",
-  ],
+  "p",
+  "ã",
 ]
 `;
 
 exports[`ipa2senyn: ɿ 1`] = `
 Array [
-  Array [
-    "",
-    "ɿ",
-  ],
-  Array [
-    "r",
-    "i",
-  ],
+  "",
+  "ɿ",
 ]
 `;
 

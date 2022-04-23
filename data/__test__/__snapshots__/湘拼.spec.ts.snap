@@ -1,0 +1,49 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ipa2senyn: ',m̩' 1`] = `
+Array [
+  "",
+  "m̩",
+  Array [
+    "m",
+    "",
+    "m",
+  ],
+]
+`;
+
+exports[`ipa2senyn: ',ɿ' 1`] = `
+Array [
+  "",
+  "ɿ",
+  Array [
+    "ri",
+    "r",
+    "i",
+  ],
+]
+`;
+
+exports[`ipa2senyn: 'k,ai' 1`] = `
+Array [
+  "k",
+  "ai",
+  Array [
+    "gai",
+    "g",
+    "ai",
+  ],
+]
+`;
+
+exports[`ipa2senyn: 'p,ã' 1`] = `
+Array [
+  "p",
+  "ã",
+  Array [
+    "ban",
+    "b",
+    "an",
+  ],
+]
+`;

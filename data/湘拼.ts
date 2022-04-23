@@ -157,3 +157,23 @@ export const FinalsConfig: FinalRow[] = [
   ['m̩', 'm̩', 'm̩', 'm'],
   ['n̩', 'n̩', 'n̩', 'n'],
 ]
+
+export type AnyInitial = m1.Initial | m2.Initial | m3.Initial
+export type AnyFinal = m1.Final | m2.Final | m3.Final
+const senMap = new Map<AnyInitial, string>()
+InitialConfig.forEach(([x, y, z, a]) =>
+  [x, y, z].forEach((_) => _ !== null && senMap.set(_, a))
+)
+const ynMap = new Map<AnyFinal, string>()
+FinalsConfig.forEach(([x, y, z, a]) =>
+  [x, y, z].forEach((_) => _ !== null && ynMap.set(_, a))
+)
+export const toSianpinA = (ipaSen: AnyInitial, ipaYn: AnyFinal) => {
+  // 只有湘音检字中有这个例外，可能对应单独 ɿ 音（对应 r 日）
+  if (ipaSen === '' && ipaYn === m1.Finals.ɿ) {
+    return ['ri', 'r', 'i']
+  }
+  const sen = senMap.get(ipaSen)!
+  const yn = ynMap.get(ipaYn)!
+  return [sen + yn, sen, yn] as const
+}

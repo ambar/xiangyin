@@ -1,8 +1,7 @@
 import * as ui from '@chakra-ui/react'
 import {useContext} from 'react'
 import * as t from '~/data/tones'
-import * as xpConfig from '~/data/湘拼'
-import * as xy from '~/data/长沙话音档'
+import * as sp from '~/data/湘拼'
 import {playAudio} from './play'
 import {VolumeIcon} from './shared'
 import {ZhuyinSettingsContext} from './ZhuyinMenu'
@@ -89,9 +88,9 @@ const SendiauTable = () => {
                       {x}
                       <rt>
                         {pinyinType === 'XPA'
-                          ? xy.ipa2xpa(sen, yn).join('')
+                          ? sp.toSianpinA(sen, yn)[0]
                           : sen + yn}
-                        {i + 1}
+                        {/* {i + 1} */}
                       </rt>
                     </ruby>
                     <PlayButton syllable={sen + yn + (i + 1)} />
@@ -114,15 +113,13 @@ const cells = [
   '《汉语方音字汇》',
   '「湘拼〇」',
 ]
-const countInitials = xpConfig.InitialConfig[0].map(
+const countInitials = sp.InitialConfig[0].map(
   (_, i) =>
-    new Set(xpConfig.InitialConfig.map((x) => x[i]).filter((x) => x !== null))
-      .size
+    new Set(sp.InitialConfig.map((x) => x[i]).filter((x) => x !== null)).size
 )
-const countFinals = xpConfig.FinalsConfig[0].map(
+const countFinals = sp.FinalsConfig[0].map(
   (_, i) =>
-    new Set(xpConfig.FinalsConfig.map((x) => x[i]).filter((x) => x !== null))
-      .size
+    new Set(sp.FinalsConfig.map((x) => x[i]).filter((x) => x !== null)).size
 )
 const SenynTable = () => {
   const {colorMode} = ui.useColorMode()
@@ -182,7 +179,7 @@ const SenynTable = () => {
                 <ui.Td key={i}>{countInitials[i]}</ui.Td>
               ))}
             </ui.Tr>
-            {xpConfig.InitialConfig.map(([a, b, c, y], i) => (
+            {sp.InitialConfig.map(([a, b, c, y], i) => (
               <ui.Tr key={i}>
                 <ui.Td>{getI(a)}</ui.Td>
                 <ui.Td>{getI(b)}</ui.Td>
@@ -215,7 +212,7 @@ const SenynTable = () => {
                 <ui.Td key={i}>{countFinals[i]}</ui.Td>
               ))}
             </ui.Tr>
-            {xpConfig.FinalsConfig.map(([a, b, c, y], i) => (
+            {sp.FinalsConfig.map(([a, b, c, y], i) => (
               <ui.Tr key={i}>
                 <ui.Td>{a}</ui.Td>
                 <ui.Td>{b}</ui.Td>

@@ -24,7 +24,6 @@ test('ipa2senyn', () => {
   ]
   test.each(cases)('ipa2senyn: %s', (x) => {
     const r = xy.ipa2senyn(x)
-    const xp = xy.ipa2xpa(...r)
-    expect([r, xp]).toMatchSnapshot()
+    expect(r).toMatchSnapshot()
   })
 }

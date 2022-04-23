@@ -1,8 +1,7 @@
 import json from './raw/汉方字.简.修正.json'
 import {changeTone} from './tones'
 import {NormResult, QueryOptions} from './types'
-import {Final, Initial} from './汉语方音字汇.meta'
-import {FinalsConfig, InitialConfig} from './湘拼'
+import {AnyFinal, AnyInitial, toSianpinA} from './湘拼'
 export * from './汉语方音字汇.meta'
 
 const schema = [
@@ -93,20 +92,6 @@ const parsePinyin = (v: RawDataSubItem): NormResult[] => {
   })
 }
 
-const xpByInitial = Object.fromEntries(
-  InitialConfig.map((x) => [x[2], x[3]]).filter((x) => x[20] !== null)
-) as Record<Initial, string>
-const xpByFinal = Object.fromEntries(
-  FinalsConfig.map((x) => [x[2], x[3]]).filter((x) => x[0] !== null)
-) as Record<Final, string>
-
-/** IPA 转湘拼 A */
-export const ipa2xpa = (i: string, f: string) => {
-  const xpi = xpByInitial[i as Initial]
-  const xpf = xpByFinal[f as Final]
-  return [xpi, xpf]
-}
-
 // TODO: 改成 script 预解析
 export const items = json.map((x) => {
   const rawItem = Object.fromEntries(
@@ -154,8 +139,7 @@ export const query = (
         let tone = changeTone(item.调, 'ToneName', toneType)
         let {音, 声, 韵} = item
         if (pinyinType === 'XPA') {
-          ;[声, 韵] = ipa2xpa(声, 韵)
-          音 = 声 + 韵
+          ;[音, 声, 韵] = toSianpinA(声 as AnyInitial, 韵 as AnyFinal)
         }
         return {音, 声, 韵, 调: tone, 释: item.释}
       })
