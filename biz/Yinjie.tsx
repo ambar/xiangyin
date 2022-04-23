@@ -3,34 +3,32 @@ import {useBoolean} from '@chakra-ui/react'
 import groupBy from 'lodash/groupBy'
 import mapValues from 'lodash/mapValues'
 import sortBy from 'lodash/sortBy'
-import {useEffect, useMemo} from 'react'
+import {useContext, useEffect, useMemo} from 'react'
+import {toSianpin} from '~/data/toSianpin'
 import * as hsn from '~/data/长沙话音档.meta'
 import {canPlayItem, DataItem, items, playAudio} from './play'
 import {StyledPopover, VolumeIcon} from './shared'
+import {ZhuyinSettingsContext} from './ZhuyinMenu'
 
 const fontSize = '1.1em'
 const initials = sortBy(Object.values(hsn.Initials), (x) => (x === '' ? 0 : 1))
 const finals = Object.values(hsn.Finals)
-const normSyllable = (syllable: string) => {
-  // 兼容
-  return syllable
-    .replace(/ʻ/g, 'ʰ')
-    .replace(/^(Ø|∅|0)/g, '')
-    .replace('ʨ', 'tɕ')
-    .replace('ʦ', 'ts')
-    .replace('n̩', 'n̍')
-    .replace('m̩', 'm̍')
-}
 
 const itemsBySyllable = mapValues(
   groupBy(items, (x) => x.声母 + x.韵母),
   (x) => sortBy(x, '长沙调序')
 )
 
+const formatSenYn = (...args: Parameters<typeof toSianpin>) => {
+  const [senyn, sen, yn, tone] = toSianpin(...args)
+  return senyn + tone
+}
+
 const StackedSyllables: React.FC<{
   group: DataItem[]
   shouldPlayOnHover: boolean
 }> = ({group, shouldPlayOnHover}) => {
+  const {toneType, pinyinType} = useContext(ZhuyinSettingsContext)
   return (
     <ui.HStack spacing={1} alignItems="flex-start">
       {group.map((x, i) => (
@@ -63,7 +61,12 @@ const StackedSyllables: React.FC<{
           >
             <ruby>
               {x.例字[0] || <>&nbsp;</>}
-              <rt>{x.声母 + x.韵母 + x.长沙调序}</rt>
+              <rt>
+                {formatSenYn(x.声母, x.韵母, x.长沙调序, {
+                  toneType,
+                  pinyinType,
+                })}
+              </rt>
             </ruby>
           </ui.Box>
           {x.號 && <VolumeIcon size=".9em" />}
@@ -96,10 +99,12 @@ const PinyinCell: React.FC<{
   shouldPlayOnHover: boolean
   shouldCompact: boolean
 }> = ({initial, final, shouldCompact, shouldPlayOnHover}) => {
+  const {toneType, pinyinType} = useContext(ZhuyinSettingsContext)
   // NOTE: Popover 大批量渲染时有性能问题，让它推迟初始化
   const [shouldRenderPopover, shouldRenderPopoverFlag] = useBoolean()
   // TODO: 在长沙话音档中替换
   const syllable = initial + final
+  const [senyn] = toSianpin(initial, final, 1, {toneType, pinyinType})
   const group = itemsBySyllable[syllable]
 
   useEffect(() => {
@@ -132,7 +137,7 @@ const PinyinCell: React.FC<{
       <ui.Box>
         <ruby>
           {shouldCompact ? '' : item.例字[0] ?? '?'}
-          <rt>{syllable}</rt>
+          <rt>{senyn}</rt>
         </ruby>
       </ui.Box>
       <VolumeIcon size=".9em" />
