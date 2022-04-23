@@ -82,14 +82,10 @@ export const octetToneNo2csToneNo: Record<CSOctetToneNo, number> = {
 }
 
 /** 长沙话序号转八位数字声调 */
-export const csToneNo2octetToneNo: Record<CSToneNo, CSOctetToneNo> = {
-  1: 1,
-  2: 2,
-  3: 3,
-  4: 5,
-  5: 6,
-  6: 7,
-}
+export const csToneNo2octetToneNo: Record<CSToneNo, CSOctetToneNo> = transpose(
+  octetToneNo2csToneNo,
+  true
+)
 
 export const csOctetToneNo2toneName: Record<CSOctetToneNo, ToneName> = {
   1: '阴平',
@@ -120,16 +116,6 @@ export const csToneName2csToneNo: Partial<Record<ToneName, CSToneNo | ''>> = {
   入声: 6,
 }
 
-/** 调值转长沙话序号 */
-export const toneValue2csToneNo: Record<number, CSToneNo> = {
-  33: 1,
-  13: 2,
-  41: 3,
-  55: 4,
-  11: 5,
-  24: 6,
-}
-
 /** 长沙话序号转调值 */
 export const csToneNo2toneValue: Record<CSToneNo, number> = {
   1: 33,
@@ -139,6 +125,12 @@ export const csToneNo2toneValue: Record<CSToneNo, number> = {
   5: 11,
   6: 24,
 }
+
+/** 调值转长沙话序号 */
+export const toneValue2csToneNo: Record<number, CSToneNo> = transpose(
+  csToneNo2toneValue,
+  true
+)
 
 /** 长沙话序号转调值 */
 export const csOctetToneNo2toneValue: Record<CSOctetToneNo, number> = {
@@ -151,6 +143,7 @@ export const csOctetToneNo2toneValue: Record<CSOctetToneNo, number> = {
 }
 
 export type ToneNumber = 1 | 2 | 3 | 4 | 5
+
 const toneLetters: Record<ToneNumber, string> = {
   1: '˩',
   2: '˨',
@@ -158,9 +151,64 @@ const toneLetters: Record<ToneNumber, string> = {
   4: '˦',
   5: '˥',
 }
-const reToneLetters = RegExp(Object.values(toneLetters).join('|'))
 
 export const getToneLetter = (number: number) =>
   [...String(number)]
     .map((x) => toneLetters[x as unknown as ToneNumber])
     .join('')
+
+/** 长沙话序号转调符 */
+export const csToneNo2toneLetter: Record<CSToneNo, string> = {
+  1: getToneLetter(33),
+  2: getToneLetter(13),
+  3: getToneLetter(41),
+  4: getToneLetter(55),
+  5: getToneLetter(11),
+  6: getToneLetter(24),
+}
+
+const toneLetter2csToneNo = transpose(csToneNo2toneLetter)
+
+type TypeToConvert = Exclude<ToneType, 'CSToneNo'>
+const toCSToneNo: Record<
+  TypeToConvert,
+  Record<number | string, number | string>
+> = {
+  ToneName: csToneName2csToneNo,
+  ToneValue: toneValue2csToneNo,
+  OctetToneNo: octetToneNo2csToneNo,
+  ToneLetter: toneLetter2csToneNo,
+}
+const byCSToneNo: Record<
+  TypeToConvert,
+  Record<number | string, number | string>
+> = {
+  OctetToneNo: csToneNo2octetToneNo,
+  ToneName: csToneNo2toneName,
+  ToneValue: csToneNo2toneValue,
+  ToneLetter: csToneNo2toneLetter,
+}
+
+export const changeTone = (
+  input: string | number,
+  inputType: ToneType,
+  outputType: ToneType
+) => {
+  const csToneNo =
+    inputType === 'CSToneNo' ? input : toCSToneNo[inputType][input]
+  const output =
+    outputType === 'CSToneNo' || !byCSToneNo[outputType]
+      ? csToneNo
+      : byCSToneNo[outputType][csToneNo]
+  return output
+}
+
+/** 转置 kv 对象 */
+function transpose<K extends keyof any, V extends keyof any>(
+  obj: Record<K, V>,
+  numberify = false
+): Record<V, K> {
+  return Object.fromEntries(
+    Object.entries(obj).map(([k, v]) => [v, numberify ? Number(k) : k])
+  )
+}

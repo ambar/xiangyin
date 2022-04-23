@@ -1,0 +1,95 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`changeTone: CSToneNo 1`] = `
+Array [
+  Array [
+    "1 ToneName -> 阴平",
+    "1 CSToneNo -> 1",
+    "1 OctetToneNo -> 1",
+    "1 ToneValue -> 33",
+    "1 ToneLetter -> ˧˧",
+  ],
+  Array [
+    "2 ToneName -> 阳平",
+    "2 CSToneNo -> 2",
+    "2 OctetToneNo -> 2",
+    "2 ToneValue -> 13",
+    "2 ToneLetter -> ˩˧",
+  ],
+  Array [
+    "3 ToneName -> 上声",
+    "3 CSToneNo -> 3",
+    "3 OctetToneNo -> 3",
+    "3 ToneValue -> 41",
+    "3 ToneLetter -> ˦˩",
+  ],
+  Array [
+    "4 ToneName -> 阴去",
+    "4 CSToneNo -> 4",
+    "4 OctetToneNo -> 5",
+    "4 ToneValue -> 55",
+    "4 ToneLetter -> ˥˥",
+  ],
+  Array [
+    "5 ToneName -> 阳去",
+    "5 CSToneNo -> 5",
+    "5 OctetToneNo -> 6",
+    "5 ToneValue -> 11",
+    "5 ToneLetter -> ˩˩",
+  ],
+  Array [
+    "6 ToneName -> 入声",
+    "6 CSToneNo -> 6",
+    "6 OctetToneNo -> 7",
+    "6 ToneValue -> 24",
+    "6 ToneLetter -> ˨˦",
+  ],
+]
+`;
+
+exports[`changeTone: OctetToneNo 1`] = `
+Array [
+  Array [
+    "1 ToneName -> 阴平",
+    "1 CSToneNo -> 1",
+    "1 OctetToneNo -> 1",
+    "1 ToneValue -> 33",
+    "1 ToneLetter -> ˧˧",
+  ],
+  Array [
+    "2 ToneName -> 阳平",
+    "2 CSToneNo -> 2",
+    "2 OctetToneNo -> 2",
+    "2 ToneValue -> 13",
+    "2 ToneLetter -> ˩˧",
+  ],
+  Array [
+    "3 ToneName -> 上声",
+    "3 CSToneNo -> 3",
+    "3 OctetToneNo -> 3",
+    "3 ToneValue -> 41",
+    "3 ToneLetter -> ˦˩",
+  ],
+  Array [
+    "5 ToneName -> 阴去",
+    "5 CSToneNo -> 4",
+    "5 OctetToneNo -> 5",
+    "5 ToneValue -> 55",
+    "5 ToneLetter -> ˥˥",
+  ],
+  Array [
+    "6 ToneName -> 阳去",
+    "6 CSToneNo -> 5",
+    "6 OctetToneNo -> 6",
+    "6 ToneValue -> 11",
+    "6 ToneLetter -> ˩˩",
+  ],
+  Array [
+    "7 ToneName -> 入声",
+    "7 CSToneNo -> 6",
+    "7 OctetToneNo -> 7",
+    "7 ToneValue -> 24",
+    "7 ToneLetter -> ˨˦",
+  ],
+]
+`;

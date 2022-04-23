@@ -1,10 +1,4 @@
-import {
-  CSOctetToneNo,
-  csOctetToneNo2toneName,
-  csOctetToneNo2toneValue,
-  getToneLetter,
-  octetToneNo2csToneNo,
-} from './tones'
+import {changeTone} from './tones'
 import {NormResult, QueryOptions} from './types'
 import {FinalsConfig, InitialConfig} from './湘拼'
 import json from './湘音检字.json'
@@ -85,21 +79,7 @@ export const query = (
 ): NormResult[] => {
   const items = charGroup.get(char) || []
   return items.map((item) => {
-    let octet = item.調號 as unknown as CSOctetToneNo
-    let tone: string | number = octet
-    if (toneType === 'CSToneNo') {
-      tone = octetToneNo2csToneNo[octet]
-    } else if (toneType === 'ToneLetter') {
-      tone = getToneLetter(csOctetToneNo2toneValue[octet])
-    } else if (toneType === 'ToneValue') {
-      tone = csOctetToneNo2toneValue[octet]
-    } else if (toneType === 'OctetToneNo') {
-      tone = octet
-    } else if (toneType === 'ToneName') {
-      tone = csOctetToneNo2toneName[octet]
-    } else {
-      tone = octetToneNo2csToneNo[octet]
-    }
+    let tone: string | number = changeTone(item.調號, 'OctetToneNo', toneType)
     let {音標: 音, 声, 韵} = item
     if (pinyinType === 'XPA') {
       ;[声, 韵] = ipa2xpa(声, 韵)

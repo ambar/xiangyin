@@ -48,7 +48,7 @@ const SendiauTable = () => {
           <ui.Tr>
             <ui.Th>调名</ui.Th>
             {csTones.map((x) => (
-              <ui.Th key={x}>{t.csToneNo2toneName[x]}</ui.Th>
+              <ui.Th key={x}>{t.changeTone(x, 'CSToneNo', 'ToneName')}</ui.Th>
             ))}
           </ui.Tr>
           <ui.Tr>
@@ -60,20 +60,22 @@ const SendiauTable = () => {
           <ui.Tr>
             <ui.Th>八位次序</ui.Th>
             {csTones.map((x) => (
-              <ui.Td key={x}>{t.csToneNo2octetToneNo[x]}</ui.Td>
+              <ui.Td key={x}>
+                {t.changeTone(x, 'CSToneNo', 'OctetToneNo')}
+              </ui.Td>
             ))}
           </ui.Tr>
           <ui.Tr>
             <ui.Th>调值</ui.Th>
             {csTones.map((x) => (
-              <ui.Td key={x}>{t.csToneNo2toneValue[x]}</ui.Td>
+              <ui.Td key={x}>{t.changeTone(x, 'CSToneNo', 'ToneValue')}</ui.Td>
             ))}
           </ui.Tr>
           <ui.Tr>
             <ui.Th>调符</ui.Th>
             {csTones.map((x) => (
               <ui.Td key={x} fontFamily="ipa" fontSize="xl">
-                {t.getToneLetter(t.csToneNo2toneValue[x])}
+                {t.changeTone(x, 'CSToneNo', 'ToneLetter')}
               </ui.Td>
             ))}
           </ui.Tr>

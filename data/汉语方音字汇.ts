@@ -1,12 +1,5 @@
 import json from './raw/汉方字.简.修正.json'
-import {
-  csToneName2csToneNo,
-  CSToneNo,
-  csToneNo2octetToneNo,
-  csToneNo2toneValue,
-  getToneLetter,
-  ToneName,
-} from './tones'
+import {changeTone} from './tones'
 import {NormResult, QueryOptions} from './types'
 import {Final, Initial} from './汉语方音字汇.meta'
 import {FinalsConfig, InitialConfig} from './湘拼'
@@ -158,21 +151,7 @@ export const query = (
       .map((x) => x.湘[cc] ?? [])
       .flat()
       .map((item) => {
-        let tv = item.调
-        let tone: string | number = csToneName2csToneNo[tv as ToneName]!
-        if (toneType === 'CSToneNo') {
-          tone = tone
-        } else if (toneType === 'ToneLetter') {
-          tone = getToneLetter(csToneNo2toneValue[tone as CSToneNo])
-        } else if (toneType === 'ToneValue') {
-          tone = csToneNo2toneValue[tone as CSToneNo]
-        } else if (toneType === 'OctetToneNo') {
-          tone = csToneNo2octetToneNo[tone as CSToneNo]
-        } else if (toneType === 'ToneName') {
-          tone = tv
-        } else {
-          tone = tone
-        }
+        let tone = changeTone(item.调, 'ToneName', toneType)
         let {音, 声, 韵} = item
         if (pinyinType === 'XPA') {
           ;[声, 韵] = ipa2xpa(声, 韵)

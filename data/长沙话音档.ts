@@ -1,11 +1,5 @@
 import json from './raw/长沙话音档.修正.json'
-import {
-  CSToneNo,
-  csToneNo2octetToneNo,
-  csToneNo2toneValue,
-  getToneLetter,
-  toneValue2csToneNo,
-} from './tones'
+import {changeTone} from './tones'
 import {NormResult, QueryOptions, SchemaEntries} from './types'
 import {FinalsConfig, InitialConfig} from './湘拼'
 import {Final, Initial} from './湘音检字.meta'
@@ -66,7 +60,7 @@ export const items = json.map((x) => {
   item.声母 = normSyllable(item.声母)
   item.韵母 = normSyllable(item.韵母)
   // 自定义增补
-  item.长沙调序 = toneValue2csToneNo[item.调值]
+  item.长沙调序 = changeTone(item.调值, 'ToneValue', 'CSToneNo') as number
   item.例字.forEach((c) => setIfNotSet(c, item))
   return item
 })
@@ -78,22 +72,7 @@ export const query = (
   const items = charGroup.get(char)
   if (items) {
     return items.map((x) => {
-      let t: string = x.调类
-      let tone: string | number = t
-      if (toneType === 'CSToneNo') {
-        tone = x.长沙调序
-      } else if (toneType === 'ToneLetter') {
-        tone = getToneLetter(csToneNo2toneValue[x.长沙调序 as CSToneNo])
-      } else if (toneType === 'ToneValue') {
-        tone = csToneNo2toneValue[x.长沙调序 as CSToneNo]
-      } else if (toneType === 'OctetToneNo') {
-        tone = csToneNo2octetToneNo[x.长沙调序 as CSToneNo]
-      } else if (toneType === 'ToneName') {
-        // TODO: 统一简繁
-        tone = t
-      } else {
-        tone = x.长沙调序
-      }
+      let tone = changeTone(x.长沙调序, 'CSToneNo', toneType)
       let {声母: 声, 韵母: 韵} = x
       let 音
       if (pinyinType === 'XPA') {
