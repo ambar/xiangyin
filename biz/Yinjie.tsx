@@ -94,8 +94,8 @@ const rIC =
   typeof requestIdleCallback !== 'undefined' ? requestIdleCallback : postPaint
 
 const PinyinCell: React.FC<{
-  initial: string
-  final: string
+  initial: hsn.Initial
+  final: hsn.Final
   shouldPlayOnHover: boolean
   shouldCompact: boolean
 }> = ({initial, final, shouldCompact, shouldPlayOnHover}) => {

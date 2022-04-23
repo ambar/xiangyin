@@ -1,7 +1,7 @@
-import {toSianpinA} from '../湘拼'
+import {AnyFinal, AnyInitial, toSianpinA} from '../湘拼'
 import * as xy from '../湘音检字'
 
-const cases = [
+const cases: [AnyInitial, AnyFinal][] = [
   [xy.Initials.p, xy.Finals.ã],
   [xy.Initials.k, xy.Finals.ai],
   ['', xy.Finals.ɿ],

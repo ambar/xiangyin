@@ -26,7 +26,7 @@ const PlayButton = ({syllable}: {syllable: string}) => {
 }
 
 const csTones: t.CSToneNo[] = [1, 2, 3, 4, 5, 6]
-const samples = [
+const samples: [string, sp.AnyInitial, sp.AnyFinal, string][] = [
   ['例字甲', 'tɕ', 'y', '猪除主句住橘'],
   ['例字乙', 'tɕ', 'i', '机期几记徛极'],
 ]
