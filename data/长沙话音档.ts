@@ -2,14 +2,13 @@ import json from './raw/长沙话音档.修正.json'
 import {changeTone, CSToneNo} from './tones'
 import {NormResult, QueryOptions, SchemaEntries} from './types'
 import {AnyFinal, AnyInitial, toSianpinA} from './湘拼'
-import type {Final, Initial} from './长沙话音档.meta'
 export * from './长沙话音档.meta'
 
 type metaKey = 'disabled' | 'flawed' | 'comment' | 'corrected'
 const schema = [
   ['號', (v: string | null) => v],
-  ['声母', (v: string) => v as Initial],
-  ['韵母', (v: string) => v as Final],
+  ['声母', String],
+  ['韵母', String],
   ['调类', String],
   ['调值', Number],
   ['例字', (v: string[]) => v],
@@ -46,7 +45,7 @@ export const items = json.map((x) => {
   item.声母 = normSyllable(item.声母)
   item.韵母 = normSyllable(item.韵母)
   // 自定义增补
-  item.长沙调序 = changeTone(item.调值, 'ToneValue', 'CSToneNo') as number
+  item.长沙调序 = changeTone(item.调值, 'ToneValue', 'CSToneNo') as CSToneNo
   item.例字.forEach((c) => setIfNotSet(c, item))
   return item
 })

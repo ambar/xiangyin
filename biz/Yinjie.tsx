@@ -5,6 +5,7 @@ import mapValues from 'lodash/mapValues'
 import sortBy from 'lodash/sortBy'
 import {useContext, useEffect, useMemo} from 'react'
 import {toSianpin} from '~/data/toSianpin'
+import {AnyFinal, AnyInitial} from '~/data/湘拼'
 import * as hsn from '~/data/长沙话音档.meta'
 import {canPlayItem, DataItem, items, playAudio} from './play'
 import {StyledPopover, VolumeIcon} from './shared'
@@ -62,10 +63,15 @@ const StackedSyllables: React.FC<{
             <ruby>
               {x.例字[0] || <>&nbsp;</>}
               <rt>
-                {formatSenYn(x.声母, x.韵母, x.长沙调序, {
-                  toneType,
-                  pinyinType,
-                })}
+                {formatSenYn(
+                  x.声母 as AnyInitial,
+                  x.韵母 as AnyFinal,
+                  x.长沙调序,
+                  {
+                    toneType,
+                    pinyinType,
+                  }
+                )}
               </rt>
             </ruby>
           </ui.Box>
