@@ -113,9 +113,10 @@ export default function ZhuyinMenu() {
           sx={{
             div: {display: ['none', 'inline']},
           }}
+          suppressHydrationWarning
         >
           <ui.Box>注音（</ui.Box>
-          {senynOptions[pinyinType]}
+          {typeof window === 'undefined' ? '  ' : senynOptions[pinyinType]}
           <ui.Box>）</ui.Box>
           <ui.Icon ml={1} as={bsi.BsCaretDownFill} />
         </ui.Flex>
