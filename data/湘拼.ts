@@ -2,6 +2,7 @@ import * as m3 from '../data/汉语方音字汇.meta'
 import * as m1 from '../data/湘音检字.meta'
 import * as m2 from '../data/长沙话音档.meta'
 
+// TODO: 改 union
 type XPAInitial = string
 type XPAFinal = string
 type InitialRow = [
@@ -168,10 +169,10 @@ const ynMap = new Map<AnyFinal, string>()
 FinalsConfig.forEach(([x, y, z, a]) =>
   [x, y, z].forEach((_) => _ !== null && ynMap.set(_, a))
 )
-export const toSianpinA = (ipaSen: AnyInitial, ipaYn: AnyFinal) => {
+export const getXPATuple = (ipaSen: AnyInitial, ipaYn: AnyFinal) => {
   // 只有湘音检字中有这个例外，可能对应单独 ɿ 音（对应 r 日）
   if (ipaSen === '' && ipaYn === m1.Finals.ɿ) {
-    return ['ri', 'r', 'i']
+    return ['ri', 'r', 'i'] as const
   }
   const sen = senMap.get(ipaSen)!
   const yn = ynMap.get(ipaYn)!

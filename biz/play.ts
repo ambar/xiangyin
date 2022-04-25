@@ -4,7 +4,7 @@ export {items}
 export type {DataItem}
 
 const configBySyllable = Object.fromEntries(
-  items.map((x) => [x.声母 + x.韵母 + x.长沙调序, x])
+  items.map((x) => [x.规范.读.toIPA(), x])
 )
 
 export const canPlay = (syllable: string) => {

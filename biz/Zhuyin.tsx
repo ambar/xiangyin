@@ -52,8 +52,8 @@ const MultipleSearchResult: React.FC<{char: string}> = ({char}) => {
   const {pinyinType, toneType} = useContext(ZhuyinSettingsContext)
   const shouldQueryVariants = useContext(ShouldQueryVariantsContext)
   const results = useMemo(
-    () => queryPinyinAll(char, shouldQueryVariants, {pinyinType, toneType}),
-    [char, shouldQueryVariants, pinyinType, toneType]
+    () => queryPinyinAll(char, shouldQueryVariants),
+    [char, shouldQueryVariants]
   )
   // 己优化，不需要需要异步处理
   // const [results, setResults] = useState<ReturnType<typeof queryPinyinAll>>([])
@@ -79,7 +79,9 @@ const MultipleSearchResult: React.FC<{char: string}> = ({char}) => {
             result.map((x, i) => (
               <ui.Tr key={i}>
                 <ui.Td>《{source}》</ui.Td>
-                <ui.Td fontFamily="ipa">{x.音 + x.调}</ui.Td>
+                <ui.Td fontFamily="ipa">
+                  {x.读.format(pinyinType, toneType)}
+                </ui.Td>
                 {/* 手机不能适应 Grid/TableContainer，除非它用 maxWidth=100vw，但不如折行直观 */}
                 <ui.Td whiteSpace="normal">{x.释}</ui.Td>
               </ui.Tr>
@@ -95,11 +97,14 @@ const RubyResult: React.FC<{char: string; result: QueryResult}> = ({
   char,
   result,
 }) => {
+  const {pinyinType, toneType} = useContext(ZhuyinSettingsContext)
   let ruby = (
     <ruby onPointerEnter={() => {}}>
       {char}
       {result.length > 0 && (
-        <rt>{result.map((x) => x.音 + x.调).join('\n')}</rt>
+        <rt>
+          {result.map((x) => x.读.format(pinyinType, toneType)).join('\n')}
+        </rt>
       )}
     </ruby>
   )
@@ -176,12 +181,12 @@ function Zhuyin() {
       Array.from(keyword).map((c) => {
         // 汉字全部用 ruby 标记，保持变体切换时样式稳定
         let r = reHan.test(c)
-          ? queryPinyin(c, shouldQueryVariants, source, {pinyinType, toneType})
+          ? queryPinyin(c, shouldQueryVariants, source)
           : null
         return [c, r]
       })
     )
-  }, [keyword, shouldQueryVariants, source, pinyinType, toneType])
+  }, [keyword, shouldQueryVariants, source])
 
   let dict = (
     <ui.Box

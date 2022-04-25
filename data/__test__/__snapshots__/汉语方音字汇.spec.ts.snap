@@ -3,18 +3,54 @@
 exports[`queryCS: 序 1`] = `
 Array [
   Object {
-    "声": "ɕ",
-    "调": 4,
+    "读": Object {
+      "IPA": Object {
+        "声": "ɕ",
+        "音": "ɕy",
+        "韵": "y",
+      },
+      "XPA": Object {
+        "声": "x",
+        "音": "xy",
+        "韵": "y",
+      },
+      "format": [Function],
+      "toIPA": [Function],
+      "toXPA": [Function],
+    },
+    "调": Object {
+      "调值": 55,
+      "调号": 5,
+      "调名": "阴去",
+      "调序": 4,
+      "调符": "˥˥",
+    },
     "释": "〔原〕",
-    "音": "ɕy",
-    "韵": "y",
   },
   Object {
-    "声": "ɕ",
-    "调": 4,
+    "读": Object {
+      "IPA": Object {
+        "声": "ɕ",
+        "音": "ɕi",
+        "韵": "i",
+      },
+      "XPA": Object {
+        "声": "x",
+        "音": "xi",
+        "韵": "i",
+      },
+      "format": [Function],
+      "toIPA": [Function],
+      "toXPA": [Function],
+    },
+    "调": Object {
+      "调值": 55,
+      "调号": 5,
+      "调名": "阴去",
+      "调序": 4,
+      "调符": "˥˥",
+    },
     "释": "〔新〕",
-    "音": "ɕi",
-    "韵": "i",
   },
 ]
 `;
@@ -22,25 +58,79 @@ Array [
 exports[`queryCS: 強 1`] = `
 Array [
   Object {
-    "声": "tɕ",
-    "调": 2,
+    "读": Object {
+      "IPA": Object {
+        "声": "tɕ",
+        "音": "tɕian",
+        "韵": "ian",
+      },
+      "XPA": Object {
+        "声": "j",
+        "音": "jian",
+        "韵": "ian",
+      },
+      "format": [Function],
+      "toIPA": [Function],
+      "toXPA": [Function],
+    },
+    "调": Object {
+      "调值": 13,
+      "调号": 2,
+      "调名": "阳平",
+      "调序": 2,
+      "调符": "˩˧",
+    },
     "释": "倔强,强大,勉强",
-    "音": "tɕian",
-    "韵": "ian",
   },
   Object {
-    "声": "tɕ",
-    "调": 3,
+    "读": Object {
+      "IPA": Object {
+        "声": "tɕ",
+        "音": "tɕian",
+        "韵": "ian",
+      },
+      "XPA": Object {
+        "声": "j",
+        "音": "jian",
+        "韵": "ian",
+      },
+      "format": [Function],
+      "toIPA": [Function],
+      "toXPA": [Function],
+    },
+    "调": Object {
+      "调值": 41,
+      "调号": 3,
+      "调名": "上声",
+      "调序": 3,
+      "调符": "˦˩",
+    },
     "释": "倔强,强大,勉强",
-    "音": "tɕian",
-    "韵": "ian",
   },
   Object {
-    "声": "tɕ",
-    "调": 5,
+    "读": Object {
+      "IPA": Object {
+        "声": "tɕ",
+        "音": "tɕian",
+        "韵": "ian",
+      },
+      "XPA": Object {
+        "声": "j",
+        "音": "jian",
+        "韵": "ian",
+      },
+      "format": [Function],
+      "toIPA": [Function],
+      "toXPA": [Function],
+    },
+    "调": Object {
+      "调值": 11,
+      "调号": 6,
+      "调名": "阳去",
+      "调序": 5,
+      "调符": "˩˩",
+    },
     "释": "倔强,强大,勉强",
-    "音": "tɕian",
-    "韵": "ian",
   },
 ]
 `;
@@ -48,18 +138,54 @@ Array [
 exports[`queryCS: 指 1`] = `
 Array [
   Object {
-    "声": "ts",
-    "调": 6,
+    "读": Object {
+      "IPA": Object {
+        "声": "ts",
+        "音": "tsɿ",
+        "韵": "ɿ",
+      },
+      "XPA": Object {
+        "声": "z",
+        "音": "zi",
+        "韵": "i",
+      },
+      "format": [Function],
+      "toIPA": [Function],
+      "toXPA": [Function],
+    },
+    "调": Object {
+      "调值": 24,
+      "调号": 7,
+      "调名": "入声",
+      "调序": 6,
+      "调符": "˨˦",
+    },
     "释": "〔未注明〕",
-    "音": "tsɿ",
-    "韵": "ɿ",
   },
   Object {
-    "声": "ts",
-    "调": 3,
+    "读": Object {
+      "IPA": Object {
+        "声": "ts",
+        "音": "tsɿ",
+        "韵": "ɿ",
+      },
+      "XPA": Object {
+        "声": "z",
+        "音": "zi",
+        "韵": "i",
+      },
+      "format": [Function],
+      "toIPA": [Function],
+      "toXPA": [Function],
+    },
+    "调": Object {
+      "调值": 41,
+      "调号": 3,
+      "调名": "上声",
+      "调序": 3,
+      "调符": "˦˩",
+    },
     "释": "〔未注明〕",
-    "音": "tsɿ",
-    "韵": "ɿ",
   },
 ]
 `;
@@ -67,25 +193,79 @@ Array [
 exports[`queryCS: 會 1`] = `
 Array [
   Object {
-    "声": "f",
-    "调": 5,
+    "读": Object {
+      "IPA": Object {
+        "声": "f",
+        "音": "fei",
+        "韵": "ei",
+      },
+      "XPA": Object {
+        "声": "f",
+        "音": "fei",
+        "韵": "ei",
+      },
+      "format": [Function],
+      "toIPA": [Function],
+      "toXPA": [Function],
+    },
+    "调": Object {
+      "调值": 11,
+      "调号": 6,
+      "调名": "阳去",
+      "调序": 5,
+      "调符": "˩˩",
+    },
     "释": "〔文〕开会,会不会之文白读皆同",
-    "音": "fei",
-    "韵": "ei",
   },
   Object {
-    "声": "f",
-    "调": 4,
+    "读": Object {
+      "IPA": Object {
+        "声": "f",
+        "音": "fei",
+        "韵": "ei",
+      },
+      "XPA": Object {
+        "声": "f",
+        "音": "fei",
+        "韵": "ei",
+      },
+      "format": [Function],
+      "toIPA": [Function],
+      "toXPA": [Function],
+    },
+    "调": Object {
+      "调值": 55,
+      "调号": 5,
+      "调名": "阴去",
+      "调序": 4,
+      "调符": "˥˥",
+    },
     "释": "〔白〕开会,会不会之文白读皆同",
-    "音": "fei",
-    "韵": "ei",
   },
   Object {
-    "声": "kʰ",
-    "调": 4,
+    "读": Object {
+      "IPA": Object {
+        "声": "kʰ",
+        "音": "kʰuai",
+        "韵": "uai",
+      },
+      "XPA": Object {
+        "声": "k",
+        "音": "kuai",
+        "韵": "uai",
+      },
+      "format": [Function],
+      "toIPA": [Function],
+      "toXPA": [Function],
+    },
+    "调": Object {
+      "调值": 55,
+      "调号": 5,
+      "调名": "阴去",
+      "调序": 4,
+      "调符": "˥˥",
+    },
     "释": "",
-    "音": "kʰuai",
-    "韵": "uai",
   },
 ]
 `;
@@ -93,11 +273,29 @@ Array [
 exports[`queryCS: 核 1`] = `
 Array [
   Object {
-    "声": "x",
-    "调": 6,
+    "读": Object {
+      "IPA": Object {
+        "声": "x",
+        "音": "xɤ",
+        "韵": "ɤ",
+      },
+      "XPA": Object {
+        "声": "h",
+        "音": "he",
+        "韵": "e",
+      },
+      "format": [Function],
+      "toIPA": [Function],
+      "toXPA": [Function],
+    },
+    "调": Object {
+      "调值": 24,
+      "调号": 7,
+      "调名": "入声",
+      "调序": 6,
+      "调符": "˨˦",
+    },
     "释": "核桃,核对同音",
-    "音": "xɤ",
-    "韵": "ɤ",
   },
 ]
 `;
@@ -105,32 +303,104 @@ Array [
 exports[`queryCS: 樹 1`] = `
 Array [
   Object {
-    "声": "ɕ",
-    "调": 5,
+    "读": Object {
+      "IPA": Object {
+        "声": "ɕ",
+        "音": "ɕy",
+        "韵": "y",
+      },
+      "XPA": Object {
+        "声": "x",
+        "音": "xy",
+        "韵": "y",
+      },
+      "format": [Function],
+      "toIPA": [Function],
+      "toXPA": [Function],
+    },
+    "调": Object {
+      "调值": 11,
+      "调号": 6,
+      "调名": "阳去",
+      "调序": 5,
+      "调符": "˩˩",
+    },
     "释": "〔文〕树立",
-    "音": "ɕy",
-    "韵": "y",
   },
   Object {
-    "声": "ɕ",
-    "调": 4,
+    "读": Object {
+      "IPA": Object {
+        "声": "ɕ",
+        "音": "ɕy",
+        "韵": "y",
+      },
+      "XPA": Object {
+        "声": "x",
+        "音": "xy",
+        "韵": "y",
+      },
+      "format": [Function],
+      "toIPA": [Function],
+      "toXPA": [Function],
+    },
+    "调": Object {
+      "调值": 55,
+      "调号": 5,
+      "调名": "阴去",
+      "调序": 4,
+      "调符": "˥˥",
+    },
     "释": "〔白〕树立",
-    "音": "ɕy",
-    "韵": "y",
   },
   Object {
-    "声": "ɕ",
-    "调": 5,
+    "读": Object {
+      "IPA": Object {
+        "声": "ɕ",
+        "音": "ɕy",
+        "韵": "y",
+      },
+      "XPA": Object {
+        "声": "x",
+        "音": "xy",
+        "韵": "y",
+      },
+      "format": [Function],
+      "toIPA": [Function],
+      "toXPA": [Function],
+    },
+    "调": Object {
+      "调值": 11,
+      "调号": 6,
+      "调名": "阳去",
+      "调序": 5,
+      "调符": "˩˩",
+    },
     "释": "〔文〕树林",
-    "音": "ɕy",
-    "韵": "y",
   },
   Object {
-    "声": "ɕ",
-    "调": 4,
+    "读": Object {
+      "IPA": Object {
+        "声": "ɕ",
+        "音": "ɕy",
+        "韵": "y",
+      },
+      "XPA": Object {
+        "声": "x",
+        "音": "xy",
+        "韵": "y",
+      },
+      "format": [Function],
+      "toIPA": [Function],
+      "toXPA": [Function],
+    },
+    "调": Object {
+      "调值": 55,
+      "调号": 5,
+      "调名": "阴去",
+      "调序": 4,
+      "调符": "˥˥",
+    },
     "释": "〔白〕树林",
-    "音": "ɕy",
-    "韵": "y",
   },
 ]
 `;
@@ -138,32 +408,104 @@ Array [
 exports[`queryCS: 蟻 1`] = `
 Array [
   Object {
-    "声": "ȵ",
-    "调": 2,
+    "读": Object {
+      "IPA": Object {
+        "声": "ȵ",
+        "音": "ȵi",
+        "韵": "i",
+      },
+      "XPA": Object {
+        "声": "gn",
+        "音": "gni",
+        "韵": "i",
+      },
+      "format": [Function],
+      "toIPA": [Function],
+      "toXPA": [Function],
+    },
+    "调": Object {
+      "调值": 13,
+      "调号": 2,
+      "调名": "阳平",
+      "调序": 2,
+      "调符": "˩˧",
+    },
     "释": "〔文〕",
-    "音": "ȵi",
-    "韵": "i",
   },
   Object {
-    "声": "ȵ",
-    "调": 5,
+    "读": Object {
+      "IPA": Object {
+        "声": "ȵ",
+        "音": "ȵi",
+        "韵": "i",
+      },
+      "XPA": Object {
+        "声": "gn",
+        "音": "gni",
+        "韵": "i",
+      },
+      "format": [Function],
+      "toIPA": [Function],
+      "toXPA": [Function],
+    },
+    "调": Object {
+      "调值": 11,
+      "调号": 6,
+      "调名": "阳去",
+      "调序": 5,
+      "调符": "˩˩",
+    },
     "释": "〔白〕",
-    "音": "ȵi",
-    "韵": "i",
   },
   Object {
-    "声": "ȵ",
-    "调": 3,
+    "读": Object {
+      "IPA": Object {
+        "声": "ȵ",
+        "音": "ȵi",
+        "韵": "i",
+      },
+      "XPA": Object {
+        "声": "gn",
+        "音": "gni",
+        "韵": "i",
+      },
+      "format": [Function],
+      "toIPA": [Function],
+      "toXPA": [Function],
+    },
+    "调": Object {
+      "调值": 41,
+      "调号": 3,
+      "调名": "上声",
+      "调序": 3,
+      "调符": "˦˩",
+    },
     "释": "〔白〕",
-    "音": "ȵi",
-    "韵": "i",
   },
   Object {
-    "声": "ȵ",
-    "调": 4,
+    "读": Object {
+      "IPA": Object {
+        "声": "ȵ",
+        "音": "ȵi",
+        "韵": "i",
+      },
+      "XPA": Object {
+        "声": "gn",
+        "音": "gni",
+        "韵": "i",
+      },
+      "format": [Function],
+      "toIPA": [Function],
+      "toXPA": [Function],
+    },
+    "调": Object {
+      "调值": 55,
+      "调号": 5,
+      "调名": "阴去",
+      "调序": 4,
+      "调符": "˥˥",
+    },
     "释": "〔白〕",
-    "音": "ȵi",
-    "韵": "i",
   },
 ]
 `;
@@ -171,18 +513,82 @@ Array [
 exports[`queryCS: 間 1`] = `
 Array [
   Object {
-    "声": "k",
-    "调": 1,
+    "读": Object {
+      "IPA": Object {
+        "声": "k",
+        "音": "kan",
+        "韵": "an",
+      },
+      "XPA": Object {
+        "声": "g",
+        "音": "gan",
+        "韵": "an",
+      },
+      "format": [Function],
+      "toIPA": [Function],
+      "toXPA": [Function],
+    },
+    "调": Object {
+      "调值": 33,
+      "调号": 1,
+      "调名": "阴平",
+      "调序": 1,
+      "调符": "˧˧",
+    },
     "释": "中间",
-    "音": "kan",
-    "韵": "an",
   },
   Object {
-    "声": "k",
-    "调": 4,
+    "读": Object {
+      "IPA": Object {
+        "声": "k",
+        "音": "kan",
+        "韵": "an",
+      },
+      "XPA": Object {
+        "声": "g",
+        "音": "gan",
+        "韵": "an",
+      },
+      "format": [Function],
+      "toIPA": [Function],
+      "toXPA": [Function],
+    },
+    "调": Object {
+      "调值": 55,
+      "调号": 5,
+      "调名": "阴去",
+      "调序": 4,
+      "调符": "˥˥",
+    },
     "释": "间断",
-    "音": "kan",
-    "韵": "an",
   },
 ]
+`;
+
+exports[`轻声 1`] = `
+Object {
+  "读": Object {
+    "IPA": Object {
+      "声": "",
+      "音": "i",
+      "韵": "i",
+    },
+    "XPA": Object {
+      "声": "",
+      "音": "i",
+      "韵": "i",
+    },
+    "format": [Function],
+    "toIPA": [Function],
+    "toXPA": [Function],
+  },
+  "调": Object {
+    "调值": 0,
+    "调号": 0,
+    "调名": "轻声",
+    "调序": 0,
+    "调符": "",
+  },
+  "释": "〔未注明〕",
+}
 `;

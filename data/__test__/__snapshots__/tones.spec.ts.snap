@@ -50,6 +50,13 @@ Array [
 exports[`changeTone: OctetToneNo 1`] = `
 Array [
   Array [
+    "0 ToneName -> 轻声",
+    "0 CSToneNo -> 0",
+    "0 OctetToneNo -> 0",
+    "0 ToneValue -> 0",
+    "0 ToneLetter -> ",
+  ],
+  Array [
     "1 ToneName -> 阴平",
     "1 CSToneNo -> 1",
     "1 OctetToneNo -> 1",

@@ -1,15 +1,23 @@
-import {changeTone} from './tones'
-import {NormResult, QueryOptions} from './types'
-import {AnyFinal, AnyInitial, toSianpinA} from './湘拼'
+import {createJyinEntry} from './jyin'
+import {changeTone, CSToneNo} from './tones'
+import {JyinEntry, SchemaEntries} from './types'
 import json from './湘音检字.json'
-import {Finals, Initials} from './湘音检字.meta'
+import {Final, Finals, Initial, Initials} from './湘音检字.meta'
 export * from './湘音检字.meta'
 
-const head = ['湘拼', '音標', '調號', '字甲', '字乙', '釋義'] as const
+const schema = [
+  ['湘拼', String],
+  ['音標', String],
+  ['調號', Number],
+  ['字甲', String],
+  ['字乙', String],
+  ['釋義', String],
+] as const
 
-type DataItem = Record<typeof head[number], string> & {
-  声: string
-  韵: string
+type DataItem = SchemaEntries<typeof schema> & {
+  声: Initial
+  韵: Final
+  规范: JyinEntry
 }
 
 // 异体、多音字分组 16519 -> 13543
@@ -21,7 +29,7 @@ const sortedInitials = Object.entries(Initials).sort(
 )
 
 /** 分解原文 IPA */
-export const ipa2senyn = (ipa: string): [string, string] => {
+export const ipa2senyn = (ipa: string) => {
   let i = ''
   let f = ''
   // 先从零声母/韵母查起，因为 m̩（韵母）以 m（己有声母）开头
@@ -36,11 +44,13 @@ export const ipa2senyn = (ipa: string): [string, string] => {
       f = i === '' ? ipa : ipa.replace(i, '')
     }
   }
-  return [i, f]
+  return [i, f] as [Initial, Final]
 }
 
 export const items = json.map((x) => {
-  const item = Object.fromEntries(x.map((v, i) => [head[i], v])) as DataItem
+  const item = Object.fromEntries(
+    schema.map(([key, val], i) => [key, val(x[i])])
+  ) as unknown as DataItem
   const setIfNotSet = (char: string) => {
     if (char) {
       if (charGroup.has(char)) charGroup.get(char)!.push(item)
@@ -50,22 +60,18 @@ export const items = json.map((x) => {
   const [声, 韵] = ipa2senyn(item.音標)
   item.声 = 声
   item.韵 = 韵
+  item.规范 = createJyinEntry(
+    item.声,
+    item.韵,
+    changeTone(item.調號, 'OctetToneNo', 'CSToneNo') as CSToneNo,
+    item.釋義
+  )
   setIfNotSet(item.字甲)
   setIfNotSet(item.字乙)
   return item
 })
 
-export const query = (
-  char: string,
-  {pinyinType = 'IPA', toneType = 'CSToneNo'}: QueryOptions = {}
-): NormResult[] => {
+export const query = (char: string): JyinEntry[] => {
   const items = charGroup.get(char) || []
-  return items.map((item) => {
-    let tone: string | number = changeTone(item.調號, 'OctetToneNo', toneType)
-    let {音標: 音, 声, 韵} = item
-    if (pinyinType === 'XPA') {
-      ;[音, 声, 韵] = toSianpinA(声 as AnyInitial, 韵 as AnyFinal)
-    }
-    return {音, 声, 韵, 调: tone, 释: item.釋義}
-  })
+  return items.map((item) => item.规范)
 }

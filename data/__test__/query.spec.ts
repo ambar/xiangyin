@@ -23,16 +23,21 @@ test('shouldQueryVariants', () => {
 })
 
 test.each(ToneTypes.concat('XYZ' as ToneType))(`toneType: %s`, (toneType) => {
-  expect(queryPinyinAll('入', false, {toneType})).toMatchSnapshot()
+  expect(
+    queryPinyinAll('入', false).map(([s, r]) => [
+      s,
+      r.map((x) => x.读.toIPA(toneType)),
+    ])
+  ).toMatchSnapshot()
 })
 
 test('XPA', () => {
   Array.from('風日吉辰人卻').map((c) => {
     expect(
-      queryPinyinAll(c, false, {pinyinType: 'XPA'}).map(([s, r]) => [
+      queryPinyinAll(c, false).map(([s, r]) => [
         s,
         c,
-        r.map((x) => x.音),
+        r.map((x) => x.读.toXPA('CSToneNo')),
       ])
     ).toMatchSnapshot()
   })

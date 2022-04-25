@@ -1,4 +1,4 @@
-import {AnyFinal, AnyInitial, toSianpinA} from '../湘拼'
+import {AnyFinal, AnyInitial, getXPATuple} from '../湘拼'
 import * as xy from '../湘音检字'
 
 const cases: [AnyInitial, AnyFinal][] = [
@@ -8,5 +8,5 @@ const cases: [AnyInitial, AnyFinal][] = [
   ['', xy.Finals.m̩],
 ]
 test.each(cases)(`ipa2senyn: '%s,%s'`, (a, b) => {
-  const xp = expect([a, b, toSianpinA(a, b)]).toMatchSnapshot()
+  const xp = expect([a, b, getXPATuple(a, b)]).toMatchSnapshot()
 })

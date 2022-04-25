@@ -3,18 +3,54 @@
 exports[`query 1`] = `
 Array [
   Object {
-    "声": "tʂ",
-    "调": 1,
+    "读": Object {
+      "IPA": Object {
+        "声": "tʂ",
+        "音": "tʂoŋ",
+        "韵": "oŋ",
+      },
+      "XPA": Object {
+        "声": "zh",
+        "音": "zhong",
+        "韵": "ong",
+      },
+      "format": [Function],
+      "toIPA": [Function],
+      "toXPA": [Function],
+    },
+    "调": Object {
+      "调值": 33,
+      "调号": 1,
+      "调名": "阴平",
+      "调序": 1,
+      "调符": "˧˧",
+    },
     "释": "",
-    "音": "tʂoŋ",
-    "韵": "oŋ",
   },
   Object {
-    "声": "tʂ",
-    "调": 4,
+    "读": Object {
+      "IPA": Object {
+        "声": "tʂ",
+        "音": "tʂoŋ",
+        "韵": "oŋ",
+      },
+      "XPA": Object {
+        "声": "zh",
+        "音": "zhong",
+        "韵": "ong",
+      },
+      "format": [Function],
+      "toIPA": [Function],
+      "toXPA": [Function],
+    },
+    "调": Object {
+      "调值": 55,
+      "调号": 5,
+      "调名": "阴去",
+      "调序": 4,
+      "调符": "˥˥",
+    },
     "释": "",
-    "音": "tʂoŋ",
-    "韵": "oŋ",
   },
 ]
 `;
@@ -22,11 +58,29 @@ Array [
 exports[`query 2`] = `
 Array [
   Object {
-    "声": "",
-    "调": 3,
+    "读": Object {
+      "IPA": Object {
+        "声": "",
+        "音": "i",
+        "韵": "i",
+      },
+      "XPA": Object {
+        "声": "",
+        "音": "i",
+        "韵": "i",
+      },
+      "format": [Function],
+      "toIPA": [Function],
+      "toXPA": [Function],
+    },
+    "调": Object {
+      "调值": 41,
+      "调号": 3,
+      "调名": "上声",
+      "调序": 3,
+      "调符": "˦˩",
+    },
     "释": "",
-    "音": "i",
-    "韵": "i",
   },
 ]
 `;

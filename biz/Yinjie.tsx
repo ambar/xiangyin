@@ -4,8 +4,7 @@ import groupBy from 'lodash/groupBy'
 import mapValues from 'lodash/mapValues'
 import sortBy from 'lodash/sortBy'
 import {useContext, useEffect, useMemo} from 'react'
-import {toSianpin} from '~/data/toSianpin'
-import {AnyFinal, AnyInitial} from '~/data/湘拼'
+import {createJyinEntry} from '~/data/jyin'
 import * as hsn from '~/data/长沙话音档.meta'
 import {canPlayItem, DataItem, items, playAudio} from './play'
 import {StyledPopover, VolumeIcon} from './shared'
@@ -16,14 +15,9 @@ const initials = sortBy(Object.values(hsn.Initials), (x) => (x === '' ? 0 : 1))
 const finals = Object.values(hsn.Finals)
 
 const itemsBySyllable = mapValues(
-  groupBy(items, (x) => x.声母 + x.韵母),
-  (x) => sortBy(x, '长沙调序')
+  groupBy(items, (x) => x.规范.读.IPA.音),
+  (x) => sortBy(x, (x) => x.规范.调.调序)
 )
-
-const formatSenYn = (...args: Parameters<typeof toSianpin>) => {
-  const [senyn, sen, yn, tone] = toSianpin(...args)
-  return senyn + tone
-}
 
 const StackedSyllables: React.FC<{
   group: DataItem[]
@@ -62,17 +56,7 @@ const StackedSyllables: React.FC<{
           >
             <ruby>
               {x.例字[0] || <>&nbsp;</>}
-              <rt>
-                {formatSenYn(
-                  x.声母 as AnyInitial,
-                  x.韵母 as AnyFinal,
-                  x.长沙调序,
-                  {
-                    toneType,
-                    pinyinType,
-                  }
-                )}
-              </rt>
+              <rt>{x.规范.读.format(pinyinType, toneType)}</rt>
             </ruby>
           </ui.Box>
           {x.號 && <VolumeIcon size=".9em" />}
@@ -110,7 +94,10 @@ const PinyinCell: React.FC<{
   const [shouldRenderPopover, shouldRenderPopoverFlag] = useBoolean()
   // TODO: 在长沙话音档中替换
   const syllable = initial + final
-  const [senyn] = toSianpin(initial, final, 1, {toneType, pinyinType})
+  const senyn = useMemo(
+    () => createJyinEntry(initial, final, 1).读[pinyinType].音,
+    [final, initial, pinyinType]
+  )
   const group = itemsBySyllable[syllable]
 
   useEffect(() => {

@@ -1,5 +1,4 @@
 import yitizi from 'yitizi'
-import {QueryOptions} from './types'
 import * as 汉语方音字汇 from './汉语方音字汇'
 import * as 湘音检字 from './湘音检字'
 import * as 长沙话音档 from './长沙话音档'
@@ -25,14 +24,13 @@ let queryMap = new Map([
 export const queryPinyin = (
   char: string,
   shouldQueryVariants = false,
-  source: Source,
-  opts: QueryOptions = {}
+  source: Source
 ) => {
   let query = queryMap.get(source)!
-  let result = query(char, opts)
+  let result = query(char)
   if (!result.length && shouldQueryVariants) {
     for (const v of yitizi.get(char)) {
-      let r = query(v, opts)
+      let r = query(v)
       if (r.length) {
         result = r
         break
@@ -44,12 +42,11 @@ export const queryPinyin = (
 
 export const queryPinyinAll = (
   char: string,
-  shouldQueryVariants = false,
-  opts: QueryOptions = {}
+  shouldQueryVariants = false
 ): [Source, QueryResult][] => {
   return [...queryMap.keys()].map((k) => [
     k,
-    queryPinyin(char, shouldQueryVariants, k, opts),
+    queryPinyin(char, shouldQueryVariants, k),
   ])
 }
 

@@ -1,6 +1,8 @@
 import * as ui from '@chakra-ui/react'
 import {useContext} from 'react'
+import {createJyinEntry, createToneStyle} from '~/data/jyin'
 import * as t from '~/data/tones'
+import {DiauStyle} from '~/data/types'
 import * as sp from '~/data/湘拼'
 import {playAudio} from './play'
 import {VolumeIcon} from './shared'
@@ -26,6 +28,9 @@ const PlayButton = ({syllable}: {syllable: string}) => {
 }
 
 const csTones: t.CSToneNo[] = [1, 2, 3, 4, 5, 6]
+const toneStyles = Object.fromEntries(
+  csTones.map((t) => [t, createToneStyle(t)])
+) as Record<t.CSToneNo, DiauStyle>
 const samples: [string, sp.AnyInitial, sp.AnyFinal, string][] = [
   ['例字甲', 'tɕ', 'y', '猪除主句住橘'],
   ['例字乙', 'tɕ', 'i', '机期几记徛极'],
@@ -47,7 +52,7 @@ const SendiauTable = () => {
           <ui.Tr>
             <ui.Th>调名</ui.Th>
             {csTones.map((x) => (
-              <ui.Th key={x}>{t.changeTone(x, 'CSToneNo', 'ToneName')}</ui.Th>
+              <ui.Th key={x}>{toneStyles[x].调名}</ui.Th>
             ))}
           </ui.Tr>
           <ui.Tr>
@@ -59,22 +64,20 @@ const SendiauTable = () => {
           <ui.Tr>
             <ui.Th>八位次序</ui.Th>
             {csTones.map((x) => (
-              <ui.Td key={x}>
-                {t.changeTone(x, 'CSToneNo', 'OctetToneNo')}
-              </ui.Td>
+              <ui.Td key={x}>{toneStyles[x].调号}</ui.Td>
             ))}
           </ui.Tr>
           <ui.Tr>
             <ui.Th>调值</ui.Th>
             {csTones.map((x) => (
-              <ui.Td key={x}>{t.changeTone(x, 'CSToneNo', 'ToneValue')}</ui.Td>
+              <ui.Td key={x}>{toneStyles[x].调值}</ui.Td>
             ))}
           </ui.Tr>
           <ui.Tr>
             <ui.Th>调符</ui.Th>
             {csTones.map((x) => (
               <ui.Td key={x} fontFamily="ipa" fontSize="xl">
-                {t.changeTone(x, 'CSToneNo', 'ToneLetter')}
+                {toneStyles[x].调符}
               </ui.Td>
             ))}
           </ui.Tr>
@@ -87,9 +90,11 @@ const SendiauTable = () => {
                     <ruby>
                       {x}
                       <rt>
-                        {pinyinType === 'XPA'
-                          ? sp.toSianpinA(sen, yn)[0]
-                          : sen + yn}
+                        {
+                          createJyinEntry(sen, yn, (i + 1) as t.CSToneNo).读[
+                            pinyinType
+                          ].音
+                        }
                         {/* {i + 1} */}
                       </rt>
                     </ruby>

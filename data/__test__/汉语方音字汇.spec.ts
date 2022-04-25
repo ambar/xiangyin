@@ -12,11 +12,16 @@ test('empty', () => {
   expect(queryCS('X')).toEqual([])
 })
 
+test('轻声', () => {
+  // 个别数量，暂不对格式化特别处理
+  expect(queryCS('宜')[0]).toMatchSnapshot()
+})
+
 test('senyn', () => {
   const matched = xy.items
     .map((x) => x.湘.长沙)
     .filter(Boolean)
     .flat()
-    .every((x) => x.声 in xy.Initials && x.韵 in xy.Finals)
+    .every((x) => x.读.IPA.声 in xy.Initials && x.读.IPA.韵 in xy.Finals)
   expect(matched).toBe(true)
 })

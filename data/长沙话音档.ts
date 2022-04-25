@@ -1,14 +1,15 @@
+import {createJyinEntry} from './jyin'
 import json from './raw/长沙话音档.修正.json'
 import {changeTone, CSToneNo} from './tones'
-import {NormResult, QueryOptions, SchemaEntries} from './types'
-import {AnyFinal, AnyInitial, toSianpinA} from './湘拼'
+import {JyinEntry, SchemaEntries} from './types'
+import {Final, Initial} from './长沙话音档.meta'
 export * from './长沙话音档.meta'
 
 type metaKey = 'disabled' | 'flawed' | 'comment' | 'corrected'
 const schema = [
   ['號', (v: string | null) => v],
-  ['声母', String],
-  ['韵母', String],
+  ['声母', (v: string) => v as Initial],
+  ['韵母', (v: string) => v as Final],
   ['调类', String],
   ['调值', Number],
   ['例字', (v: string[]) => v],
@@ -17,7 +18,7 @@ const schema = [
 
 type RawDataItem = SchemaEntries<typeof schema>
 export type DataItem = RawDataItem & {
-  长沙调序: CSToneNo
+  规范: JyinEntry
 }
 
 export const charGroup = new Map<string, DataItem[]>()
@@ -42,31 +43,22 @@ export const items = json.map((x) => {
   const item = Object.fromEntries(
     schema.map(([key, val], i) => [key, val(x[i])])
   ) as DataItem
-  item.声母 = normSyllable(item.声母)
-  item.韵母 = normSyllable(item.韵母)
-  // 自定义增补
-  item.长沙调序 = changeTone(item.调值, 'ToneValue', 'CSToneNo') as CSToneNo
+  item.声母 = normSyllable(item.声母) as Initial
+  item.韵母 = normSyllable(item.韵母) as Final
   item.例字.forEach((c) => setIfNotSet(c, item))
+  item.规范 = createJyinEntry(
+    item.声母,
+    item.韵母,
+    changeTone(item.调值, 'ToneValue', 'CSToneNo') as CSToneNo,
+    ''
+  )
   return item
 })
 
-export const query = (
-  char: string,
-  {pinyinType = 'IPA', toneType = 'CSToneNo'}: QueryOptions = {}
-): NormResult[] => {
+export const query = (char: string): JyinEntry[] => {
   const items = charGroup.get(char)
   if (items) {
-    return items.map((x) => {
-      let tone = changeTone(x.长沙调序, 'CSToneNo', toneType)
-      let {声母: 声, 韵母: 韵} = x
-      let 音
-      if (pinyinType === 'XPA') {
-        ;[音, 声, 韵] = toSianpinA(声 as AnyInitial, 韵 as AnyFinal)
-      } else {
-        音 = x.声母 + x.韵母
-      }
-      return {音, 声, 韵, 调: tone, 释: ''}
-    })
+    return items.map((x) => x.规范)
   }
   return []
 }

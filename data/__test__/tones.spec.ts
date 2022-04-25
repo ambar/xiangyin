@@ -1,5 +1,5 @@
 import * as t from '../tones'
-import {changeTone, ToneTypes} from '../tones'
+import {changeTone, csConfig, ToneTypes} from '../tones'
 
 const csTones: t.CSToneNo[] = [1, 2, 3, 4, 5, 6]
 
@@ -13,7 +13,7 @@ test('changeTone: CSToneNo', () => {
   ).toMatchSnapshot()
 })
 
-const octets = Object.keys(t.octetToneNo2csToneNo)
+const octets = csConfig.map((x) => x[1])
 
 test('changeTone: OctetToneNo', () => {
   expect(

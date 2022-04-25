@@ -31,28 +31,7 @@ export const toneCode2toneName = {
 }
 
 export type ToneName = keyof typeof toneName2ToneCode
-export const toneName2ToneCode = {
-  轻声: 'T0',
-  // 平: 'T2',
-  平声: 'T2',
-  阴平: 'T1a',
-  阳平: 'T1b',
-  // 上: 'T2',
-  上声: 'T2',
-  阴上: 'T2a',
-  阳上: 'T2b',
-  // 去: 'T3',
-  去声: 'T3',
-  阴去: 'T3a',
-  阳去: 'T3b',
-  // 入: 'T4',
-  入声: 'T4',
-  阴入: 'T4a',
-  阳入: 'T4b',
-}
-
-/** 长沙话序号声调 */
-export type CSToneNo = 1 | 2 | 3 | 4 | 5 | 6
+export const toneName2ToneCode = transpose(toneCode2toneName)
 
 /** 长沙话序号声调 */
 export const toneCode2csToneNo: Partial<Record<ToneCode, CSToneNo | ''>> = {
@@ -68,83 +47,9 @@ export const toneCode2csToneNo: Partial<Record<ToneCode, CSToneNo | ''>> = {
 
 /** 八位数字声调 */
 export type OctetToneNo = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8
-/** 长沙话在用的八位数字声调  */
-export type CSOctetToneNo = Exclude<OctetToneNo, 4 | 8>
 
-/** 八位数字声调 */
-export const octetToneNo2csToneNo: Record<CSOctetToneNo, number> = {
-  1: 1,
-  2: 2,
-  3: 3,
-  5: 4,
-  6: 5,
-  7: 6,
-}
-
-/** 长沙话序号转八位数字声调 */
-export const csToneNo2octetToneNo: Record<CSToneNo, CSOctetToneNo> = transpose(
-  octetToneNo2csToneNo,
-  true
-)
-
-export const csOctetToneNo2toneName: Record<CSOctetToneNo, ToneName> = {
-  1: '阴平',
-  2: '阳平',
-  3: '上声',
-  5: '阴去',
-  6: '阳去',
-  7: '入声',
-}
-
-export const csToneNo2toneName: Record<CSToneNo, ToneName> = {
-  1: '阴平',
-  2: '阳平',
-  3: '上声',
-  4: '阴去',
-  5: '阳去',
-  6: '入声',
-}
-
-/** 四声转长沙话序号 */
-export const csToneName2csToneNo: Partial<Record<ToneName, CSToneNo | ''>> = {
-  轻声: '',
-  阴平: 1,
-  阳平: 2,
-  上声: 3,
-  阴去: 4,
-  阳去: 5,
-  入声: 6,
-}
-
-/** 长沙话序号转调值 */
-export const csToneNo2toneValue: Record<CSToneNo, number> = {
-  1: 33,
-  2: 13,
-  3: 41,
-  4: 55,
-  5: 11,
-  6: 24,
-}
-
-/** 调值转长沙话序号 */
-export const toneValue2csToneNo: Record<number, CSToneNo> = transpose(
-  csToneNo2toneValue,
-  true
-)
-
-/** 长沙话序号转调值 */
-export const csOctetToneNo2toneValue: Record<CSOctetToneNo, number> = {
-  1: 33,
-  2: 13,
-  3: 41,
-  5: 55,
-  6: 11,
-  7: 24,
-}
-
-export type ToneNumber = 1 | 2 | 3 | 4 | 5
-
-const toneLetters: Record<ToneNumber, string> = {
+type ToneLetterValue = 1 | 2 | 3 | 4 | 5
+const toneLetters: Record<ToneLetterValue, string> = {
   1: '˩',
   2: '˨',
   3: '˧',
@@ -152,55 +57,51 @@ const toneLetters: Record<ToneNumber, string> = {
   5: '˥',
 }
 
-export const getToneLetter = (number: number) =>
-  [...String(number)]
-    .map((x) => toneLetters[x as unknown as ToneNumber])
+export function getToneLetter(number: number) {
+  return [...String(number)]
+    .map((x) => toneLetters[x as unknown as ToneLetterValue])
     .join('')
-
-/** 长沙话序号转调符 */
-export const csToneNo2toneLetter: Record<CSToneNo, string> = {
-  1: getToneLetter(33),
-  2: getToneLetter(13),
-  3: getToneLetter(41),
-  4: getToneLetter(55),
-  5: getToneLetter(11),
-  6: getToneLetter(24),
 }
 
-const toneLetter2csToneNo = transpose(csToneNo2toneLetter)
+export const csConfig = [
+  // 仅汉语方音字汇中有个别轻声
+  ['轻声', 0, 0, 0, ''],
+  ['阴平', 1, 1, 33, getToneLetter(33)],
+  ['阳平', 2, 2, 13, getToneLetter(13)],
+  ['上声', 3, 3, 41, getToneLetter(41)],
+  ['阴去', 5, 4, 55, getToneLetter(55)],
+  ['阳去', 6, 5, 11, getToneLetter(11)],
+  ['入声', 7, 6, 24, getToneLetter(24)],
+] as const
 
-type TypeToConvert = Exclude<ToneType, 'CSToneNo'>
-const toCSToneNo: Record<
-  TypeToConvert,
-  Record<number | string, number | string>
-> = {
-  ToneName: csToneName2csToneNo,
-  ToneValue: toneValue2csToneNo,
-  OctetToneNo: octetToneNo2csToneNo,
-  ToneLetter: toneLetter2csToneNo,
-}
-const byCSToneNo: Record<
-  TypeToConvert,
-  Record<number | string, number | string>
-> = {
-  OctetToneNo: csToneNo2octetToneNo,
-  ToneName: csToneNo2toneName,
-  ToneValue: csToneNo2toneValue,
-  ToneLetter: csToneNo2toneLetter,
+/** 长沙话调名  */
+export type CSToneName = typeof csConfig[number][0]
+/** 长沙话在用的八位数字声调  */
+export type CSOctetToneNo = typeof csConfig[number][1]
+/** 长沙话调序 */
+export type CSToneNo = typeof csConfig[number][2]
+
+const cellIndexByToneType: Record<ToneType, number> = {
+  ToneName: 0,
+  OctetToneNo: 1,
+  CSToneNo: 2,
+  ToneValue: 3,
+  ToneLetter: 4,
 }
 
+// TODO: 结果加类型
 export const changeTone = (
   input: string | number,
   inputType: ToneType,
   outputType: ToneType
 ) => {
-  const csToneNo =
-    inputType === 'CSToneNo' ? input : toCSToneNo[inputType][input]
-  const output =
-    outputType === 'CSToneNo' || !byCSToneNo[outputType]
-      ? csToneNo
-      : byCSToneNo[outputType][csToneNo]
-  return output
+  const row = csConfig.find(
+    (row) => row[cellIndexByToneType[inputType]] === input
+  )
+  if (!row) {
+    throw new Error(`Invalid input: ${input}`)
+  }
+  return row[cellIndexByToneType[outputType]]
 }
 
 /** 转置 kv 对象 */

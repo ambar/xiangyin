@@ -1,7 +1,8 @@
+import {createJyinEntry} from './jyin'
 import json from './raw/汉方字.简.修正.json'
-import {changeTone} from './tones'
-import {NormResult, QueryOptions} from './types'
-import {AnyFinal, AnyInitial, toSianpinA} from './湘拼'
+import {changeTone, CSToneNo} from './tones'
+import {JyinEntry} from './types'
+import {Final, Initial} from './汉语方音字汇.meta'
 export * from './汉语方音字汇.meta'
 
 const schema = [
@@ -39,12 +40,12 @@ type RawDataSubItem = Record<typeof subhead[number], string>
 type DataItem = {
   號: string
   字: string
-  湘: Record<县市, NormResult[]>
+  湘: Record<县市, JyinEntry[]>
 }
 
 export const charGroup = new Map<string, DataItem[]>()
 
-const parsePinyin = (v: RawDataSubItem): NormResult[] => {
+const parsePinyin = (v: RawDataSubItem): JyinEntry[] => {
   // 声/韵/调可能只在任意一个中出现斜线，主要是文白异读
   const i = v.声母.split('/')
   const f = v.韵母.split('/')
@@ -80,15 +81,17 @@ const parsePinyin = (v: RawDataSubItem): NormResult[] => {
     const tn = t[i]
     // 一些项目是单字表示，统一一下（入 -> 入声）
     const toneName = tn.length === 1 ? tn + '声' : tn
-    const 声 = y.replace('0', '')
-    const 韵 = f[i]
-    return {
-      音: 声 + 韵,
+    const 声 = y.replace('0', '') as Initial
+    const 韵 = f[i] as Final
+    const 释 = (notes ? `〔${notes[i]}〕` : '') + def
+    return createJyinEntry(
       声,
       韵,
-      调: toneName,
-      释: (notes ? `〔${notes[i]}〕` : '') + def,
-    }
+      v.方言点 === '长沙'
+        ? (changeTone(toneName, 'ToneName', 'CSToneNo') as CSToneNo)
+        : 0,
+      释
+    )
   })
 }
 
@@ -125,28 +128,14 @@ variantMap.forEach(([a, b]) => {
   }
 })
 
-export const query = (
-  char: string,
-  cc: 县市,
-  {pinyinType = 'IPA', toneType = 'CSToneNo'}: QueryOptions = {}
-) => {
+export const query = (char: string, cc: 县市) => {
   const items = charGroup.get(char)
   if (items && cc) {
-    return items
-      .map((x) => x.湘[cc] ?? [])
-      .flat()
-      .map((item) => {
-        let tone = changeTone(item.调, 'ToneName', toneType)
-        let {音, 声, 韵} = item
-        if (pinyinType === 'XPA') {
-          ;[音, 声, 韵] = toSianpinA(声 as AnyInitial, 韵 as AnyFinal)
-        }
-        return {音, 声, 韵, 调: tone, 释: item.释}
-      })
+    return items.map((x) => x.湘[cc] ?? []).flat()
   }
   return []
 }
 
-export const queryCS = (char: string, opts?: QueryOptions) => {
-  return query(char, '长沙', opts)
+export const queryCS = (char: string) => {
+  return query(char, '长沙')
 }
