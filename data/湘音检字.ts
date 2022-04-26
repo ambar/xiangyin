@@ -1,7 +1,7 @@
 import {createJyinEntry} from './jyin'
+import json from './raw/湘音检字.json'
 import {changeTone, CSToneNo} from './tones'
 import {JyinEntry, SchemaEntries} from './types'
-import json from './湘音检字.json'
 import {Final, Finals, Initial, Initials} from './湘音检字.meta'
 export * from './湘音检字.meta'
 
