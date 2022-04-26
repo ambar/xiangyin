@@ -15,3 +15,14 @@ export const memoize = <T extends AnyFunction<unknown>>(
     return value
   }) as T
 }
+
+export const addIfNotAdd = <T>(
+  map: Map<string, T[]>,
+  char: string,
+  item: T
+) => {
+  if (char) {
+    if (map.has(char)) map.get(char)!.push(item)
+    else map.set(char, [item])
+  }
+}

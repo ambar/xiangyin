@@ -40,6 +40,7 @@ export type SenynStyle = {
 export type JyinEntry = {
   读: SenynStyle
   调: DiauStyle
+  字: string
   释: string
 }
 

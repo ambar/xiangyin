@@ -2,6 +2,7 @@ import {createJyinEntry} from './jyin'
 import json from './raw/湘音检字.json'
 import {changeTone, CSToneNo} from './tones'
 import {JyinEntry, SchemaEntries} from './types'
+import {addIfNotAdd} from './utils'
 import {Final, Finals, Initial, Initials} from './湘音检字.meta'
 export * from './湘音检字.meta'
 
@@ -22,6 +23,9 @@ type DataItem = SchemaEntries<typeof schema> & {
 
 // 异体、多音字分组 16519 -> 13543
 export const charGroup = new Map<string, DataItem[]>()
+
+export const normItems: JyinEntry[] = []
+export const normItemsByChar = new Map<string, JyinEntry[]>()
 
 // 声母较长的排前面
 const sortedInitials = Object.entries(Initials).sort(
@@ -51,27 +55,28 @@ export const items = json.map((x) => {
   const item = Object.fromEntries(
     schema.map(([key, val], i) => [key, val(x[i])])
   ) as unknown as DataItem
-  const setIfNotSet = (char: string) => {
-    if (char) {
-      if (charGroup.has(char)) charGroup.get(char)!.push(item)
-      else charGroup.set(char, [item])
-    }
-  }
   const [声, 韵] = ipa2senyn(item.音標)
   item.声 = 声
   item.韵 = 韵
-  item.规范 = createJyinEntry(
+  addIfNotAdd(charGroup, item.字甲, item)
+  addIfNotAdd(charGroup, item.字乙, item)
+  const normItem = createJyinEntry(
     item.声,
     item.韵,
     changeTone(item.調號, 'OctetToneNo', 'CSToneNo') as CSToneNo,
+    item.字甲,
     item.釋義
   )
-  setIfNotSet(item.字甲)
-  setIfNotSet(item.字乙)
+  item.规范 = normItem
+  if (item.字甲) {
+    addIfNotAdd(normItemsByChar, item.字甲, normItem)
+  }
+  if (item.字乙) {
+    addIfNotAdd(normItemsByChar, item.字乙, {...normItem, 字: item.字乙})
+  }
   return item
 })
 
 export const query = (char: string): JyinEntry[] => {
-  const items = charGroup.get(char) || []
-  return items.map((item) => item.规范)
+  return normItemsByChar.get(char) || []
 }

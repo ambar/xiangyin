@@ -95,7 +95,7 @@ const PinyinCell: React.FC<{
   // TODO: 在长沙话音档中替换
   const syllable = initial + final
   const senyn = useMemo(
-    () => createJyinEntry(initial, final, 1).读[pinyinType].音,
+    () => createJyinEntry(initial, final, 1, '').读[pinyinType].音,
     [final, initial, pinyinType]
   )
   const group = itemsBySyllable[syllable]

@@ -2,6 +2,7 @@ import {createJyinEntry} from './jyin'
 import json from './raw/长沙话音档.修正.json'
 import {changeTone, CSToneNo} from './tones'
 import {JyinEntry, SchemaEntries} from './types'
+import {addIfNotAdd} from './utils'
 import {Final, Initial} from './长沙话音档.meta'
 export * from './长沙话音档.meta'
 
@@ -23,13 +24,6 @@ export type DataItem = RawDataItem & {
 
 export const charGroup = new Map<string, DataItem[]>()
 
-const setIfNotSet = (char: string, item: DataItem) => {
-  if (char) {
-    if (charGroup.has(char)) charGroup.get(char)!.push(item)
-    else charGroup.set(char, [item])
-  }
-}
-
 // 其他与字典统一
 const normSyllable = (syllable: string) => {
   return syllable
@@ -39,13 +33,26 @@ const normSyllable = (syllable: string) => {
     .replace('n̍', 'n̩')
 }
 
+export const normItems: JyinEntry[] = []
+export const normItemsByChar = new Map<string, JyinEntry[]>()
+
 export const items = json.map((x) => {
   const item = Object.fromEntries(
     schema.map(([key, val], i) => [key, val(x[i])])
   ) as DataItem
   item.声母 = normSyllable(item.声母) as Initial
   item.韵母 = normSyllable(item.韵母) as Final
-  item.例字.forEach((c) => setIfNotSet(c, item))
+  item.例字.forEach((c) => {
+    addIfNotAdd(charGroup, c, item)
+    const normItem = createJyinEntry(
+      item.声母,
+      item.韵母,
+      changeTone(item.调值, 'ToneValue', 'CSToneNo') as CSToneNo,
+      ''
+    )
+    normItems.push(normItem)
+    addIfNotAdd(normItemsByChar, c, normItem)
+  })
   item.规范 = createJyinEntry(
     item.声母,
     item.韵母,
@@ -56,9 +63,5 @@ export const items = json.map((x) => {
 })
 
 export const query = (char: string): JyinEntry[] => {
-  const items = charGroup.get(char)
-  if (items) {
-    return items.map((x) => x.规范)
-  }
-  return []
+  return normItemsByChar.get(char) || []
 }

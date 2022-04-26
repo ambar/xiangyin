@@ -55,10 +55,12 @@ export const createJyinEntry = (
   sen: AnyInitial,
   yn: AnyFinal,
   tone: CSToneNo,
+  zi: string,
   shi = ''
 ): JyinEntry => {
   return {
     ...createSenyndiau(sen, yn, tone),
+    字: zi,
     释: shi,
   }
 }

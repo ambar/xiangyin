@@ -3,6 +3,7 @@
 exports[`queryCS: 序 1`] = `
 Array [
   Object {
+    "字": "序",
     "读": Object {
       "IPA": Object {
         "声": "ɕ",
@@ -28,6 +29,7 @@ Array [
     "释": "〔原〕",
   },
   Object {
+    "字": "序",
     "读": Object {
       "IPA": Object {
         "声": "ɕ",
@@ -58,6 +60,7 @@ Array [
 exports[`queryCS: 強 1`] = `
 Array [
   Object {
+    "字": "強",
     "读": Object {
       "IPA": Object {
         "声": "tɕ",
@@ -83,6 +86,7 @@ Array [
     "释": "倔强,强大,勉强",
   },
   Object {
+    "字": "強",
     "读": Object {
       "IPA": Object {
         "声": "tɕ",
@@ -108,6 +112,7 @@ Array [
     "释": "倔强,强大,勉强",
   },
   Object {
+    "字": "強",
     "读": Object {
       "IPA": Object {
         "声": "tɕ",
@@ -138,6 +143,7 @@ Array [
 exports[`queryCS: 指 1`] = `
 Array [
   Object {
+    "字": "指",
     "读": Object {
       "IPA": Object {
         "声": "ts",
@@ -163,6 +169,7 @@ Array [
     "释": "〔未注明〕",
   },
   Object {
+    "字": "指",
     "读": Object {
       "IPA": Object {
         "声": "ts",
@@ -193,6 +200,7 @@ Array [
 exports[`queryCS: 會 1`] = `
 Array [
   Object {
+    "字": "會",
     "读": Object {
       "IPA": Object {
         "声": "f",
@@ -218,6 +226,7 @@ Array [
     "释": "〔文〕开会,会不会之文白读皆同",
   },
   Object {
+    "字": "會",
     "读": Object {
       "IPA": Object {
         "声": "f",
@@ -243,6 +252,7 @@ Array [
     "释": "〔白〕开会,会不会之文白读皆同",
   },
   Object {
+    "字": "會",
     "读": Object {
       "IPA": Object {
         "声": "kʰ",
@@ -273,6 +283,7 @@ Array [
 exports[`queryCS: 核 1`] = `
 Array [
   Object {
+    "字": "核",
     "读": Object {
       "IPA": Object {
         "声": "x",
@@ -303,6 +314,7 @@ Array [
 exports[`queryCS: 樹 1`] = `
 Array [
   Object {
+    "字": "樹",
     "读": Object {
       "IPA": Object {
         "声": "ɕ",
@@ -328,6 +340,7 @@ Array [
     "释": "〔文〕树立",
   },
   Object {
+    "字": "樹",
     "读": Object {
       "IPA": Object {
         "声": "ɕ",
@@ -353,6 +366,7 @@ Array [
     "释": "〔白〕树立",
   },
   Object {
+    "字": "樹",
     "读": Object {
       "IPA": Object {
         "声": "ɕ",
@@ -378,6 +392,7 @@ Array [
     "释": "〔文〕树林",
   },
   Object {
+    "字": "樹",
     "读": Object {
       "IPA": Object {
         "声": "ɕ",
@@ -408,6 +423,7 @@ Array [
 exports[`queryCS: 蟻 1`] = `
 Array [
   Object {
+    "字": "蟻",
     "读": Object {
       "IPA": Object {
         "声": "ȵ",
@@ -433,6 +449,7 @@ Array [
     "释": "〔文〕",
   },
   Object {
+    "字": "蟻",
     "读": Object {
       "IPA": Object {
         "声": "ȵ",
@@ -458,6 +475,7 @@ Array [
     "释": "〔白〕",
   },
   Object {
+    "字": "蟻",
     "读": Object {
       "IPA": Object {
         "声": "ȵ",
@@ -483,6 +501,7 @@ Array [
     "释": "〔白〕",
   },
   Object {
+    "字": "蟻",
     "读": Object {
       "IPA": Object {
         "声": "ȵ",
@@ -513,6 +532,7 @@ Array [
 exports[`queryCS: 間 1`] = `
 Array [
   Object {
+    "字": "閒",
     "读": Object {
       "IPA": Object {
         "声": "k",
@@ -538,6 +558,7 @@ Array [
     "释": "中间",
   },
   Object {
+    "字": "閒",
     "读": Object {
       "IPA": Object {
         "声": "k",
@@ -567,6 +588,7 @@ Array [
 
 exports[`轻声 1`] = `
 Object {
+  "字": "宜",
   "读": Object {
     "IPA": Object {
       "声": "",

@@ -2,6 +2,7 @@ import {createJyinEntry} from './jyin'
 import json from './raw/汉方字.简.修正.json'
 import {changeTone, CSToneNo} from './tones'
 import {JyinEntry} from './types'
+import {addIfNotAdd} from './utils'
 import {Final, Initial} from './汉语方音字汇.meta'
 export * from './汉语方音字汇.meta'
 
@@ -45,7 +46,10 @@ type DataItem = {
 
 export const charGroup = new Map<string, DataItem[]>()
 
-const parsePinyin = (v: RawDataSubItem): JyinEntry[] => {
+export const normItems: JyinEntry[] = []
+export const normItemsByChar = new Map<string, JyinEntry[]>()
+
+const parsePinyin = (v: RawDataSubItem, char: string): JyinEntry[] => {
   // 声/韵/调可能只在任意一个中出现斜线，主要是文白异读
   const i = v.声母.split('/')
   const f = v.韵母.split('/')
@@ -90,6 +94,7 @@ const parsePinyin = (v: RawDataSubItem): JyinEntry[] => {
       v.方言点 === '长沙'
         ? (changeTone(toneName, 'ToneName', 'CSToneNo') as CSToneNo)
         : 0,
+      char,
       释
     )
   })
@@ -104,15 +109,21 @@ export const items = json.map((x) => {
   const item = {
     號: rawItem.號,
     字: rawItem.字,
-    湘: Object.fromEntries(rawItem.湘.map((v) => [v.方言点, parsePinyin(v)])),
+    湘: Object.fromEntries(
+      rawItem.湘.map((v) => {
+        const items = parsePinyin(v, rawItem.字)
+        if (v.方言点 === '长沙') {
+          items.forEach((x) => {
+            normItems.push(x)
+            addIfNotAdd(normItemsByChar, x.字, x)
+          })
+          return [v.方言点, items]
+        }
+        return [v.方言点, items]
+      })
+    ),
   } as DataItem
-  const setIfNotSet = (char: string) => {
-    if (char) {
-      if (charGroup.has(char)) charGroup.get(char)!.push(item)
-      else charGroup.set(char, [item])
-    }
-  }
-  setIfNotSet(item.字)
+  addIfNotAdd(charGroup, item.字, item)
   return item
 })
 
@@ -120,11 +131,14 @@ export const items = json.map((x) => {
 const variantMap = [
   ['間', '閒'],
   // TODO: 应当更新 `queryVariants`（包含台湾用字），但要解决不上面的对应问题
-  ['顏', '颜'],
+  // ['顏', '颜'],
 ]
 variantMap.forEach(([a, b]) => {
   if (!charGroup.get(a) && charGroup.has(b)) {
     charGroup.set(a, charGroup.get(b)!)
+  }
+  if (!normItemsByChar.get(a) && normItemsByChar.has(b)) {
+    normItemsByChar.set(a, normItemsByChar.get(b)!)
   }
 })
 
@@ -137,5 +151,5 @@ export const query = (char: string, cc: 县市) => {
 }
 
 export const queryCS = (char: string) => {
-  return query(char, '长沙')
+  return normItemsByChar.get(char) || []
 }

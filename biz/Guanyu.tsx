@@ -91,7 +91,7 @@ const SendiauTable = () => {
                       {x}
                       <rt>
                         {
-                          createJyinEntry(sen, yn, (i + 1) as t.CSToneNo).读[
+                          createJyinEntry(sen, yn, (i + 1) as t.CSToneNo, x).读[
                             pinyinType
                           ].音
                         }

@@ -31,6 +31,7 @@ Array [
 exports[`query 1`] = `
 Array [
   Object {
+    "字": "中",
     "读": Object {
       "IPA": Object {
         "声": "tʃ",
@@ -56,6 +57,7 @@ Array [
     "释": "",
   },
   Object {
+    "字": "中",
     "读": Object {
       "IPA": Object {
         "声": "tʃ",
