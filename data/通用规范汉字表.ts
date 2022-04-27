@@ -14,13 +14,13 @@ const head = ['字', '音', '繁', '异'] as const
 type DataItem = Record<typeof head[number], string>
 
 // 原始数据 8105 项，按繁体、异体展开后 11357 项
-const charGroup = new Map<string, DataItem>()
+const rawItemsByChar = new Map<string, DataItem>()
 
 export const items = json.map((x) => {
   const item = Object.fromEntries(x.map((v, i) => [head[i], v])) as DataItem
   const setIfNotSet = (chars: string) => {
     if (chars) {
-      Array.from(chars).map((x) => charGroup.set(x, item))
+      Array.from(chars).map((x) => rawItemsByChar.set(x, item))
     }
   }
   setIfNotSet(item.字)
@@ -30,12 +30,12 @@ export const items = json.map((x) => {
 })
 
 export const query = (char: string) => {
-  return charGroup.get(char)
+  return rawItemsByChar.get(char)
 }
 
 // 此表收录不完整，没有包括台湾用字，参考：http://ws.moe.edu.tw/001/Upload/userfiles/標準字對照簡化字.pdf
 export const queryVariants = (char: string) => {
-  const item = charGroup.get(char)
+  const item = rawItemsByChar.get(char)
   return item
     ? Array.from((item.字 + item.繁 + item.异).replaceAll(char, ''))
     : []

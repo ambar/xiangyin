@@ -14,7 +14,7 @@ const schema = [
     (v: string[][]) =>
       v.map((x) =>
         Object.fromEntries(x.map((x, i) => [subhead[i], x]))
-      ) as unknown as RawDataSubItem,
+      ) as unknown as RawSubDataItem,
   ],
 ] as const
 
@@ -33,10 +33,10 @@ type 县市 = '长沙' | '双峰' | '全州(县城)' | '灌阳(文市)'
 type RawDataItem = {
   號: string
   字: string
-  湘: RawDataSubItem[]
+  湘: RawSubDataItem[]
 }
 
-type RawDataSubItem = Record<typeof subhead[number], string>
+type RawSubDataItem = Record<typeof subhead[number], string>
 
 type DataItem = {
   號: string
@@ -44,12 +44,12 @@ type DataItem = {
   湘: Record<县市, JyinEntry[]>
 }
 
-export const charGroup = new Map<string, DataItem[]>()
+export const rawItemsByChar = new Map<string, DataItem[]>()
 
 export const normItems: JyinEntry[] = []
 export const normItemsByChar = new Map<string, JyinEntry[]>()
 
-const parsePinyin = (v: RawDataSubItem, char: string): JyinEntry[] => {
+const parsePinyin = (v: RawSubDataItem, char: string): JyinEntry[] => {
   // 声/韵/调可能只在任意一个中出现斜线，主要是文白异读
   const i = v.声母.split('/')
   const f = v.韵母.split('/')
@@ -101,7 +101,7 @@ const parsePinyin = (v: RawDataSubItem, char: string): JyinEntry[] => {
 }
 
 // TODO: 改成 script 预解析
-export const items = json.map((x) => {
+export const rawItems = json.map((x) => {
   const rawItem = Object.fromEntries(
     // @ts-expect-error
     schema.map(([key, val], i) => [key, val(x[i])])
@@ -123,7 +123,7 @@ export const items = json.map((x) => {
       })
     ),
   } as DataItem
-  addIfNotAdd(charGroup, item.字, item)
+  addIfNotAdd(rawItemsByChar, item.字, item)
   return item
 })
 
@@ -134,8 +134,8 @@ const variantMap = [
   // ['顏', '颜'],
 ]
 variantMap.forEach(([a, b]) => {
-  if (!charGroup.get(a) && charGroup.has(b)) {
-    charGroup.set(a, charGroup.get(b)!)
+  if (!rawItemsByChar.get(a) && rawItemsByChar.has(b)) {
+    rawItemsByChar.set(a, rawItemsByChar.get(b)!)
   }
   if (!normItemsByChar.get(a) && normItemsByChar.has(b)) {
     normItemsByChar.set(a, normItemsByChar.get(b)!)
@@ -143,7 +143,7 @@ variantMap.forEach(([a, b]) => {
 })
 
 export const query = (char: string, cc: 县市) => {
-  const items = charGroup.get(char)
+  const items = rawItemsByChar.get(char)
   if (items && cc) {
     return items.map((x) => x.湘[cc] ?? []).flat()
   }

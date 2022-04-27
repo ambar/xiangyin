@@ -22,7 +22,7 @@ export type DataItem = RawDataItem & {
   规范: JyinEntry
 }
 
-export const charGroup = new Map<string, DataItem[]>()
+export const rawItemsByChar = new Map<string, DataItem[]>()
 
 // 其他与字典统一
 const normSyllable = (syllable: string) => {
@@ -36,14 +36,14 @@ const normSyllable = (syllable: string) => {
 export const normItems: JyinEntry[] = []
 export const normItemsByChar = new Map<string, JyinEntry[]>()
 
-export const items = json.map((x) => {
+export const rawItems = json.map((x) => {
   const item = Object.fromEntries(
     schema.map(([key, val], i) => [key, val(x[i])])
   ) as DataItem
   item.声母 = normSyllable(item.声母) as Initial
   item.韵母 = normSyllable(item.韵母) as Final
   item.例字.forEach((c) => {
-    addIfNotAdd(charGroup, c, item)
+    addIfNotAdd(rawItemsByChar, c, item)
     const normItem = createJyinEntry(
       item.声母,
       item.韵母,

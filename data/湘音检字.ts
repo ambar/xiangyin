@@ -22,7 +22,7 @@ type DataItem = SchemaEntries<typeof schema> & {
 }
 
 // 异体、多音字分组 16519 -> 13543
-export const charGroup = new Map<string, DataItem[]>()
+export const rawItemsByChar = new Map<string, DataItem[]>()
 
 export const normItems: JyinEntry[] = []
 export const normItemsByChar = new Map<string, JyinEntry[]>()
@@ -51,15 +51,15 @@ export const ipa2senyn = (ipa: string) => {
   return [i, f] as [Initial, Final]
 }
 
-export const items = json.map((x) => {
+export const rawItems = json.map((x) => {
   const item = Object.fromEntries(
     schema.map(([key, val], i) => [key, val(x[i])])
   ) as unknown as DataItem
   const [声, 韵] = ipa2senyn(item.音標)
   item.声 = 声
   item.韵 = 韵
-  addIfNotAdd(charGroup, item.字甲, item)
-  addIfNotAdd(charGroup, item.字乙, item)
+  addIfNotAdd(rawItemsByChar, item.字甲, item)
+  addIfNotAdd(rawItemsByChar, item.字乙, item)
   const normItem = createJyinEntry(
     item.声,
     item.韵,
