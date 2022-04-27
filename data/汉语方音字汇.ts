@@ -46,8 +46,8 @@ type DataItem = {
 
 export const rawItemsByChar = new Map<string, DataItem[]>()
 
-export const normItems: JyinEntry[] = []
-export const normItemsByChar = new Map<string, JyinEntry[]>()
+export const items: JyinEntry[] = []
+export const itemsByChar = new Map<string, JyinEntry[]>()
 
 const parsePinyin = (v: RawSubDataItem, char: string): JyinEntry[] => {
   // 声/韵/调可能只在任意一个中出现斜线，主要是文白异读
@@ -111,15 +111,15 @@ export const rawItems = json.map((x) => {
     字: rawItem.字,
     湘: Object.fromEntries(
       rawItem.湘.map((v) => {
-        const items = parsePinyin(v, rawItem.字)
+        const theItems = parsePinyin(v, rawItem.字)
         if (v.方言点 === '长沙') {
-          items.forEach((x) => {
-            normItems.push(x)
-            addIfNotAdd(normItemsByChar, x.字, x)
+          theItems.forEach((x) => {
+            items.push(x)
+            addIfNotAdd(itemsByChar, x.字, x)
           })
-          return [v.方言点, items]
+          return [v.方言点, theItems]
         }
-        return [v.方言点, items]
+        return [v.方言点, theItems]
       })
     ),
   } as DataItem
@@ -137,8 +137,8 @@ variantMap.forEach(([a, b]) => {
   if (!rawItemsByChar.get(a) && rawItemsByChar.has(b)) {
     rawItemsByChar.set(a, rawItemsByChar.get(b)!)
   }
-  if (!normItemsByChar.get(a) && normItemsByChar.has(b)) {
-    normItemsByChar.set(a, normItemsByChar.get(b)!)
+  if (!itemsByChar.get(a) && itemsByChar.has(b)) {
+    itemsByChar.set(a, itemsByChar.get(b)!)
   }
 })
 
@@ -151,5 +151,5 @@ export const query = (char: string, cc: 县市) => {
 }
 
 export const queryCS = (char: string) => {
-  return normItemsByChar.get(char) || []
+  return itemsByChar.get(char) || []
 }

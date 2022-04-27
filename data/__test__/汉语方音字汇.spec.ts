@@ -6,6 +6,12 @@ test.each(csChars)('queryCS: %s', (char) => {
   expect(queryCS(char)).toMatchSnapshot()
 })
 
+test('api', () => {
+  expect(xy.items.length > 0).toBe(true)
+  expect(Object.keys(xy.Initials).length > 0).toBe(true)
+  expect(Object.keys(xy.Finals).length > 0).toBe(true)
+})
+
 test('empty', () => {
   // 仅有灌阳/全州的结果
   expect(queryCS('鷺')).toEqual([])
@@ -18,7 +24,7 @@ test('轻声', () => {
 })
 
 test('senyn', () => {
-  const matched = xy.items
+  const matched = xy.rawItems
     .map((x) => x.湘.长沙)
     .filter(Boolean)
     .flat()

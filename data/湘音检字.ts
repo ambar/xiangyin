@@ -24,8 +24,8 @@ type DataItem = SchemaEntries<typeof schema> & {
 // 异体、多音字分组 16519 -> 13543
 export const rawItemsByChar = new Map<string, DataItem[]>()
 
-export const normItems: JyinEntry[] = []
-export const normItemsByChar = new Map<string, JyinEntry[]>()
+export const items: JyinEntry[] = []
+export const itemsByChar = new Map<string, JyinEntry[]>()
 
 // 声母较长的排前面
 const sortedInitials = Object.entries(Initials).sort(
@@ -69,14 +69,17 @@ export const rawItems = json.map((x) => {
   )
   item.规范 = normItem
   if (item.字甲) {
-    addIfNotAdd(normItemsByChar, item.字甲, normItem)
+    items.push(normItem)
+    addIfNotAdd(itemsByChar, item.字甲, normItem)
   }
   if (item.字乙) {
-    addIfNotAdd(normItemsByChar, item.字乙, {...normItem, 字: item.字乙})
+    const theItem = {...normItem, 字: item.字乙}
+    items.push(theItem)
+    addIfNotAdd(itemsByChar, item.字乙, theItem)
   }
   return item
 })
 
 export const query = (char: string): JyinEntry[] => {
-  return normItemsByChar.get(char) || []
+  return itemsByChar.get(char) || []
 }

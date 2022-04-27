@@ -15,7 +15,7 @@ export const StyledPopover: React.FC<
         <ui.PopoverTrigger>{triggerContent}</ui.PopoverTrigger>
       )}
       <ui.Portal>
-        <ui.PopoverContent>
+        <ui.PopoverContent maxHeight="30vh" overflowY="auto">
           {header && (
             <ui.PopoverHeader fontWeight="semibold">{header}</ui.PopoverHeader>
           )}

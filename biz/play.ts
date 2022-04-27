@@ -1,18 +1,21 @@
-import {DataItem, items} from '~/data/长沙话音档'
+import {JyinEntry} from '~/data/types'
+import {DataItem, items, rawItems} from '~/data/长沙话音档'
 
 export {items}
 export type {DataItem}
 
 const configBySyllable = Object.fromEntries(
-  items.map((x) => [x.规范.读.toIPA(), x])
+  rawItems.filter((x) => x.號).map((x) => [x.规范.读.toIPA(), x])
 )
 
 export const canPlay = (syllable: string) => {
   return configBySyllable[syllable] !== undefined
 }
 
-export const canPlayItem = (x: DataItem) => {
-  return !x.號 || x.元.disabled || x.元.flawed
+export const canPlayJyinEntry = (item: JyinEntry) => {
+  const injie = item.读.toIPA()
+  const x = configBySyllable[injie]
+  return !x || !x.號 || x.元.disabled || x.元.flawed
 }
 
 const normSyllable = (syllable: string) => {

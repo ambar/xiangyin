@@ -3,7 +3,7 @@
 exports[`query 1`] = `
 Array [
   Object {
-    "字": "",
+    "字": "中",
     "读": Object {
       "IPA": Object {
         "声": "tʂ",
@@ -29,7 +29,7 @@ Array [
     "释": "",
   },
   Object {
-    "字": "",
+    "字": "中",
     "读": Object {
       "IPA": Object {
         "声": "tʂ",
@@ -60,7 +60,7 @@ Array [
 exports[`query 2`] = `
 Array [
   Object {
-    "字": "",
+    "字": "椅",
     "读": Object {
       "IPA": Object {
         "声": "",

@@ -33,8 +33,8 @@ const normSyllable = (syllable: string) => {
     .replace('n̍', 'n̩')
 }
 
-export const normItems: JyinEntry[] = []
-export const normItemsByChar = new Map<string, JyinEntry[]>()
+export const items: JyinEntry[] = []
+export const itemsByChar = new Map<string, JyinEntry[]>()
 
 export const rawItems = json.map((x) => {
   const item = Object.fromEntries(
@@ -48,10 +48,10 @@ export const rawItems = json.map((x) => {
       item.声母,
       item.韵母,
       changeTone(item.调值, 'ToneValue', 'CSToneNo') as CSToneNo,
-      ''
+      c
     )
-    normItems.push(normItem)
-    addIfNotAdd(normItemsByChar, c, normItem)
+    items.push(normItem)
+    addIfNotAdd(itemsByChar, c, normItem)
   })
   item.规范 = createJyinEntry(
     item.声母,
@@ -63,5 +63,5 @@ export const rawItems = json.map((x) => {
 })
 
 export const query = (char: string): JyinEntry[] => {
-  return normItemsByChar.get(char) || []
+  return itemsByChar.get(char) || []
 }

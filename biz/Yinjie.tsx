@@ -5,8 +5,9 @@ import mapValues from 'lodash/mapValues'
 import sortBy from 'lodash/sortBy'
 import {useContext, useEffect, useMemo} from 'react'
 import {createJyinEntry} from '~/data/jyin'
+import {JyinEntry} from '~/data/types'
 import * as hsn from '~/data/长沙话音档.meta'
-import {canPlayItem, DataItem, items, playAudio} from './play'
+import {canPlay, canPlayJyinEntry, items, playAudio} from './play'
 import {StyledPopover, VolumeIcon} from './shared'
 import {ZhuyinSettingsContext} from './ZhuyinMenu'
 
@@ -15,18 +16,22 @@ const initials = sortBy(Object.values(hsn.Initials), (x) => (x === '' ? 0 : 1))
 const finals = Object.values(hsn.Finals)
 
 const itemsBySyllable = mapValues(
-  groupBy(items, (x) => x.规范.读.IPA.音),
-  (x) => sortBy(x, (x) => x.规范.调.调序)
+  groupBy(items, (x) => x.读.IPA.音),
+  (x) => sortBy(x, (x) => x.调.调序)
 )
 
 const StackedSyllables: React.FC<{
-  group: DataItem[]
+  group: JyinEntry[]
   shouldPlayOnHover: boolean
 }> = ({group, shouldPlayOnHover}) => {
+  const groupedByTone = useMemo(
+    () => Object.entries(groupBy(group, (x) => x.调.调序)),
+    [group]
+  )
   const {toneType, pinyinType} = useContext(ZhuyinSettingsContext)
   return (
     <ui.HStack spacing={1} alignItems="flex-start">
-      {group.map((x, i) => (
+      {groupedByTone.map(([t, x], i) => (
         <ui.Box
           key={i}
           // 让比较长的六个音不溢出，如 tɕiəu1~6，默认宽 318px
@@ -34,17 +39,17 @@ const StackedSyllables: React.FC<{
           textAlign="center"
           cursor="pointer"
           onPointerDown={() => {
-            // if (!shouldPlayOnHover) {
-            playAudio(x.號!)
-            // }
+            playAudio(x[0].读.toIPA())
           }}
           onPointerEnter={() => {
             if (shouldPlayOnHover) {
-              playAudio(x.號!)
+              playAudio(x[0].读.toIPA())
             }
           }}
-          textDecorationLine={canPlayItem(x) ? 'line-through' : 'inherit'}
-          color={canPlayItem(x) ? 'gray' : 'inherit'}
+          textDecorationLine={
+            canPlayJyinEntry(x[0]) ? 'line-through' : 'inherit'
+          }
+          color={canPlayJyinEntry(x[0]) ? 'gray' : 'inherit'}
           css={{svg: {display: 'inline'}}}
         >
           <ui.Box
@@ -55,11 +60,12 @@ const StackedSyllables: React.FC<{
             }}
           >
             <ruby>
-              {x.例字[0] || <>&nbsp;</>}
-              <rt>{x.规范.读.format(pinyinType, toneType)}</rt>
+              {/* TODO: {x.map((x) => x.字)} */}
+              {x[0].字 || <>&nbsp;</>}
+              <rt>{x[0].读.format(pinyinType, toneType)}</rt>
             </ruby>
           </ui.Box>
-          {x.號 && <VolumeIcon size=".9em" />}
+          {canPlay(x[0].读.toIPA()) && <VolumeIcon size=".9em" />}
         </ui.Box>
       ))}
     </ui.HStack>
@@ -105,21 +111,20 @@ const PinyinCell: React.FC<{
   }, [shouldRenderPopoverFlag])
 
   // 外漏的项目找第一个能播放的（popover 中显示全部）
-  const item = useMemo(() => group?.find((x) => x.號), [group])
+  const item = useMemo(() => group?.find((x) => canPlay(x.读.toIPA())), [group])
+  // const item = useMemo(() => group?.find((x) => x.號), [group])
   const playableCell = item && (
     <ui.Box
       cursor="pointer"
       onPointerDown={() => {
-        // if (!shouldPlayOnHover) {
-        playAudio(item.號!)
-        // }
+        playAudio(item.读.toIPA())
       }}
       // 因 touch 设备触发时机的不同，让播放行为一致
       onPointerEnter={() => {
         // 在交互时初始化不太可靠，移动迅速时有些没有关闭
         // setTimeout(shouldRenderPopoverFlag.on)
         if (shouldPlayOnHover) {
-          playAudio(item.號!)
+          playAudio(item.读.toIPA())
         }
       }}
       css={{
@@ -129,7 +134,7 @@ const PinyinCell: React.FC<{
     >
       <ui.Box>
         <ruby>
-          {shouldCompact ? '' : item.例字[0] ?? '?'}
+          {shouldCompact ? '' : item.字 ?? '?'}
           <rt>{senyn}</rt>
         </ruby>
       </ui.Box>

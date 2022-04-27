@@ -6,9 +6,9 @@ let counters = [
   [
     '湘音检字',
     () => {
-      const set = new Set(湘音检字.items.map((x) => x.字甲).filter(Boolean))
+      const set = new Set(湘音检字.rawItems.map((x) => x.字甲).filter(Boolean))
       const setAll = new Set(
-        湘音检字.items
+        湘音检字.rawItems
           .map((x) => [x.字甲, x.字乙])
           .flat()
           .filter(Boolean)
@@ -19,7 +19,7 @@ let counters = [
   [
     '长沙话音档',
     () => {
-      const set = new Set(长沙话音档.items.map((x) => x.例字).flat())
+      const set = new Set(长沙话音档.rawItems.map((x) => x.例字).flat())
       return set.size
     },
   ],
@@ -27,12 +27,12 @@ let counters = [
     '汉语方音字汇',
     () => {
       const set = new Set(
-        汉语方音字汇.items
+        汉语方音字汇.rawItems
           .filter((x) => x.湘.长沙)
           .map((x) => x.字)
           .flat()
       )
-      const setAll = new Set(汉语方音字汇.items.map((x) => x.字).flat())
+      const setAll = new Set(汉语方音字汇.rawItems.map((x) => x.字).flat())
       return [set.size, setAll.size].join(', ')
     },
   ],
