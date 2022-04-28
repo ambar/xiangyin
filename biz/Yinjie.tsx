@@ -28,7 +28,8 @@ const fontSize = '1.1em'
 const StackedSyllables: React.FC<{
   group: JyinEntry[]
   shouldPlayOnHover: boolean
-}> = ({group, shouldPlayOnHover}) => {
+  shouldShowAllOnHover: boolean
+}> = ({group, shouldPlayOnHover, shouldShowAllOnHover}) => {
   const groupedByTone = useMemo(
     () => Object.entries(groupBy(group, (x) => x.调.调序)),
     [group]
@@ -65,8 +66,7 @@ const StackedSyllables: React.FC<{
             }}
           >
             <ruby>
-              {/* TODO: {x.map((x) => x.字)} */}
-              {x[0].字 || <>&nbsp;</>}
+              {shouldShowAllOnHover ? x.map((x) => x.字) : x[0].字}
               <rt>{x[0].读.format(pinyinType, toneType)}</rt>
             </ruby>
           </ui.Box>
@@ -104,8 +104,16 @@ const PinyinCell: React.FC<{
   initial: AnyInitial
   final: AnyFinal
   shouldPlayOnHover: boolean
+  shouldShowAllOnHover: boolean
   shouldCompact: boolean
-}> = ({itemsBySyllable, initial, final, shouldCompact, shouldPlayOnHover}) => {
+}> = ({
+  itemsBySyllable,
+  initial,
+  final,
+  shouldCompact,
+  shouldPlayOnHover,
+  shouldShowAllOnHover,
+}) => {
   const {toneType, pinyinType} = useContext(ZhuyinSettingsContext)
   // NOTE: Popover 大批量渲染时有性能问题，让它推迟初始化
   const [shouldRenderPopover, shouldRenderPopoverFlag] = useBoolean()
@@ -171,6 +179,7 @@ const PinyinCell: React.FC<{
           <StackedSyllables
             group={group}
             shouldPlayOnHover={shouldPlayOnHover}
+            shouldShowAllOnHover={shouldShowAllOnHover}
           />
         </StyledPopover>
       ) : (
@@ -199,15 +208,38 @@ const PinyinTable = () => {
       itemsBySyllable,
     }
   }, [source])
-  const [shouldCompact, shouldCompactFlag] = useBoolean(true)
+  const [shouldCompact, shouldCompactFlag] = useBoolean(false)
   const [shouldPlayOnHover, shouldPlayOnHoverFlag] = useBoolean(true)
+  const [shouldShowAllOnHover, shouldShowAllOnHoverFlag] = useBoolean(true)
   const {colorMode} = ui.useColorMode()
   const thBg = colorMode === 'dark' ? 'gray.800' : 'white'
 
+  const displayMenu = (
+    <ui.Menu isLazy closeOnSelect>
+      <ui.MenuButton as={ui.Button}>显示设定</ui.MenuButton>
+      <ui.MenuList minWidth="240px" maxHeight="80vh" overflowY="auto">
+        <ui.MenuOptionGroup
+          type="checkbox"
+          value={[!shouldCompact ? 'yes' : 'no']}
+          onChange={shouldCompactFlag.toggle}
+        >
+          <ui.MenuItemOption value="yes">默认显示例字</ui.MenuItemOption>
+        </ui.MenuOptionGroup>
+        <ui.MenuOptionGroup
+          type="checkbox"
+          value={[shouldShowAllOnHover ? 'yes' : 'no']}
+          onChange={shouldShowAllOnHoverFlag.toggle}
+        >
+          <ui.MenuItemOption value="yes">悬停时例字全显</ui.MenuItemOption>
+        </ui.MenuOptionGroup>
+      </ui.MenuList>
+    </ui.Menu>
+  )
+
   return (
     <ui.Box>
-      <ui.HStack my={4} spacing={5}>
-        <ui.Box>
+      <ui.HStack spacing={5} flexWrap="wrap">
+        <ui.Box my={4}>
           <ui.Select
             value={source}
             onChange={(e) => setSource(e.target.value as Source)}
@@ -227,16 +259,27 @@ const PinyinTable = () => {
           isChecked={shouldPlayOnHover}
           onChange={shouldPlayOnHoverFlag.toggle}
         /> */}
-        <ui.Flex alignItems="center">
+        <ui.Box my={4}>{displayMenu}</ui.Box>
+        {/* <ui.Flex my={4} alignItems="center">
           <ui.FormLabel htmlFor="shouldCompactFlag" mb={0}>
-            紧凑显示
+            默认显示例字
           </ui.FormLabel>
           <ui.Switch
             id="shouldCompactFlag"
-            isChecked={shouldCompact}
+            isChecked={!shouldCompact}
             onChange={shouldCompactFlag.toggle}
           />
         </ui.Flex>
+        <ui.Flex my={4} alignItems="center">
+          <ui.FormLabel htmlFor="shouldShowAllOnHoverFlag" mb={0}>
+            悬停时例字全显
+          </ui.FormLabel>
+          <ui.Switch
+            id="shouldShowAllOnHoverFlag"
+            isChecked={shouldShowAllOnHover}
+            onChange={shouldShowAllOnHoverFlag.toggle}
+          />
+        </ui.Flex> */}
       </ui.HStack>
       <ui.TableContainer
         sx={{
@@ -313,6 +356,7 @@ const PinyinTable = () => {
                     final={y}
                     shouldCompact={shouldCompact}
                     shouldPlayOnHover={shouldPlayOnHover}
+                    shouldShowAllOnHover={shouldShowAllOnHover}
                   />
                 ))}
               </ui.Tr>
