@@ -3,22 +3,27 @@ import {useBoolean} from '@chakra-ui/react'
 import groupBy from 'lodash/groupBy'
 import mapValues from 'lodash/mapValues'
 import sortBy from 'lodash/sortBy'
-import {useContext, useEffect, useMemo} from 'react'
+import {useContext, useEffect, useMemo, useState} from 'react'
 import {createJyinEntry} from '~/data/jyin'
-import {JyinEntry} from '~/data/types'
-import * as hsn from '~/data/长沙话音档.meta'
-import {canPlay, canPlayJyinEntry, items, playAudio} from './play'
-import {StyledPopover, VolumeIcon} from './shared'
+import {Source, sourceOptions} from '~/data/query'
+import {AnyFinal, AnyInitial, JyinEntry} from '~/data/types'
+import * as 汉语方音字汇 from '~/data/汉语方音字汇'
+import * as 湘音检字 from '~/data/湘音检字'
+import * as 长沙话音档 from '~/data/长沙话音档'
+import {canPlayJyinEntry, isJyinEntryFlawed, playJyinEntry} from './play'
+import {StyledPopover, VolumeIcon, VolumeOffIcon} from './shared'
 import {ZhuyinSettingsContext} from './ZhuyinMenu'
 
+const dictMap: Record<
+  Source,
+  typeof 汉语方音字汇 | typeof 湘音检字 | typeof 长沙话音档
+> = {
+  [Source.湘音检字]: 湘音检字,
+  [Source.汉语方音字汇]: 汉语方音字汇,
+  [Source.长沙话音档]: 长沙话音档,
+}
+const E = '∅'
 const fontSize = '1.1em'
-const initials = sortBy(Object.values(hsn.Initials), (x) => (x === '' ? 0 : 1))
-const finals = Object.values(hsn.Finals)
-
-const itemsBySyllable = mapValues(
-  groupBy(items, (x) => x.读.IPA.音),
-  (x) => sortBy(x, (x) => x.调.调序)
-)
 
 const StackedSyllables: React.FC<{
   group: JyinEntry[]
@@ -39,17 +44,17 @@ const StackedSyllables: React.FC<{
           textAlign="center"
           cursor="pointer"
           onPointerDown={() => {
-            playAudio(x[0].读.toIPA())
+            playJyinEntry(x[0])
           }}
           onPointerEnter={() => {
             if (shouldPlayOnHover) {
-              playAudio(x[0].读.toIPA())
+              playJyinEntry(x[0])
             }
           }}
-          textDecorationLine={
-            canPlayJyinEntry(x[0]) ? 'line-through' : 'inherit'
-          }
-          color={canPlayJyinEntry(x[0]) ? 'gray' : 'inherit'}
+          // textDecorationLine={
+          //   isJyinEntryFlawed(x[0]) ? 'line-through' : 'inherit'
+          // }
+          // color={isJyinEntryFlawed(x[0]) ? 'gray' : 'inherit'}
           css={{svg: {display: 'inline'}}}
         >
           <ui.Box
@@ -65,7 +70,12 @@ const StackedSyllables: React.FC<{
               <rt>{x[0].读.format(pinyinType, toneType)}</rt>
             </ruby>
           </ui.Box>
-          {canPlay(x[0].读.toIPA()) && <VolumeIcon size=".9em" />}
+          {canPlayJyinEntry(x[0]) &&
+            (isJyinEntryFlawed(x[0]) ? (
+              <VolumeOffIcon size=".9em" color="gray" />
+            ) : (
+              <VolumeIcon size=".9em" />
+            ))}
         </ui.Box>
       ))}
     </ui.HStack>
@@ -90,11 +100,12 @@ const rIC =
   typeof requestIdleCallback !== 'undefined' ? requestIdleCallback : postPaint
 
 const PinyinCell: React.FC<{
-  initial: hsn.Initial
-  final: hsn.Final
+  itemsBySyllable: Record<string, JyinEntry[]>
+  initial: AnyInitial
+  final: AnyFinal
   shouldPlayOnHover: boolean
   shouldCompact: boolean
-}> = ({initial, final, shouldCompact, shouldPlayOnHover}) => {
+}> = ({itemsBySyllable, initial, final, shouldCompact, shouldPlayOnHover}) => {
   const {toneType, pinyinType} = useContext(ZhuyinSettingsContext)
   // NOTE: Popover 大批量渲染时有性能问题，让它推迟初始化
   const [shouldRenderPopover, shouldRenderPopoverFlag] = useBoolean()
@@ -111,20 +122,22 @@ const PinyinCell: React.FC<{
   }, [shouldRenderPopoverFlag])
 
   // 外漏的项目找第一个能播放的（popover 中显示全部）
-  const item = useMemo(() => group?.find((x) => canPlay(x.读.toIPA())), [group])
-  // const item = useMemo(() => group?.find((x) => x.號), [group])
+  const item = useMemo(
+    () => group?.find((x) => canPlayJyinEntry(x)) || group?.[0],
+    [group]
+  )
   const playableCell = item && (
     <ui.Box
       cursor="pointer"
       onPointerDown={() => {
-        playAudio(item.读.toIPA())
+        playJyinEntry(item)
       }}
       // 因 touch 设备触发时机的不同，让播放行为一致
       onPointerEnter={() => {
         // 在交互时初始化不太可靠，移动迅速时有些没有关闭
         // setTimeout(shouldRenderPopoverFlag.on)
         if (shouldPlayOnHover) {
-          playAudio(item.读.toIPA())
+          playJyinEntry(item)
         }
       }}
       css={{
@@ -138,7 +151,11 @@ const PinyinCell: React.FC<{
           <rt>{senyn}</rt>
         </ruby>
       </ui.Box>
-      <VolumeIcon size=".9em" />
+      {canPlayJyinEntry(item) && <VolumeIcon size=".9em" />}
+      {/* <VolumeIcon
+        size=".9em"
+        visibility={canPlayJyinEntry(item) ? 'visible' : 'hidden'}
+      /> */}
     </ui.Box>
   )
 
@@ -164,6 +181,24 @@ const PinyinCell: React.FC<{
 }
 
 const PinyinTable = () => {
+  const [source, setSource] = useState(Source.长沙话音档)
+  const {initials, finals, itemsBySyllable} = useMemo(() => {
+    const dict = dictMap[source]
+    const initials = sortBy(Object.values(dict.Initials), (x) =>
+      x === '' ? 0 : 1
+    )
+    const finals = Object.values(dict.Finals)
+    const itemsBySyllable = mapValues(
+      groupBy(dict.items, (x) => x.读.IPA.音),
+      (x) => sortBy(x, (x) => x.调.调序)
+    )
+    return {
+      dict,
+      initials,
+      finals,
+      itemsBySyllable,
+    }
+  }, [source])
   const [shouldCompact, shouldCompactFlag] = useBoolean(true)
   const [shouldPlayOnHover, shouldPlayOnHoverFlag] = useBoolean(true)
   const {colorMode} = ui.useColorMode()
@@ -171,25 +206,38 @@ const PinyinTable = () => {
 
   return (
     <ui.Box>
-      <ui.FormControl display="flex" alignItems="center">
-        <ui.FormLabel htmlFor="shouldPlayOnHoverFlag" mb={0} mr={1}>
+      <ui.HStack my={4} spacing={5}>
+        <ui.Box>
+          <ui.Select
+            value={source}
+            onChange={(e) => setSource(e.target.value as Source)}
+          >
+            {sourceOptions.map(({label, value}) => (
+              <option key={value} value={value}>
+                {label}
+              </option>
+            ))}
+          </ui.Select>
+        </ui.Box>
+        {/* <ui.FormLabel htmlFor="shouldPlayOnHoverFlag" mb={0} mr={1}>
           悬停播放
         </ui.FormLabel>
         <ui.Switch
           id="shouldPlayOnHoverFlag"
           isChecked={shouldPlayOnHover}
           onChange={shouldPlayOnHoverFlag.toggle}
-        />
-        <ui.FormLabel htmlFor="shouldCompactFlag" mb={0} mr={1} ml={4}>
-          紧凑显示
-        </ui.FormLabel>
-        <ui.Switch
-          id="shouldCompactFlag"
-          isChecked={shouldCompact}
-          onChange={shouldCompactFlag.toggle}
-        />
-      </ui.FormControl>
-      {/* <ui.Text my="4">老派长沙方言中声母有 23 个，韵母 41 个。</ui.Text> */}
+        /> */}
+        <ui.Flex alignItems="center">
+          <ui.FormLabel htmlFor="shouldCompactFlag" mb={0}>
+            紧凑显示
+          </ui.FormLabel>
+          <ui.Switch
+            id="shouldCompactFlag"
+            isChecked={shouldCompact}
+            onChange={shouldCompactFlag.toggle}
+          />
+        </ui.Flex>
+      </ui.HStack>
       <ui.TableContainer
         sx={{
           // overflow 与 sticky 冲突，因此在 48em+ 时不使用 overflow，让 sticky 生效
@@ -218,15 +266,14 @@ const PinyinTable = () => {
           }}
         >
           <ui.TableCaption placement="top">
-            表格用字来自《长沙话音档》（1997），读音取自
+            表头横列为声母，坚列为韵母。读音取自
             <ui.Link
               isExternal
               href="http://humanum.arts.cuhk.edu.hk/Lexis/lexi-mf/"
             >
               汉语多功能字库
             </ui.Link>
-            ，属老派长沙话，其中声母共 23 个，韵母共 41 个。⚠️
-            灰色删除线标记的为错误或不准确读音。
+            ，偏老派长沙话，⚠️ 灰色标记的为错误或不准确读音。
           </ui.TableCaption>
           <ui.Thead
             sx={{
@@ -238,9 +285,13 @@ const PinyinTable = () => {
             }}
           >
             <ui.Tr>
-              <ui.Th>{''}</ui.Th>
+              <ui.Th px={0}>
+                <ui.Box fontSize="md">
+                  {finals.length}＼{initials.length}
+                </ui.Box>
+              </ui.Th>
               {initials.map((x) => (
-                <ui.Th key={x}>{x === '' ? '∅' : x}</ui.Th>
+                <ui.Th key={x}>{x === '' ? E : x}</ui.Th>
               ))}
             </ui.Tr>
           </ui.Thead>
@@ -258,6 +309,7 @@ const PinyinTable = () => {
                 <ui.Th>{y}</ui.Th>
                 {initials.map((x) => (
                   <PinyinCell
+                    itemsBySyllable={itemsBySyllable}
                     key={x + y}
                     initial={x}
                     final={y}

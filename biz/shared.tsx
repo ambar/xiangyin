@@ -31,3 +31,4 @@ export const StyledPopover: React.FC<
 // 大多图标库里只有 up/down 两样式，但我更需要的中等的（两条线），FiVolume2/BsVolumeUp
 // https://react-icons.github.io/react-icons/search?q=volume
 export const VolumeIcon = hi.HiVolumeUp
+export const VolumeOffIcon = hi.HiVolumeOff

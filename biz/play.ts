@@ -1,19 +1,24 @@
-import {JyinEntry} from '~/data/types'
-import {DataItem, items, rawItems} from '~/data/长沙话音档'
+import {JyinEntry, PinyinType} from '~/data/types'
+import {rawItems} from '~/data/长沙话音档'
 
-export {items}
-export type {DataItem}
-
+const playKey: PinyinType = 'IPA'
 const configBySyllable = Object.fromEntries(
-  rawItems.filter((x) => x.號).map((x) => [x.规范.读.toIPA(), x])
+  rawItems.filter((x) => x.號).map((x) => [x.规范.读.format(playKey), x])
 )
 
+/** 有音频文件定义 */
 export const canPlay = (syllable: string) => {
-  return configBySyllable[syllable] !== undefined
+  return !!configBySyllable[syllable]
 }
 
+/** 有音频文件定义 */
 export const canPlayJyinEntry = (item: JyinEntry) => {
-  const injie = item.读.toIPA()
+  const x = configBySyllable[item.读.format(playKey)]
+  return !!x
+}
+
+export const isJyinEntryFlawed = (item: JyinEntry) => {
+  const injie = item.读.format(playKey)
   const x = configBySyllable[injie]
   return !x || !x.號 || x.元.disabled || x.元.flawed
 }
@@ -44,4 +49,9 @@ export const playAudio = (syllable: number | string) => {
     }
     Promise.resolve(audio.play()).catch(() => {})
   }
+}
+
+/** 有音频文件定义 */
+export const playJyinEntry = (item: JyinEntry) => {
+  playAudio(item.读.format(playKey))
 }

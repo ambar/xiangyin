@@ -1,6 +1,7 @@
 import {CSToneNo, OctetToneNo, ToneType} from './tones'
 import {AnyFinal, AnyInitial} from './湘拼'
 
+export type {AnyFinal, AnyInitial}
 export const PinyinTypes = ['IPA', 'XPA'] as const
 export type PinyinType = typeof PinyinTypes[number]
 
@@ -23,7 +24,7 @@ export type DiauStyle = {
 }
 
 export type SenynStyle = {
-  format(p: PinyinType, t: ToneType): string
+  format(p: PinyinType, t?: ToneType): string
   /** 国际音标（原文） */
   IPA: {音: string; 声: AnyInitial; 韵: AnyFinal}
   toIPA(t?: ToneType): string

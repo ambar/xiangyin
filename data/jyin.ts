@@ -35,15 +35,15 @@ const createSenyndiau = memoize(
     const IPA = {音: sen + yn, 声: sen, 韵: yn}
     const XPA = {音: a, 声: b, 韵: c}
     const 读 = Object.freeze({
-      format(p: PinyinType, t: ToneType) {
+      format(p: PinyinType, t?: ToneType) {
         return 读[`to${p}`](t)
       },
       IPA,
-      toIPA(t: ToneType) {
+      toIPA(t: ToneType = 'CSToneNo') {
         return IPA.音 + (调[tMap[t] || '调序'] ?? '')
       },
       XPA,
-      toXPA(t: ToneType) {
+      toXPA(t: ToneType = 'CSToneNo') {
         return XPA.音 + (调[tMap[t] || '调序'] ?? '')
       },
     })
