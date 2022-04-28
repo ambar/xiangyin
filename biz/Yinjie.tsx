@@ -266,7 +266,8 @@ const PinyinTable = () => {
           }}
         >
           <ui.TableCaption placement="top">
-            表头横列为声母，坚列为韵母。读音取自
+            纵向表头为声母共 {initials.length} 个，横向为韵母共 {finals.length}{' '}
+            个。读音取自
             <ui.Link
               isExternal
               href="http://humanum.arts.cuhk.edu.hk/Lexis/lexi-mf/"
@@ -281,15 +282,12 @@ const PinyinTable = () => {
                 position: 'sticky',
                 top: 0,
                 bg: thBg,
+                py: 2,
               },
             }}
           >
             <ui.Tr>
-              <ui.Th px={0}>
-                <ui.Box fontSize="md">
-                  {finals.length}＼{initials.length}
-                </ui.Box>
-              </ui.Th>
+              <ui.Th>{''}</ui.Th>
               {initials.map((x) => (
                 <ui.Th key={x}>{x === '' ? E : x}</ui.Th>
               ))}
