@@ -66,7 +66,7 @@ const StackedSyllables: React.FC<{
             }}
           >
             <ruby>
-              {shouldShowAllOnHover ? x.map((x) => x.字) : x[0].字}
+              {shouldShowAllOnHover ? x.map((x) => x.字).join('') : x[0].字}
               <rt>{x[0].读.format(pinyinType, toneType)}</rt>
             </ruby>
           </ui.Box>
