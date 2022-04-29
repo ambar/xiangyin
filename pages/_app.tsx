@@ -5,6 +5,9 @@ import type {AppProps} from 'next/app'
 import '../biz/polyfill'
 import '../styles/globals.css'
 
+// 对字典中扩展区 B~G 的汉字应用自定义字体
+const extFonts = `HanaSubset,BabelStoneHanSubset`
+
 /** https://chakra-ui.com/docs/styled-system/theming/theme */
 const customTheme = extendTheme({
   config: {
@@ -12,8 +15,8 @@ const customTheme = extendTheme({
     // useSystemColorMode: true,
   },
   fonts: {
-    body: `HanaSubset,${theme.fonts.body}`,
-    heading: `HanaSubset,${theme.fonts.heading}`,
+    body: `${extFonts},${theme.fonts.body}`,
+    heading: `${extFonts},${theme.fonts.heading}`,
     ipa: 'Doulos SIL, Arial',
   },
   styles: {
