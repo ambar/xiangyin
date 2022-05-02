@@ -235,7 +235,19 @@ const SenynTable = () => {
 const Guanyu = () => {
   return (
     <ui.Box>
-      <ui.Heading fontSize="xl">收字情况</ui.Heading>
+      <ui.Text>
+        长沙话中的一些方言用字可参考：
+        <ui.Link
+          isExternal
+          color="teal"
+          href="https://fangyanzi.vercel.app/?group=%E6%B9%98"
+        >
+          https://fangyanzi.vercel.app/?group=湘
+        </ui.Link>
+      </ui.Text>
+      <ui.Heading my={8} fontSize="xl">
+        收字情况
+      </ui.Heading>
       <ui.UnorderedList mt={4}>
         <ui.ListItem>《湘音检字》1937 收字约 13543</ui.ListItem>
         <ui.ListItem>《长沙话音档》1997 收字约 3696</ui.ListItem>
