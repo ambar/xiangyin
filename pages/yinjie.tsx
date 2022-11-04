@@ -1,18 +1,12 @@
-import type {InferGetServerSidePropsType} from 'next'
-import getServerSideJyinProps from '~/server/getServerSideJyinProps'
 import BasePage from '../biz/BasePage'
 import Yinjie from '../biz/Yinjie'
 
-const Home = ({
-  initialJyin,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const Home = () => {
   return (
-    <BasePage initialJyin={initialJyin}>
+    <BasePage>
       <Yinjie />
     </BasePage>
   )
 }
-
-export const getServerSideProps = getServerSideJyinProps
 
 export default Home

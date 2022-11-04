@@ -1,5 +1,4 @@
 import * as ui from '@chakra-ui/react'
-import cookie from 'js-cookie'
 import React, {
   createContext,
   useContext,
@@ -11,12 +10,15 @@ import * as bsi from 'react-icons/bs'
 import {ToneType, ToneTypes} from '~/data/tones'
 import {PinyinType, PinyinTypes} from '~/data/types'
 
+const defaultPinyinType: PinyinType = 'XPA'
+const defaultToneType: ToneType = 'CSToneNo'
+
 export const ZhuyinSettingsContext = createContext<{
   pinyinType: PinyinType
   toneType: ToneType
 }>({
-  pinyinType: 'IPA',
-  toneType: 'CSToneNo',
+  pinyinType: defaultPinyinType,
+  toneType: defaultToneType,
 })
 
 const ZhuyinSettingsSetterContext = createContext<{
@@ -27,8 +29,6 @@ const ZhuyinSettingsSetterContext = createContext<{
   setToneType() {},
 })
 
-const defaultPinyinType: PinyinType = 'IPA'
-const defaultToneType: ToneType = 'CSToneNo'
 type ValueType = [PinyinType | void, ToneType | void]
 const parse = (v: string): [PinyinType, ToneType] => {
   let [pinyinType, toneType] = v.split('|') as ValueType
@@ -45,7 +45,7 @@ const getInitialSettings = (initialJyin?: string): [PinyinType, ToneType] => {
   if (initialJyin) {
     return parse(initialJyin || '')
   } else if (typeof window !== 'undefined') {
-    return parse(cookie.get('jyin') || '')
+    return parse(localStorage.getItem('jyin') || '')
   }
   return [defaultPinyinType, defaultToneType]
 }
@@ -62,7 +62,7 @@ export const ZhuyinSettingsProvider: React.FC<{
 
   // 暂没有 SSR 需要（如果有，应当存 cookie）
   useEffect(() => {
-    cookie.set('jyin', [pinyinType, toneType].join('|'), {path: '/'})
+    localStorage.setItem('jyin', [pinyinType, toneType].join('|'))
   }, [toneType, pinyinType])
 
   return (
