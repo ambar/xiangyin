@@ -6,6 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "build:static": "next build && next export",
+    "deploy-gh-pages": "NEXT_PUBLIC_BASE_PATH=/xiangyin NEXT_PUBLIC_ASSET_PREFIX=/xiangyin/ yarn build:static && touch out/.nojekyll && gh-pages -d out -t",
     "lint": "next lint"
   },
   "dependencies": {
