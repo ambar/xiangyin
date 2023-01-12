@@ -1,5 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  experimental: {
+    appDir: true,
+  },
   // 让 router 工作正常
   ...(process.env.NEXT_PUBLIC_BASE_PATH && {
     basePath: process.env.NEXT_PUBLIC_BASE_PATH,

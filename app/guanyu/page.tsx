@@ -1,5 +1,7 @@
-import BasePage from '../biz/BasePage'
-import Guanyu from '../biz/Guanyu'
+'use client'
+
+import BasePage from '../../biz/BasePage'
+import Guanyu from '../../biz/Guanyu'
 
 const Home = ({}) => {
   return (

@@ -1,9 +1,10 @@
 import * as ui from '@chakra-ui/react'
 import Head from 'next/head'
 import Link from 'next/link'
-import {useRouter} from 'next/router'
+import {usePathname} from 'next/navigation'
 import React from 'react'
 import * as bsi from 'react-icons/bs'
+import BaseProvider from './BaseProvider'
 import ZhuyinMenu, {ZhuyinSettingsProvider} from './ZhuyinMenu'
 
 const tabIndexByPathname = {
@@ -18,8 +19,7 @@ const BasePage: React.FC<{children: React.ReactNode; initialJyin?: string}> = ({
   children,
   initialJyin,
 }) => {
-  const router = useRouter()
-  const {pathname} = router
+  const pathname = usePathname()
   const tabIndex = tabIndexByPathname[pathname as TabKey]
   // NOTE: chakra 在上面屏蔽了 tab 键导航（变成了箭头键导航），还不如完成重写不使用它
   const nav = (
@@ -97,14 +97,16 @@ const BasePage: React.FC<{children: React.ReactNode; initialJyin?: string}> = ({
   )
 
   return (
-    <ui.Container maxW="6xl" px="0">
-      {head}
-      <div suppressHydrationWarning>
-        <ZhuyinSettingsProvider initialJyin={initialJyin}>
-          {body}
-        </ZhuyinSettingsProvider>
-      </div>
-    </ui.Container>
+    <BaseProvider>
+      <ui.Container maxW="6xl" px="0">
+        {head}
+        <div suppressHydrationWarning>
+          <ZhuyinSettingsProvider initialJyin={initialJyin}>
+            {body}
+          </ZhuyinSettingsProvider>
+        </div>
+      </ui.Container>
+    </BaseProvider>
   )
 }
 
