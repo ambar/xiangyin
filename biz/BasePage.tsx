@@ -4,7 +4,6 @@ import Link from 'next/link'
 import {usePathname} from 'next/navigation'
 import React from 'react'
 import * as bsi from 'react-icons/bs'
-import BaseProvider from './BaseProvider'
 import ZhuyinMenu, {ZhuyinSettingsProvider} from './ZhuyinMenu'
 
 const tabIndexByPathname = {
@@ -97,16 +96,14 @@ const BasePage: React.FC<{children: React.ReactNode; initialJyin?: string}> = ({
   )
 
   return (
-    <BaseProvider>
-      <ui.Container maxW="6xl" px="0">
-        {head}
-        <div suppressHydrationWarning>
-          <ZhuyinSettingsProvider initialJyin={initialJyin}>
-            {body}
-          </ZhuyinSettingsProvider>
-        </div>
-      </ui.Container>
-    </BaseProvider>
+    <ui.Container maxW="6xl" px="0">
+      {head}
+      <div suppressHydrationWarning>
+        <ZhuyinSettingsProvider initialJyin={initialJyin}>
+          {body}
+        </ZhuyinSettingsProvider>
+      </div>
+    </ui.Container>
   )
 }
 

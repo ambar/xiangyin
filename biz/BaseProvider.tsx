@@ -1,3 +1,5 @@
+'use client'
+
 import {ChakraProvider, extendTheme, theme} from '@chakra-ui/react'
 // 给 HTML 元素加上了 [data-focus-visible-added] hook，而 `@chakra-ui/css-reset` 识别了它，这样避免到处重置 outline 样式
 import 'focus-visible'
