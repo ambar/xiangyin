@@ -52,7 +52,9 @@ export const playAudio = (syllable: number | string) => {
       ? syllable
       : getConfig(normSyllable(syllable))?.號
   if (no) {
-    const src = `/audio/syllables/F${String(no).padStart(5, '0')}.mp3`
+    const src = `${process.env.NEXT_PUBLIC_BASE_PATH}/audio/syllables/F${String(
+      no
+    ).padStart(5, '0')}.mp3`
     if (audio) {
       audio.pause()
       audio.src = src

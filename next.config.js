@@ -1,3 +1,7 @@
+const withPWA = require('next-pwa')({
+  dest: 'public',
+})
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // 让 router 工作正常
@@ -11,4 +15,4 @@ const nextConfig = {
   }),
 }
 
-module.exports = nextConfig
+module.exports = withPWA(nextConfig)

@@ -53,6 +53,22 @@ const BasePage: React.FC<{children: React.ReactNode; initialJyin?: string}> = ({
       </ui.Link>
     </ui.HStack>
   )
+
+  const pwaMeta = (
+    <>
+      <meta name="application-name" content="湘音" />
+      <meta name="apple-mobile-web-app-capable" content="yes" />
+      <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+      <meta name="apple-mobile-web-app-title" content="湘音" />
+      <meta name="mobile-web-app-capable" content="yes" />
+      <meta name="theme-color" content="#000000" />
+      <link
+        rel="manifest"
+        href={`${process.env.NEXT_PUBLIC_BASE_PATH}/manifest.json`}
+      />
+    </>
+  )
+
   const head = (
     <Head>
       <title>湘音 - 长沙话发音字典</title>
@@ -61,19 +77,20 @@ const BasePage: React.FC<{children: React.ReactNode; initialJyin?: string}> = ({
         rel="icon"
         sizes="any"
         type="image/svg+xml"
-        href="/favicon/xiang.svg"
+        href={`${process.env.NEXT_PUBLIC_BASE_PATH}/favicon/xiang.svg`}
       />
       <link
         rel="icon"
         sizes="32x32"
         type="image/png"
-        href="/favicon/xiang32h.png"
+        href={`${process.env.NEXT_PUBLIC_BASE_PATH}/favicon/xiang32h.png`}
       />
       <link
         rel="apple-touch-icon"
         sizes="180x180"
-        href="/favicon/xiang180h.png"
+        href={`${process.env.NEXT_PUBLIC_BASE_PATH}/favicon/xiang180h.png`}
       />
+      {pwaMeta}
     </Head>
   )
   const body = (
