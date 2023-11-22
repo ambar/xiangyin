@@ -1,5 +1,6 @@
 const withPWA = require('next-pwa')({
   dest: 'public',
+  publicExcludes: ['!noprecache/**/*', '!**/*.mp3'],
 })
 
 /** @type {import('next').NextConfig} */
